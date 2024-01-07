@@ -1,6 +1,16 @@
 # Visual Studio 2015 user specific files
 .vs/
 
+# svn files
+.svn/*
+.vs/*
+.idea/*
+Content/Assets/*
+Content/ThirdParty/*
+Content/MSPresets/*
+Plugins/*
+TBS_Game.sln.DotSettings.user
+
 # Compiled Object files
 *.slo
 *.lo
