@@ -3,11 +3,23 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Level/LevelType.h"
 #include "UObject/Object.h"
 #include "PlanModellerGameInstance.generated.h"
 
-UCLASS(Abstract, Blueprintable, BlueprintType)
+class ULevelTransitionController;
+
+UCLASS(Blueprintable, BlueprintType)
 class PLANMODELLER3D_API UPlanModellerGameInstance : public UGameInstance
 {
 	GENERATED_BODY()
+	__override virtual void Init() override;
+
+public:
+	UPROPERTY(BlueprintReadOnly, Category = "Levels")
+	ULevelTransitionController* TransitionController;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Levels")
+	TSubclassOf<ULevelTransitionController> LevelTransitionControllerClass;
+
 };

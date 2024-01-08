@@ -2,3 +2,10 @@
 
 
 #include "Core/PlanModellerGameInstance.h"
+#include "Level/LevelTransitionController.h"
+
+void UPlanModellerGameInstance::Init()
+{
+	Super::Init();
+	TransitionController = NewObject<ULevelTransitionController>(this, LevelTransitionControllerClass);
+}
