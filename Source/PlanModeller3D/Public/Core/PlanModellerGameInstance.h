@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Level/LevelType.h"
 #include "UObject/Object.h"
 #include "PlanModellerGameInstance.generated.h"
 
