@@ -3,27 +3,27 @@
 #include "DMCompositeModels.h"
 #include "DMParametricItem.generated.h"
 
-USTRUCT()
+USTRUCT(BlueprintType)
 struct FDMParametricItem
 {
 	GENERATED_BODY()
 
 public:
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	FGuid Id;
 	
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	FString Name;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	FVector2D Position;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	bool Enable;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	bool Visible;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	FDMCompositeModels CompositeModels;
 };

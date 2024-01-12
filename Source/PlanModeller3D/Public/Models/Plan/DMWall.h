@@ -2,51 +2,51 @@
 
 #include "DMWall.generated.h"
 
-USTRUCT()
+USTRUCT(BlueprintType)
 struct FDMWall
 {
 	GENERATED_BODY()
 
 public:
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	FGuid Id;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	FString Name;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	FString Description;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	bool Enable;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	bool Visible;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	double Area;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	double Thickness;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	bool Connected;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	bool ThicknessAvailability;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	double Height;
 	
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	double HeightFromFloor;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	TArray<FVector2D> Points;
 	
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	TArray<FGuid> CornersIds;
 	
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	TArray<FGuid> WallDependentModelsIds;
 };

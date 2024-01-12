@@ -2,39 +2,39 @@
 
 #include "DMRoom.generated.h"
 
-USTRUCT()
+USTRUCT(BlueprintType)
 struct FDMRoom
 {
 	GENERATED_BODY()
 
 public:
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	FGuid Id;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	FString Name;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	FString Description;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	double Area;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	double Height;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	double HeightFromFloor;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	bool Enable;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	bool Visible;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	TArray<FVector2D> Points;
 	
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	TArray<FGuid> CornersIds;
 };

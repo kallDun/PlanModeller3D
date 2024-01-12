@@ -6,6 +6,7 @@
 #include "UObject/Object.h"
 #include "PlanModellerGameInstance.generated.h"
 
+class USavingService;
 class ULevelTransitionController;
 
 UCLASS(Blueprintable, BlueprintType)
@@ -21,4 +22,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Levels")
 	TSubclassOf<ULevelTransitionController> LevelTransitionControllerClass;
 
+	UPROPERTY(BlueprintReadOnly, Category = "SaveGame")
+	USavingService* SavingService;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "SaveGame", meta=(ClampMin=0, ClampMax=20))
+	int SlotsCount;
 };

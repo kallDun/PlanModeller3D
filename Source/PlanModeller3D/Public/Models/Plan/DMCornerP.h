@@ -4,21 +4,21 @@
 
 #include "DMCornerP.generated.h"
 
-USTRUCT()
+USTRUCT(BlueprintType)
 struct FDMCornerP
 {
 	GENERATED_BODY()
 
 public:
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	FGuid Id;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	FVector2D Position;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	bool Enable;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	bool Visible;
 };

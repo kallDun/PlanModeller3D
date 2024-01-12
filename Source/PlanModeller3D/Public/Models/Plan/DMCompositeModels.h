@@ -6,24 +6,24 @@
 #include "DMCornerP.h"
 #include "DMCompositeModels.generated.h"
 
-USTRUCT()
+USTRUCT(BlueprintType)
 struct FDMCompositeModels
 {
 	GENERATED_BODY()
 
 public:
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	TArray<FDMRoom> Rooms;
 	
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	TArray<FDMWall> Walls;
 	
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	TArray<FDMDoorWindow> Doors;
 	
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	TArray<FDMDoorWindow> Windows;
 	
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	TArray<FDMCornerP> Corners;
 };

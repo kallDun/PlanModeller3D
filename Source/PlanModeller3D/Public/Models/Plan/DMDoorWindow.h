@@ -6,63 +6,63 @@
 #include "UObject/Object.h"
 #include "DMDoorWindow.generated.h"
 
-USTRUCT()
+USTRUCT(BlueprintType)
 struct FDMDoorWindow
 {
 	GENERATED_BODY()
 
 public:
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	FGuid Id;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	FGuid WallId;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	FString Name;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	FString Description;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	double Area;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	bool Enable;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	bool Visible;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	double Width1;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	double Width2;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	double Indent1;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	double Indent2;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	double MinIndentInMeters;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	bool ChangeSecondPairPlaces;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	double Height;
 	
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	double HeightFromFloor;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	TArray<FVector2D> Points;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	TArray<FGuid> CornersPair1Ids;
 	
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	TArray<FGuid> CornersPair2Ids;
 };

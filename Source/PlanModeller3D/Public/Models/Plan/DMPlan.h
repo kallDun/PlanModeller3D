@@ -9,27 +9,27 @@
 #include "DMWall.h"
 #include "DMPlan.generated.h"
 
-USTRUCT()
+USTRUCT(BlueprintType)
 struct FDMPlan
 {
 	GENERATED_BODY()
 
 public:
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	TArray<FDMRoom> Rooms;
 	
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	TArray<FDMWall> Walls;
 	
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	TArray<FDMDoorWindow> Doors;
 	
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	TArray<FDMDoorWindow> Windows;
 	
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	TArray<FDMCornerP> Corners;
 	
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	TArray<FDMParametricItem> ParametricItems;
 };
