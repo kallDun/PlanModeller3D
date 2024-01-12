@@ -13,10 +13,10 @@ struct FDMDoorWindow
 
 public:
 	UPROPERTY(BlueprintReadWrite)
-	FGuid Id;
+	FString Id;
 
 	UPROPERTY(BlueprintReadWrite)
-	FGuid WallId;
+	FString WallId;
 
 	UPROPERTY(BlueprintReadWrite)
 	FString Name;
@@ -61,8 +61,8 @@ public:
 	TArray<FVector2D> Points;
 
 	UPROPERTY(BlueprintReadWrite)
-	TArray<FGuid> CornersPair1Ids;
+	TArray<FString> CornersPair1Ids;
 	
 	UPROPERTY(BlueprintReadWrite)
-	TArray<FGuid> CornersPair2Ids;
+	TArray<FString> CornersPair2Ids;
 };

@@ -9,7 +9,7 @@ struct FDMWall
 
 public:
 	UPROPERTY(BlueprintReadWrite)
-	FGuid Id;
+	FString Id;
 
 	UPROPERTY(BlueprintReadWrite)
 	FString Name;
@@ -45,8 +45,8 @@ public:
 	TArray<FVector2D> Points;
 	
 	UPROPERTY(BlueprintReadWrite)
-	TArray<FGuid> CornersIds;
+	TArray<FString> CornersIds;
 	
 	UPROPERTY(BlueprintReadWrite)
-	TArray<FGuid> WallDependentModelsIds;
+	TArray<FString> WallDependentModelsIds;
 };

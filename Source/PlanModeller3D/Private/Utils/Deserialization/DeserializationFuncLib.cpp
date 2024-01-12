@@ -4,15 +4,11 @@
 #include "Utils/Deserialization/DeserializationFuncLib.h"
 #include "JsonObjectConverter.h"
 
-bool UDeserializationFuncLib::DeserializeJsonFile(const FString& FilePath, TSharedPtr<FJsonObject>& OutJsonObject)
+
+template <typename TStruct>
+bool UDeserializationFuncLib::DeserializeJsonFileByPath(const FString& FilePath, TStruct& OutStruct)
 {
-	FString FileContents;
-	if (!FFileHelper::LoadFileToString(FileContents, *FilePath))
-	{
-		// Handle file reading error
-		UE_LOG(LogTemp, Error, TEXT("Failed to load file: %s"), *FilePath);
-		return false;
-	}
-	const TSharedRef<TJsonReader<>> Reader = TJsonReaderFactory<>::Create(FileContents);
-	return FJsonSerializer::Deserialize(Reader, OutJsonObject);
+	FString FileData = "";
+	if (!FFileHelper::LoadFileToString(FileData, *FilePath)) return false;
+	return FJsonObjectConverter::JsonObjectStringToUStruct(FileData, &OutStruct, 0, 0);
 }

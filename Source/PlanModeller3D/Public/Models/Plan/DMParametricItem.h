@@ -10,7 +10,7 @@ struct FDMParametricItem
 
 public:
 	UPROPERTY(BlueprintReadWrite)
-	FGuid Id;
+	FString Id;
 	
 	UPROPERTY(BlueprintReadWrite)
 	FString Name;

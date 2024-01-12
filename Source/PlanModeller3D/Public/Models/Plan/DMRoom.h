@@ -9,32 +9,32 @@ struct FDMRoom
 
 public:
 	UPROPERTY(BlueprintReadWrite)
-	FGuid Id;
-
-	UPROPERTY(BlueprintReadWrite)
-	FString Name;
-
-	UPROPERTY(BlueprintReadWrite)
-	FString Description;
-
-	UPROPERTY(BlueprintReadWrite)
-	double Area;
-
-	UPROPERTY(BlueprintReadWrite)
 	double Height;
 
 	UPROPERTY(BlueprintReadWrite)
 	double HeightFromFloor;
 
 	UPROPERTY(BlueprintReadWrite)
+	TArray<FVector2D> Points;
+
+	UPROPERTY(BlueprintReadWrite)
+	double Area;
+
+	UPROPERTY(BlueprintReadWrite)
+	FString Name;
+
+	UPROPERTY(BlueprintReadWrite)
+	FString Description;
+	
+	UPROPERTY(BlueprintReadWrite)
+	FString Id;
+
+	UPROPERTY(BlueprintReadWrite)
 	bool Enable;
 
 	UPROPERTY(BlueprintReadWrite)
 	bool Visible;
-
-	UPROPERTY(BlueprintReadWrite)
-	TArray<FVector2D> Points;
 	
 	UPROPERTY(BlueprintReadWrite)
-	TArray<FGuid> CornersIds;
+	TArray<FString> CornersIds;
 };

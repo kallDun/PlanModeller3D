@@ -2,7 +2,6 @@
 
 
 #include "Save/SavingService.h"
-#include "JsonObjectConverter.h"
 #include "Kismet/GameplayStatics.h"
 #include "Save/Data/SaveGameData.h"
 #include "Utils/Deserialization/DeserializationFuncLib.h"
@@ -41,10 +40,6 @@ void USavingService::CreateNewSaveGame(const int SlotIndex, FString SaveName, co
 	USaveGameData* NewSaveGame = Cast<USaveGameData>(UGameplayStatics::CreateSaveGameObject(USaveGameData::StaticClass()));
 	NewSaveGame->SaveName = SaveName;
 	CurrentSaveGame = NewSaveGame;
-
-	TSharedPtr<FJsonObject> OutJsonObject = MakeShareable(new FJsonObject());
-	UDeserializationFuncLib::DeserializeJsonFile(FilePath, OutJsonObject);
-	FJsonObjectConverter::JsonObjectToUStruct<FDMPlan>(OutJsonObject.ToSharedRef(), &NewSaveGame->Plan2D);
-	
+	UDeserializationFuncLib::DeserializeJsonFileByPath(FilePath, NewSaveGame->Plan2D);
 	SaveGame(SlotIndex);
 }

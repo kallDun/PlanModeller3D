@@ -11,7 +11,7 @@ struct FDMCornerP
 
 public:
 	UPROPERTY(BlueprintReadWrite)
-	FGuid Id;
+	FString Id;
 
 	UPROPERTY(BlueprintReadWrite)
 	FVector2D Position;
