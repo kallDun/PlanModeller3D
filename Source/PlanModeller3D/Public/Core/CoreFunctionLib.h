@@ -6,6 +6,7 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "CoreFunctionLib.generated.h"
 
+class USavingService;
 class APlanModellerState;
 class AMenuGameMode;
 class APlanModellerGameMode;
@@ -19,6 +20,9 @@ class PLANMODELLER3D_API UCoreFunctionLib : public UBlueprintFunctionLibrary
 public:
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Core", meta=(HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	static UPlanModellerGameInstance* GetPMInstance(const UObject* WorldContextObject);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Core", meta=(HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+	static USavingService* GetSavingService(const UObject* WorldContextObject);
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Core", meta=(HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	static APlanModellerGameMode* GetPMGameMode(const UObject* WorldContextObject);

@@ -8,7 +8,11 @@ public class PlanModeller3D : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "UMG", "Engine", "InputCore", "Json", "JsonUtilities" });
+		PublicDependencyModuleNames.AddRange(new[]
+		{
+			"Core", "CoreUObject", "UMG", "Engine", "InputCore", 
+			"Json", "JsonUtilities", "ProceduralMeshComponent", "GeometryFramework", "GeometryScriptingEditor"
+		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 

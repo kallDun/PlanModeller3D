@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/SaveGame.h"
 #include "Models/Plan/DMPlan.h"
+#include "Models/Plan3D/MPlan.h"
 #include "UObject/Object.h"
 #include "SaveGameData.generated.h"
 
@@ -20,4 +21,7 @@ public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FDMPlan Plan2D;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FMPlan Plan3D;
 };

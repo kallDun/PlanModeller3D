@@ -12,6 +12,11 @@ UPlanModellerGameInstance* UCoreFunctionLib::GetPMInstance(const UObject* WorldC
 	return Cast<UPlanModellerGameInstance>(WorldContextObject->GetWorld()->GetGameInstance());
 }
 
+USavingService* UCoreFunctionLib::GetSavingService(const UObject* WorldContextObject)
+{
+	return GetPMInstance(WorldContextObject)->SavingService;
+}
+
 APlanModellerGameMode* UCoreFunctionLib::GetPMGameMode(const UObject* WorldContextObject)
 {
 	return Cast<APlanModellerGameMode>(WorldContextObject->GetWorld()->GetAuthGameMode());
