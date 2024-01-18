@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GeometryActors/GeneratedDynamicMeshActor.h"
+#include "Models/Plan/DMDoorWindow.h"
 #include "Models/Plan/DMWall.h"
 #include "Models/Plan3D/MWall.h"
 #include "WallActor.generated.h"
@@ -14,15 +15,21 @@ class PLANMODELLER3D_API AWallActor : public AGeneratedDynamicMeshActor
 	GENERATED_BODY()
 
 public:
-	AWallActor();
+	AWallActor() = default;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FDMWall	DMWall;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FMWall MWall;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<FDMDoorWindow> DMDoors = {};
 
-	UFUNCTION(BlueprintCallable)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<FDMDoorWindow> DMWindows = {};
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Init(FDMWall Wall);
 
 };

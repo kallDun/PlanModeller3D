@@ -11,5 +11,19 @@ class PLANMODELLER3D_API APlanModellerState : public AGameStateBase
 {
 	GENERATED_BODY()
 
+public:
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class ARoomActor> RoomActorClass;
+	
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class AWallActor> WallActorClass;
+
+	UPROPERTY(BlueprintReadOnly)
+	TArray<ARoomActor*> RoomActors;
+
+	UPROPERTY(BlueprintReadOnly)
+	TArray<AWallActor*> WallActors;
+
+	virtual void BeginPlay() override;
 	
 };

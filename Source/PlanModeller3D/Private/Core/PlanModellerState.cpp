@@ -2,3 +2,30 @@
 
 
 #include "Core/PlanModellerState.h"
+#include "Actors/Generated/RoomActor.h"
+#include "Actors/Generated/WallActor.h"
+#include "Core/CoreFunctionLib.h"
+#include "Save/SavingService.h"
+#include "Save/Data/SaveGameData.h"
+
+
+void APlanModellerState::BeginPlay()
+{
+	Super::BeginPlay();
+	if (const auto SavingService = UCoreFunctionLib::GetSavingService(this))
+	{
+		const auto Save = SavingService->CurrentSaveGame;
+		for (const auto RoomDto : Save->Plan2D.Rooms)
+		{
+			auto Room = GetWorld()->SpawnActor<ARoomActor>(RoomActorClass);
+			Room->Init(RoomDto);
+			RoomActors.Add(Room);
+		}
+		for (const auto WallDto : Save->Plan2D.Walls)
+		{
+			auto Wall = GetWorld()->SpawnActor<AWallActor>(WallActorClass);
+			Wall->Init(WallDto);
+			WallActors.Add(Wall);
+		}
+	}
+}
