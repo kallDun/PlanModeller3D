@@ -14,5 +14,5 @@ class PLANMODELLER3D_API UDeserializationFuncLib : public UBlueprintFunctionLibr
 
 public:
 	template <typename TStruct>
-	static bool DeserializeJsonFileByPath(const FString& FilePath, TStruct& OutStruct);
+	static bool DeserializeJsonFileByPath(const FString& FilePath, TStruct* OutStruct);
 };

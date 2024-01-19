@@ -6,9 +6,9 @@
 
 
 template <typename TStruct>
-bool UDeserializationFuncLib::DeserializeJsonFileByPath(const FString& FilePath, TStruct& OutStruct)
+bool UDeserializationFuncLib::DeserializeJsonFileByPath(const FString& FilePath, TStruct* OutStruct)
 {
 	FString FileData = "";
 	if (!FFileHelper::LoadFileToString(FileData, *FilePath)) return false;
-	return FJsonObjectConverter::JsonObjectStringToUStruct(FileData, &OutStruct, 0, 0);
+	return FJsonObjectConverter::JsonObjectStringToUStruct(FileData, OutStruct, 0, 0);
 }

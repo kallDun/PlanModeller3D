@@ -2,9 +2,13 @@
 
 
 #include "Save/SavingService.h"
+
+#include "JsonObjectConverter.h"
 #include "Kismet/GameplayStatics.h"
 #include "Save/Data/SaveGameData.h"
 #include "Utils/Deserialization/DeserializationFuncLib.h"
+#include "Models/Plan/DMPlan.h"
+
 
 
 void USavingService::Init(const int SlotsToLoad)
@@ -35,11 +39,24 @@ void USavingService::SaveGame(const int SlotIndex)
 	Init(SaveGames.Num());
 }
 
+void USavingService::DeleteSave(const int SlotIndex)
+{
+	if (SlotIndex < 0 || SlotIndex >= SaveGames.Num()) return;
+	UGameplayStatics::DeleteGameInSlot(FString::FromInt(SlotIndex), 0);
+	Init(SaveGames.Num());
+}
+
 void USavingService::CreateNewSaveGame(const int SlotIndex, FString SaveName, const FString FilePath)
 {
 	USaveGameData* NewSaveGame = Cast<USaveGameData>(UGameplayStatics::CreateSaveGameObject(USaveGameData::StaticClass()));
 	NewSaveGame->SaveName = SaveName;
 	CurrentSaveGame = NewSaveGame;
-	UDeserializationFuncLib::DeserializeJsonFileByPath(FilePath, NewSaveGame->Plan2D);
+	
+	//UDeserializationFuncLib::DeserializeJsonFileByPath(FilePath, &NewSaveGame->Plan2D);
+
+	if (FString FileData = ""; FFileHelper::LoadFileToString(FileData, *FilePath))
+	{
+		FJsonObjectConverter::JsonObjectStringToUStruct<FDMPlan>(FileData, &NewSaveGame->Plan2D, 0, 0);
+	}
 	SaveGame(SlotIndex);
 }

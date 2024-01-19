@@ -34,5 +34,8 @@ public:
 	void SaveGame(int SlotIndex);
 
 	UFUNCTION(BlueprintCallable)
+	void DeleteSave(int SlotIndex);
+
+	UFUNCTION(BlueprintCallable)
 	void CreateNewSaveGame(int SlotIndex, FString SaveName, FString FilePath);
 };
