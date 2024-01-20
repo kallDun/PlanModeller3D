@@ -7,6 +7,7 @@
 #include "SavingService.generated.h"
 
 
+class USavingServiceData;
 class USaveGameData;
 
 UCLASS(Blueprintable, BlueprintType)
@@ -15,6 +16,9 @@ class PLANMODELLER3D_API USavingService : public UObject
 	GENERATED_BODY()
 
 public:
+	UPROPERTY()
+	USavingServiceData* Data;
+	
 	UPROPERTY(BlueprintReadOnly)
 	TArray<USaveGameData*> SaveGames;
 
@@ -22,7 +26,7 @@ public:
 	USaveGameData* CurrentSaveGame;
 	
 	UFUNCTION()
-	void Init(const int SlotsToLoad);
+	void Init(USavingServiceData* SavingServiceData);
 	
 	UFUNCTION()
 	static TArray<USaveGameData*> GetSaveGames(const int SlotsToLoad);

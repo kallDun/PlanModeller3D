@@ -1,19 +1,18 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Save/SavingService.h"
-
+#include "Services/Save/SavingService.h"
 #include "JsonObjectConverter.h"
 #include "Kismet/GameplayStatics.h"
-#include "Save/Data/SaveGameData.h"
-#include "Utils/Deserialization/DeserializationFuncLib.h"
+#include "Services/Save/Data/SaveGameData.h"
 #include "Models/Plan/DMPlan.h"
+#include "Services/Save/SavingServiceData.h"
 
 
-
-void USavingService::Init(const int SlotsToLoad)
+void USavingService::Init(USavingServiceData* SavingServiceData)
 {
-	SaveGames = GetSaveGames(SlotsToLoad);
+	Data = SavingServiceData;
+	SaveGames = GetSaveGames(Data->SlotsCount);
 }
 
 TArray<USaveGameData*> USavingService::GetSaveGames(const int SlotsToLoad)
@@ -36,14 +35,14 @@ void USavingService::SaveGame(const int SlotIndex)
 {
 	if (SlotIndex < 0 || SlotIndex >= SaveGames.Num()) return;
 	UGameplayStatics::SaveGameToSlot(CurrentSaveGame, FString::FromInt(SlotIndex), 0);
-	Init(SaveGames.Num());
+	SaveGames = GetSaveGames(Data->SlotsCount);
 }
 
 void USavingService::DeleteSave(const int SlotIndex)
 {
 	if (SlotIndex < 0 || SlotIndex >= SaveGames.Num()) return;
 	UGameplayStatics::DeleteGameInSlot(FString::FromInt(SlotIndex), 0);
-	Init(SaveGames.Num());
+	SaveGames = GetSaveGames(Data->SlotsCount);
 }
 
 void USavingService::CreateNewSaveGame(const int SlotIndex, FString SaveName, const FString FilePath)
@@ -51,8 +50,6 @@ void USavingService::CreateNewSaveGame(const int SlotIndex, FString SaveName, co
 	USaveGameData* NewSaveGame = Cast<USaveGameData>(UGameplayStatics::CreateSaveGameObject(USaveGameData::StaticClass()));
 	NewSaveGame->SaveName = SaveName;
 	CurrentSaveGame = NewSaveGame;
-	
-	//UDeserializationFuncLib::DeserializeJsonFileByPath(FilePath, &NewSaveGame->Plan2D);
 
 	if (FString FileData = ""; FFileHelper::LoadFileToString(FileData, *FilePath))
 	{

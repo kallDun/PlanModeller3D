@@ -6,6 +6,8 @@
 #include "UObject/Object.h"
 #include "PlanModellerGameInstance.generated.h"
 
+class USavingServiceData;
+class ULevelTransitionData;
 class UPoolsSystem;
 class UPoolSystemData;
 class USavingService;
@@ -22,13 +24,13 @@ public:
 	ULevelTransitionController* TransitionController;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Levels")
-	TSubclassOf<ULevelTransitionController> LevelTransitionControllerClass;
+	ULevelTransitionData* LevelTransitionData;
 
 	UPROPERTY(BlueprintReadOnly, Category = "SaveGame")
 	USavingService* SavingService;
 	
-	UPROPERTY(EditDefaultsOnly, Category = "SaveGame", meta=(ClampMin=0, ClampMax=20))
-	int SlotsCount;
+	UPROPERTY(EditDefaultsOnly, Category = "SaveGame")
+	USavingServiceData* SavingServiceData;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Levels")
 	UPoolsSystem* PoolsSystem;

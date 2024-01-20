@@ -7,20 +7,18 @@
 #include "UObject/Object.h"
 #include "LevelTransitionController.generated.h"
 
+class ULevelTransitionData;
 class UUserWidget;
 
-UCLASS(Abstract, Blueprintable, BlueprintType)
+UCLASS(BlueprintType)
 class PLANMODELLER3D_API ULevelTransitionController : public UObject
 {
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(EditDefaultsOnly)
-	TMap<ELevelType, FName> LevelPaths;
-
-	UPROPERTY(EditAnywhere)
-	TSubclassOf<UUserWidget> LoadingScreenClass;
-
+	UFUNCTION()
+	void Init(ULevelTransitionData* InLevelTransitionData);
+	
 	UFUNCTION(BlueprintCallable)
 	void LoadLevel(ELevelType LevelType);
 
@@ -28,6 +26,9 @@ public:
 	void LoadStreamLevel(ELevelType LevelType);
 	
 private:
+	UPROPERTY()
+	ULevelTransitionData* Data;
+	
 	UPROPERTY()
 	UUserWidget* LoadingScreen;
 

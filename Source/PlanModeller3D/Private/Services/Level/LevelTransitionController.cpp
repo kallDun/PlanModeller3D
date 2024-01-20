@@ -1,19 +1,26 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Level/LevelTransitionController.h"
+#include "Services/Level/LevelTransitionController.h"
 #include "Blueprint/UserWidget.h"
 #include "Kismet/GameplayStatics.h"
+#include "Services/Level/LevelTransitionData.h"
+
+
+void ULevelTransitionController::Init(ULevelTransitionData* InLevelTransitionData)
+{
+	Data = InLevelTransitionData;
+}
 
 void ULevelTransitionController::LoadLevel(const ELevelType LevelType)
 {
-	if (!LevelPaths.Contains(LevelType))
+	if (!Data->LevelPaths.Contains(LevelType))
 	{
 		UE_LOG(LogTemp, Error, TEXT("Level type %d not found in LevelPaths"), LevelType);
 		return;
 	}
 	
-	const FName LevelPath = LevelPaths[LevelType];
+	const FName LevelPath = Data->LevelPaths[LevelType];
 	UE_LOG(LogTemp, Warning, TEXT("Loading level %s"), *LevelPath.ToString());
 
 	UGameplayStatics::OpenLevel(this, LevelPath);
@@ -21,13 +28,13 @@ void ULevelTransitionController::LoadLevel(const ELevelType LevelType)
 
 void ULevelTransitionController::LoadStreamLevel(ELevelType LevelType)
 {
-	if (!LevelPaths.Contains(LevelType))
+	if (!Data->LevelPaths.Contains(LevelType))
 	{
 		UE_LOG(LogTemp, Error, TEXT("Level type %d not found in LevelPaths"), LevelType);
 		return;
 	}
 	
-	const FName LevelPath = LevelPaths[LevelType];
+	const FName LevelPath = Data->LevelPaths[LevelType];
 	UE_LOG(LogTemp, Warning, TEXT("Loading level %s"), *LevelPath.ToString());
 	
 	FLatentActionInfo LatentInfo;
@@ -42,7 +49,7 @@ void ULevelTransitionController::LoadStreamLevel(ELevelType LevelType)
 
 void ULevelTransitionController::CreateLoadingScreen()
 {
-	LoadingScreen = CreateWidget<UUserWidget>(GetWorld(), LoadingScreenClass, FName("Loading Screen"));
+	LoadingScreen = CreateWidget<UUserWidget>(GetWorld(), Data->LoadingScreenClass, FName("Loading Screen"));
 	LoadingScreen->AddToViewport();
 }
 
