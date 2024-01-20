@@ -4,6 +4,7 @@
 #include "Services/Pool/PoolService.h"
 #include "Blueprint/UserWidget.h"
 #include "Services/Pool/PoolData.h"
+#include "Services/Pool/PoolObject.h"
 
 
 void UPoolService::Init(const FPoolData& PoolData)
@@ -21,11 +22,11 @@ void UPoolService::Dispose()
 {
 	for (const auto Object : UsedPool)
 	{
-		Object->ConditionalBeginDestroy();
+		DestroyObject(Object);
 	}
 	for (const auto Object : FreePool)
 	{
-		Object->ConditionalBeginDestroy();
+		DestroyObject(Object);
 	}
 	UsedPool.Empty();
 }
@@ -87,6 +88,12 @@ void UPoolService::ShowObject(UObject* Object)
 	{
 		Cast<UUserWidget>(Object)->SetVisibility(ESlateVisibility::Visible);
 	}
+
+	if (Object->GetClass()->ImplementsInterface(UPoolObject::StaticClass()))
+	{
+		const auto PoolObject = Cast<IPoolObject>(Object);
+		PoolObject->GetFromPool();
+	}
 }
 
 void UPoolService::HideObject(UObject* Object)
@@ -99,9 +106,37 @@ void UPoolService::HideObject(UObject* Object)
 	{
 		Cast<UUserWidget>(Object)->SetVisibility(ESlateVisibility::Collapsed);
 	}
+
+	if (Object->GetClass()->ImplementsInterface(UPoolObject::StaticClass()))
+	{
+		const auto PoolObject = Cast<IPoolObject>(Object);
+		PoolObject->ReturnToPool();
+	}
 }
 
-void UPoolService::IncreasePoolSize(EPoolRule Rule, int Constant)
+void UPoolService::DestroyObject(UObject* Object)
+{
+	if (Object->GetClass()->ImplementsInterface(UPoolObject::StaticClass()))
+	{
+		const auto PoolObject = Cast<IPoolObject>(Object);
+		PoolObject->OnPoolDispose();
+	}
+
+	if (Object->IsA(AActor::StaticClass()))
+	{
+		Cast<AActor>(Object)->Destroy();
+	}
+	else if (Object->IsA(UUserWidget::StaticClass()))
+	{
+		Cast<UUserWidget>(Object)->RemoveFromParent();
+	}
+	else
+	{
+		Object->ConditionalBeginDestroy();
+	}
+}
+
+void UPoolService::IncreasePoolSize(const EPoolRule Rule, const int Constant)
 {
 	if (Rule == EPoolRule::None) return;
 	

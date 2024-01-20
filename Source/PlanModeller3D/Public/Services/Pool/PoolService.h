@@ -48,4 +48,7 @@ private:
 
 	UFUNCTION()
 	static void HideObject(UObject* Object);
+
+	UFUNCTION()
+	static void DestroyObject(UObject* Object);
 };

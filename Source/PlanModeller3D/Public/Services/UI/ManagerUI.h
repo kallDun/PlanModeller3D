@@ -7,7 +7,7 @@
 #include "ManagerUI.generated.h"
 
 UCLASS(BlueprintType)
-class PLANMODELLER3D_API UUIManager : public UObject
+class PLANMODELLER3D_API UManagerUI : public UObject
 {
 	GENERATED_BODY()
 
