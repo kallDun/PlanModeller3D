@@ -13,8 +13,6 @@ public class PlanModeller3D : ModuleRules
 			"Core", "CoreUObject", "UMG", "Engine", "InputCore", "Json", "JsonUtilities", "ProceduralMeshComponent", "GeometryFramework", "GeometryScriptingEditor"
 		});
 
-		PrivateDependencyModuleNames.AddRange(new string[] {  });
-
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
 		
