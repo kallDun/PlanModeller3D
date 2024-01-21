@@ -151,7 +151,7 @@ void UPoolService::HideObject(UObject* Object, const bool BroadcastMessage)
 	else if (Object->IsA(UUserWidget::StaticClass()))
 	{
 		const auto Widget = Cast<UUserWidget>(Object);
-		Widget->SetVisibility(ESlateVisibility::Collapsed);
+		Widget->SetVisibility(ESlateVisibility::Hidden);
 		Widget->RemoveFromParent();
 	}
 
