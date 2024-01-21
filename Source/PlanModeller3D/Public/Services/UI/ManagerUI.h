@@ -6,11 +6,30 @@
 #include "UObject/Object.h"
 #include "ManagerUI.generated.h"
 
+class UPoolsSystem;
+class UPanelUI;
+class UManagerUIData;
+
 UCLASS(BlueprintType)
 class PLANMODELLER3D_API UManagerUI : public UObject
 {
 	GENERATED_BODY()
 
+private:
+	UPROPERTY()
+	UManagerUIData* Data;
+
+	UPROPERTY()
+	UPoolsSystem* PoolsSystem;
+
 public:
+	UFUNCTION()
+	void Init(UManagerUIData* ManagerData);
+
+	UFUNCTION(BlueprintCallable)
+	UPanelUI* GetPanel(FName PanelName, UObject* Parent) const;
+
+	UFUNCTION(BlueprintCallable)
+	void ReturnPanel(UPanelUI* Panel) const;
 	
 };

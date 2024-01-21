@@ -5,6 +5,7 @@
 #include "Services/Level/LevelTransitionController.h"
 #include "Services/Save/SavingService.h"
 #include "Services/Pool/PoolsSystem.h"
+#include "Services/UI/ManagerUI.h"
 
 void UPlanModellerGameInstance::Init()
 {
@@ -18,4 +19,7 @@ void UPlanModellerGameInstance::Init()
 	
 	PoolsSystem = NewObject<UPoolsSystem>(this, UPoolsSystem::StaticClass());
 	PoolsSystem->Init(PoolsData);
+
+	ManagerUI = NewObject<UManagerUI>(this, UManagerUI::StaticClass());
+	ManagerUI->Init(ManagerUIData);
 }

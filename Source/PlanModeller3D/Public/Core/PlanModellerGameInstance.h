@@ -26,15 +26,21 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Levels")
 	ULevelTransitionData* LevelTransitionData;
 
-	UPROPERTY(BlueprintReadOnly, Category = "SaveGame")
+	UPROPERTY(BlueprintReadOnly, Category = "Save Game")
 	USavingService* SavingService;
 	
-	UPROPERTY(EditDefaultsOnly, Category = "SaveGame")
+	UPROPERTY(EditDefaultsOnly, Category = "Save Game")
 	USavingServiceData* SavingServiceData;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Levels")
+	UPROPERTY(BlueprintReadOnly, Category = "Pools System")
 	UPoolsSystem* PoolsSystem;
 	
-	UPROPERTY(EditDefaultsOnly, Category = "Pool System")
+	UPROPERTY(EditDefaultsOnly, Category = "Pools System")
 	UPoolSystemData* PoolsData;
+
+	UPROPERTY(BlueprintReadOnly, Category = "UI")
+	class UManagerUI* ManagerUI;
+
+	UPROPERTY(EditDefaultsOnly, Category = "UI")
+	class UManagerUIData* ManagerUIData;
 };

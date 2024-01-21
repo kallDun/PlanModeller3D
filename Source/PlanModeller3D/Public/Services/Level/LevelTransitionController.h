@@ -7,6 +7,9 @@
 #include "UObject/Object.h"
 #include "LevelTransitionController.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnLevelUnloaded, ELevelType, Level);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnLevelLoaded, ELevelType, Level);
+
 class ULevelTransitionData;
 class UUserWidget;
 
@@ -15,6 +18,16 @@ class PLANMODELLER3D_API ULevelTransitionController : public UObject
 {
 	GENERATED_BODY()
 
+public:
+	UPROPERTY(BlueprintAssignable)
+	FOnLevelUnloaded OnLevelUnloadedEvent;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnLevelLoaded OnLevelLoadedEvent;
+
+	UPROPERTY(BlueprintReadOnly)
+	ELevelType CurrentLevelType;
+	
 public:
 	UFUNCTION()
 	void Init(ULevelTransitionData* InLevelTransitionData);

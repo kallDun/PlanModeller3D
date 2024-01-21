@@ -3,21 +3,22 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "PanelUIData.h"
 #include "UObject/Object.h"
-#include "SavingServiceData.generated.h"
+#include "ManagerUIData.generated.h"
 
 
 UCLASS(BlueprintType)
-class PLANMODELLER3D_API USavingServiceData : public UPrimaryDataAsset
+class PLANMODELLER3D_API UManagerUIData : public UPrimaryDataAsset
 {
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(ClampMin=0, ClampMax=20))
-	int SlotsCount;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<FPanelUIData> Panels;
 
 	__override virtual FPrimaryAssetId GetPrimaryAssetId() const override
 	{
-		return FPrimaryAssetId("SavingServiceData", GetFName());
+		return FPrimaryAssetId("ManagerUIData", GetFName());
 	}
 };

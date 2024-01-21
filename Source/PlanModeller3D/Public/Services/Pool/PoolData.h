@@ -26,14 +26,14 @@ struct FPoolData
 	EPoolRule GetFromPoolRule;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(ClampMin = "0",
-		EditCondition = "GetFromPoolRule == EAdditionPoolRule::AddConstant || GetFromPoolRule == EAdditionPoolRule::MultiplyByConstant"))
+		EditCondition = "GetFromPoolRule == EAdditionPoolRule::AddConstant || GetFromPoolRule == EAdditionPoolRule::MultiplyByConstant", EditConditionHides=true))
 	int GetFromPoolRuleConstant;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	EPoolRule CloseToMaxSizeRule;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(ClampMin = "0",
-		EditCondition = "CloseToMaxSizeRule == EAdditionPoolRule::AddConstant || CloseToMaxSizeRule == EAdditionPoolRule::MultiplyByConstant"))
+		EditCondition = "CloseToMaxSizeRule == EAdditionPoolRule::AddConstant || CloseToMaxSizeRule == EAdditionPoolRule::MultiplyByConstant", EditConditionHides=true))
 	int CloseToMaxSizeRuleConstant;
 	
 };

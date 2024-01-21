@@ -18,5 +18,13 @@ public:
 	TMap<ELevelType, FName> LevelPaths;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	ELevelType InitialLevelType;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<UUserWidget> LoadingScreenClass;
+
+	__override virtual FPrimaryAssetId GetPrimaryAssetId() const override
+	{
+		return FPrimaryAssetId("LevelTransitionData", GetFName());
+	}
 };

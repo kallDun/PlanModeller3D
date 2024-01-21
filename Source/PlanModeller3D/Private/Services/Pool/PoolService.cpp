@@ -3,6 +3,7 @@
 
 #include "Services/Pool/PoolService.h"
 #include "Blueprint/UserWidget.h"
+#include "Components/PanelWidget.h"
 #include "Services/Pool/PoolData.h"
 #include "Services/Pool/PoolObject.h"
 
@@ -31,7 +32,7 @@ void UPoolService::Dispose()
 	UsedPool.Empty();
 }
 
-UObject* UPoolService::GetFromPool()
+UObject* UPoolService::GetFromPool(UObject* Parent)
 {
 	IncreasePoolSize(Data.GetFromPoolRule, Data.GetFromPoolRuleConstant);
 	if (FreePool.Num() > 0)
@@ -42,7 +43,7 @@ UObject* UPoolService::GetFromPool()
 		{
 			IncreasePoolSize(Data.CloseToMaxSizeRule, Data.CloseToMaxSizeRuleConstant);
 		}
-		ShowObject(Object);
+		ShowObject(Object, Parent);
 		return Object;
 	}
 	return nullptr;
@@ -56,6 +57,16 @@ void UPoolService::ReturnToPool(UObject* Object)
 		UsedPool.Remove(Object);
 		FreePool.Add(Object);
 	}
+}
+
+int UPoolService::GetUsedCount() const
+{
+	return UsedPool.Num();
+}
+
+TArray<UObject*> UPoolService::GetUsedPool() const
+{
+	return TArray(UsedPool);
 }
 
 UObject* UPoolService::CreateObject()
@@ -78,21 +89,40 @@ UObject* UPoolService::CreateObject()
 	return NewObject<UObject>(this, Data.Class);
 }
 
-void UPoolService::ShowObject(UObject* Object)
+void UPoolService::ShowObject(UObject* Object, UObject* Parent)
 {
 	if (Object->IsA(AActor::StaticClass()))
 	{
-		Cast<AActor>(Object)->SetActorHiddenInGame(false);
+		const auto Actor = Cast<AActor>(Object);
+		Actor->SetActorHiddenInGame(false);
+		if (Parent != nullptr)
+		{
+			Actor->AttachToActor(Cast<AActor>(Parent), FAttachmentTransformRules::KeepRelativeTransform);
+			Actor->SetOwner(Cast<AActor>(Parent));
+		}
 	}
 	else if (Object->IsA(UUserWidget::StaticClass()))
 	{
-		Cast<UUserWidget>(Object)->SetVisibility(ESlateVisibility::Visible);
+		const auto Widget = Cast<UUserWidget>(Object);
+		Widget->SetVisibility(ESlateVisibility::Visible);
+		if (Parent != nullptr)
+		{
+			if (Parent->IsA(UPanelWidget::StaticClass()))
+			{
+				const auto Panel = Cast<UPanelWidget>(Parent);
+				Panel->AddChild(Widget);
+			}
+		}
+		else
+		{
+			Widget->AddToViewport();
+		}
 	}
 
 	if (Object->GetClass()->ImplementsInterface(UPoolObject::StaticClass()))
 	{
 		const auto PoolObject = Cast<IPoolObject>(Object);
-		PoolObject->GetFromPool();
+		PoolObject->Execute_GetFromPool(Object, this);
 	}
 }
 
@@ -100,17 +130,22 @@ void UPoolService::HideObject(UObject* Object)
 {
 	if (Object->IsA(AActor::StaticClass()))
 	{
-		Cast<AActor>(Object)->SetActorHiddenInGame(true);
+		const auto Actor = Cast<AActor>(Object);
+		Actor->SetActorHiddenInGame(true);
+		Actor->DetachFromActor(FDetachmentTransformRules::KeepRelativeTransform);
+		Actor->SetOwner(nullptr);
 	}
 	else if (Object->IsA(UUserWidget::StaticClass()))
 	{
-		Cast<UUserWidget>(Object)->SetVisibility(ESlateVisibility::Collapsed);
+		const auto Widget = Cast<UUserWidget>(Object);
+		Widget->SetVisibility(ESlateVisibility::Collapsed);
+		Widget->RemoveFromParent();
 	}
 
 	if (Object->GetClass()->ImplementsInterface(UPoolObject::StaticClass()))
 	{
 		const auto PoolObject = Cast<IPoolObject>(Object);
-		PoolObject->ReturnToPool();
+		PoolObject->Execute_ReturnToPool(Object, this);
 	}
 }
 
@@ -119,21 +154,14 @@ void UPoolService::DestroyObject(UObject* Object)
 	if (Object->GetClass()->ImplementsInterface(UPoolObject::StaticClass()))
 	{
 		const auto PoolObject = Cast<IPoolObject>(Object);
-		PoolObject->OnPoolDispose();
+		PoolObject->Execute_OnPoolDispose(Object,this);
 	}
 
 	if (Object->IsA(AActor::StaticClass()))
 	{
 		Cast<AActor>(Object)->Destroy();
 	}
-	else if (Object->IsA(UUserWidget::StaticClass()))
-	{
-		Cast<UUserWidget>(Object)->RemoveFromParent();
-	}
-	else
-	{
-		Object->ConditionalBeginDestroy();
-	}
+	Object->ConditionalBeginDestroy();
 }
 
 void UPoolService::IncreasePoolSize(const EPoolRule Rule, const int Constant)

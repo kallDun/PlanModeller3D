@@ -19,11 +19,11 @@ class IPoolObject
 	
 public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void GetFromPool();
+	void GetFromPool(UPoolService* Pool);
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void ReturnToPool();
+	void ReturnToPool(UPoolService* Pool);
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void OnPoolDispose();
+	void OnPoolDispose(UPoolService* Pool);
 };

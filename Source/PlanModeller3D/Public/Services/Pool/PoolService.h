@@ -31,11 +31,17 @@ public:
 	void Dispose();
 
 	UFUNCTION(BlueprintCallable)
-	UObject* GetFromPool();
+	UObject* GetFromPool(UObject* Parent);
 
 	UFUNCTION(BlueprintCallable)
 	void ReturnToPool(UObject* Object);
 
+	UFUNCTION(BlueprintCallable)
+	int GetUsedCount() const;
+
+	UFUNCTION(BlueprintCallable)
+	TArray<UObject*> GetUsedPool() const;
+	
 private:
 	UFUNCTION()
 	UObject* CreateObject();
@@ -44,11 +50,11 @@ private:
 	void IncreasePoolSize(EPoolRule Rule, int Constant);
 	
 	UFUNCTION()
-	static void ShowObject(UObject* Object);
+	void ShowObject(UObject* Object, UObject* Parent);
 
 	UFUNCTION()
-	static void HideObject(UObject* Object);
+	void HideObject(UObject* Object);
 
 	UFUNCTION()
-	static void DestroyObject(UObject* Object);
+	void DestroyObject(UObject* Object);
 };
