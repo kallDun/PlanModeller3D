@@ -19,6 +19,7 @@ void UManagerUI::Init(UManagerUIData* ManagerData)
 	{
 		const FPoolData PoolData = FPoolData(PanelData.UseNameAsPoolID ? PanelData.Name : PanelData.PoolID,
 			PanelData.PanelClass, 1, PanelData.bIsSingleton ? 1 : PanelData.MaxCount,
+			ELevelTransitionPoolBehaviour::Hide,
 			EPoolRule::None, 0,
 			EPoolRule::AddConstant, 1);
 		PoolsSystem->CreatePool(PoolData);

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "LevelTransitionPoolBehaviour.h"
 #include "PoolRule.h"
 #include "UObject/Object.h"
 #include "PoolData.generated.h"
@@ -21,19 +22,22 @@ struct FPoolData
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(ClampMin = "1"))
 	int MaxSize = 1;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	ELevelTransitionPoolBehaviour LevelTransitionBehaviour;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	EPoolRule GetFromPoolRule;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(ClampMin = "0",
-		EditCondition = "GetFromPoolRule == EAdditionPoolRule::AddConstant || GetFromPoolRule == EAdditionPoolRule::MultiplyByConstant", EditConditionHides=true))
+		EditCondition = "GetFromPoolRule == EPoolRule::AddConstant || GetFromPoolRule == EPoolRule::MultiplyByConstant", EditConditionHides=true))
 	int GetFromPoolRuleConstant;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	EPoolRule CloseToMaxSizeRule;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(ClampMin = "0",
-		EditCondition = "CloseToMaxSizeRule == EAdditionPoolRule::AddConstant || CloseToMaxSizeRule == EAdditionPoolRule::MultiplyByConstant", EditConditionHides=true))
+		EditCondition = "CloseToMaxSizeRule == EPoolRule::AddConstant || CloseToMaxSizeRule == EPoolRule::MultiplyByConstant", EditConditionHides=true))
 	int CloseToMaxSizeRuleConstant;
 	
 };

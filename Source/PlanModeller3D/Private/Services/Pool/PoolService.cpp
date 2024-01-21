@@ -4,12 +4,15 @@
 #include "Services/Pool/PoolService.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/PanelWidget.h"
+#include "Core/CoreFunctionLib.h"
+#include "Services/Level/LevelTransitionController.h"
 #include "Services/Pool/PoolData.h"
 #include "Services/Pool/PoolObject.h"
 
 
 void UPoolService::Init(const FPoolData& PoolData)
 {
+	TransitionController = UCoreFunctionLib::GetTransitionController(this);
 	Data = PoolData;
 	for (int i = 0; i < Data.InitialSize && i < Data.MaxSize; ++i)
 	{
@@ -17,6 +20,9 @@ void UPoolService::Init(const FPoolData& PoolData)
 		HideObject(Object);
 		FreePool.Add(Object);
 	}
+	
+	TransitionController->OnLevelUnloadedEvent.AddDynamic(this, &UPoolService::OnLevelUnloaded);
+	TransitionController->OnLevelLoadedEvent.AddDynamic(this, &UPoolService::OnLevelLoaded);
 }
 
 void UPoolService::Dispose()
@@ -30,7 +36,12 @@ void UPoolService::Dispose()
 		DestroyObject(Object);
 	}
 	UsedPool.Empty();
+
+	TransitionController->OnLevelUnloadedEvent.RemoveDynamic(this, &UPoolService::OnLevelUnloaded);
+	TransitionController->OnLevelLoadedEvent.RemoveDynamic(this, &UPoolService::OnLevelLoaded);
 }
+
+// PUBLIC
 
 UObject* UPoolService::GetFromPool(UObject* Parent)
 {
@@ -53,9 +64,9 @@ void UPoolService::ReturnToPool(UObject* Object)
 {
 	if (UsedPool.Contains(Object))
 	{
-		HideObject(Object);
 		UsedPool.Remove(Object);
 		FreePool.Add(Object);
+		HideObject(Object);
 	}
 }
 
@@ -68,6 +79,8 @@ TArray<UObject*> UPoolService::GetUsedPool() const
 {
 	return TArray(UsedPool);
 }
+
+// PRIVATE
 
 UObject* UPoolService::CreateObject()
 {
@@ -89,7 +102,7 @@ UObject* UPoolService::CreateObject()
 	return NewObject<UObject>(this, Data.Class);
 }
 
-void UPoolService::ShowObject(UObject* Object, UObject* Parent)
+void UPoolService::ShowObject(UObject* Object, UObject* Parent, const bool BroadcastMessage)
 {
 	if (Object->IsA(AActor::StaticClass()))
 	{
@@ -119,14 +132,14 @@ void UPoolService::ShowObject(UObject* Object, UObject* Parent)
 		}
 	}
 
-	if (Object->GetClass()->ImplementsInterface(UPoolObject::StaticClass()))
+	if (BroadcastMessage && Object->GetClass()->ImplementsInterface(UPoolObject::StaticClass()))
 	{
 		const auto PoolObject = Cast<IPoolObject>(Object);
 		PoolObject->Execute_GetFromPool(Object, this);
 	}
 }
 
-void UPoolService::HideObject(UObject* Object)
+void UPoolService::HideObject(UObject* Object, const bool BroadcastMessage)
 {
 	if (Object->IsA(AActor::StaticClass()))
 	{
@@ -142,7 +155,7 @@ void UPoolService::HideObject(UObject* Object)
 		Widget->RemoveFromParent();
 	}
 
-	if (Object->GetClass()->ImplementsInterface(UPoolObject::StaticClass()))
+	if (BroadcastMessage && Object->GetClass()->ImplementsInterface(UPoolObject::StaticClass()))
 	{
 		const auto PoolObject = Cast<IPoolObject>(Object);
 		PoolObject->Execute_ReturnToPool(Object, this);
@@ -194,5 +207,42 @@ void UPoolService::IncreasePoolSize(const EPoolRule Rule, const int Constant)
 		auto Object = CreateObject();
 		HideObject(Object);
 		FreePool.Add(Object);
+	}
+}
+
+// EVENT HANDLERS
+
+void UPoolService::OnLevelUnloaded(ELevelType Level)
+{
+	if (Data.LevelTransitionBehaviour == ELevelTransitionPoolBehaviour::Dispose)
+	{
+		Dispose();
+	}
+	else if (Data.LevelTransitionBehaviour == ELevelTransitionPoolBehaviour::Hide)
+	{
+		for (const auto Object : UsedPool)
+		{
+			HideObject(Object, false);
+			FreePool.Add(Object);
+		}
+		UsedPool.Empty();
+	}
+	else if (Data.LevelTransitionBehaviour == ELevelTransitionPoolBehaviour::HideThenShow)
+	{
+		for (const auto Object : UsedPool)
+		{
+			HideObject(Object, false);
+		}
+	}
+}
+
+void UPoolService::OnLevelLoaded(ELevelType Level)
+{
+	if (Data.LevelTransitionBehaviour == ELevelTransitionPoolBehaviour::HideThenShow)
+	{
+		for (const auto Object : UsedPool)
+		{
+			ShowObject(Object, nullptr, false);
+		}
 	}
 }
