@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "LevelTransitionPoolBehaviour.h"
+#include "PoolInitializationType.h"
 #include "PoolRule.h"
 #include "UObject/Object.h"
 #include "PoolData.generated.h"
@@ -39,5 +40,8 @@ struct FPoolData
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(ClampMin = "0",
 		EditCondition = "CloseToMaxSizeRule == EPoolRule::AddConstant || CloseToMaxSizeRule == EPoolRule::MultiplyByConstant", EditConditionHides=true))
 	int CloseToMaxSizeRuleConstant;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	EPoolInitializationType InitializationType;
 	
 };

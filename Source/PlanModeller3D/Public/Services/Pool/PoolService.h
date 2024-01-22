@@ -28,6 +28,9 @@ private:
 
 	UPROPERTY()
 	FPoolData Data;
+
+	UPROPERTY()
+	bool bIsInitialized = false;
 	
 public:
 	UFUNCTION()
@@ -49,6 +52,9 @@ public:
 	TArray<UObject*> GetUsedPool() const;
 	
 private:
+	UFUNCTION()
+	void InitDefaultPoolObjects();
+	
 	UFUNCTION()
 	UObject* CreateObject();
 

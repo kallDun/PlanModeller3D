@@ -13,13 +13,10 @@
 void UPoolService::Init(const FPoolData& PoolData)
 {
 	Data = PoolData;
-	for (int i = 0; i < Data.InitialSize && i < Data.MaxSize; ++i)
+	if (PoolData.InitializationType == EPoolInitializationType::Immediate)
 	{
-		auto Object = CreateObject();
-		HideObject(Object);
-		FreePool.Add(Object);
+		InitDefaultPoolObjects();
 	}
-	
 	TransitionController = UCoreFunctionLib::GetTransitionController(this);
 	TransitionController->OnLevelUnloadedEvent.AddDynamic(this, &UPoolService::OnLevelUnloaded);
 	TransitionController->OnLevelLoadedEvent.AddDynamic(this, &UPoolService::OnLevelLoaded);
@@ -45,6 +42,11 @@ void UPoolService::Dispose()
 
 UObject* UPoolService::GetFromPool(UObject* Parent)
 {
+	if (Data.InitializationType == EPoolInitializationType::Lazy && !bIsInitialized)
+	{
+		InitDefaultPoolObjects();
+	}
+	
 	IncreasePoolSize(Data.GetFromPoolRule, Data.GetFromPoolRuleConstant);
 	if (FreePool.Num() > 0)
 	{
@@ -81,6 +83,17 @@ TArray<UObject*> UPoolService::GetUsedPool() const
 }
 
 // PRIVATE
+
+void UPoolService::InitDefaultPoolObjects()
+{
+	for (int i = 0; i < Data.InitialSize && i < Data.MaxSize; ++i)
+	{
+		auto Object = CreateObject();
+		HideObject(Object);
+		FreePool.Add(Object);
+	}
+	bIsInitialized = true;
+}
 
 UObject* UPoolService::CreateObject()
 {

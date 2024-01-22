@@ -2,9 +2,6 @@
 
 
 #include "Services/Pool/PoolsSystem.h"
-
-#include "Core/CoreFunctionLib.h"
-#include "Core/PlanModellerGameInstance.h"
 #include "Services/Pool/PoolService.h"
 #include "Services/Pool/PoolSystemData.h"
 
