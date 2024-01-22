@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "LevelType.h"
+#include "Services/Initialization/Initializable.h"
 #include "UObject/Object.h"
 #include "LevelTransitionController.generated.h"
 
@@ -14,7 +15,7 @@ class ULevelTransitionData;
 class UUserWidget;
 
 UCLASS(BlueprintType)
-class PLANMODELLER3D_API ULevelTransitionController : public UObject
+class PLANMODELLER3D_API ULevelTransitionController : public UObject, public IInitializable
 {
 	GENERATED_BODY()
 
@@ -29,8 +30,7 @@ public:
 	ELevelType CurrentLevelType;
 	
 public:
-	UFUNCTION()
-	void Init(ULevelTransitionData* InLevelTransitionData);
+	virtual void Init_Implementation(UPrimaryDataAsset* TransitionData) override;
 	
 	UFUNCTION(BlueprintCallable)
 	void LoadLevel(ELevelType LevelType);

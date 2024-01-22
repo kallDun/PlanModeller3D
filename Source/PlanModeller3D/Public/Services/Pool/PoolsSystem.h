@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Services/Initialization/Initializable.h"
 #include "UObject/Object.h"
 #include "PoolsSystem.generated.h"
-
 
 struct FPoolData;
 
 UCLASS(BlueprintType)
-class PLANMODELLER3D_API UPoolsSystem : public UObject
+class PLANMODELLER3D_API UPoolsSystem : public UObject, public IInitializable
 {
 	GENERATED_BODY()
 
@@ -18,9 +18,8 @@ private:
 	UPROPERTY()
 	TMap<FName, class UPoolService*> Pools = {};
 
-public:	
-	UFUNCTION()
-	void Init(class UPoolSystemData* PoolSystemData);
+public:
+	virtual void Init_Implementation(UPrimaryDataAsset* PoolSystemData) override;
 
 	UFUNCTION(BlueprintCallable)
 	UPoolService* CreatePool(FPoolData PoolData);

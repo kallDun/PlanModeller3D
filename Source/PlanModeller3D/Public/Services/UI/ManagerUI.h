@@ -11,7 +11,7 @@ class UPanelUI;
 class UManagerUIData;
 
 UCLASS(BlueprintType)
-class PLANMODELLER3D_API UManagerUI : public UObject
+class PLANMODELLER3D_API UManagerUI : public UObject, public IInitializable
 {
 	GENERATED_BODY()
 
@@ -24,7 +24,10 @@ private:
 
 public:
 	UFUNCTION()
-	void Init(UManagerUIData* ManagerData);
+	virtual void Init_Implementation(UPrimaryDataAsset* ManagerData) override;
+
+	UFUNCTION()
+	void Init2(UPrimaryDataAsset* ManagerData);
 
 	UFUNCTION(BlueprintCallable)
 	UPanelUI* GetPanel(FName PanelName, UObject* Parent) const;

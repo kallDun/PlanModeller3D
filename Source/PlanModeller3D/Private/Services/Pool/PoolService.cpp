@@ -12,7 +12,6 @@
 
 void UPoolService::Init(const FPoolData& PoolData)
 {
-	TransitionController = UCoreFunctionLib::GetTransitionController(this);
 	Data = PoolData;
 	for (int i = 0; i < Data.InitialSize && i < Data.MaxSize; ++i)
 	{
@@ -21,6 +20,7 @@ void UPoolService::Init(const FPoolData& PoolData)
 		FreePool.Add(Object);
 	}
 	
+	TransitionController = UCoreFunctionLib::GetTransitionController(this);
 	TransitionController->OnLevelUnloadedEvent.AddDynamic(this, &UPoolService::OnLevelUnloaded);
 	TransitionController->OnLevelLoadedEvent.AddDynamic(this, &UPoolService::OnLevelLoaded);
 }

@@ -2,24 +2,30 @@
 
 
 #include "Core/PlanModellerGameInstance.h"
+#include "Services/Initialization/ServicesAbstractFactory.h"
 #include "Services/Level/LevelTransitionController.h"
+#include "Services/Level/LevelTransitionData.h"
 #include "Services/Save/SavingService.h"
 #include "Services/Pool/PoolsSystem.h"
+#include "Services/Pool/PoolSystemData.h"
+#include "Services/Save/SavingServiceData.h"
 #include "Services/UI/ManagerUI.h"
+#include "Services/UI/ManagerUIData.h"
 
 void UPlanModellerGameInstance::Init()
 {
 	Super::Init();
-	
-	TransitionController = NewObject<ULevelTransitionController>(this, ULevelTransitionController::StaticClass());
-	TransitionController->Init(LevelTransitionData);
-	
-	SavingService = NewObject<USavingService>(this, USavingService::StaticClass());
-	SavingService->Init(SavingServiceData);
-	
-	PoolsSystem = NewObject<UPoolsSystem>(this, UPoolsSystem::StaticClass());
-	PoolsSystem->Init(PoolsData);
+	TransitionController = UServicesAbstractFactory::CreateService<ULevelTransitionController>(this, LevelTransitionData);
+	SavingService = UServicesAbstractFactory::CreateService<USavingService>(this, SavingServiceData);
 
-	ManagerUI = NewObject<UManagerUI>(this, UManagerUI::StaticClass());
-	ManagerUI->Init(ManagerUIData);
+	
+	//PoolsSystem = UServicesAbstractFactory::CreateService<UPoolsSystem>(this, PoolsData);
+
+	PoolsSystem = NewObject<UPoolsSystem>(this, UPoolsSystem::StaticClass());
+	//PoolsSystem->Init_Implementation(PoolsData);
+	
+	//ManagerUI = UServicesAbstractFactory::CreateService<UManagerUI>(this, ManagerUIData);
+
+	ManagerUI = NewObject<UManagerUI>(this);
+	ManagerUI->Init2(ManagerUIData);
 }

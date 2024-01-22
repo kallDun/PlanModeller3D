@@ -9,9 +9,10 @@
 #include "Services/Save/SavingServiceData.h"
 
 
-void USavingService::Init(USavingServiceData* SavingServiceData)
+void USavingService::Init_Implementation(UPrimaryDataAsset* SavingServiceData)
 {
-	Data = SavingServiceData;
+	IInitializable::Init_Implementation(SavingServiceData);
+	Data = Cast<USavingServiceData>(SavingServiceData);
 	SaveGames = GetSaveGames(Data->SlotsCount);
 }
 

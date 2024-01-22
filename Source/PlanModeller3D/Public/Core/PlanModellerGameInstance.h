@@ -17,6 +17,7 @@ UCLASS(Blueprintable, BlueprintType)
 class PLANMODELLER3D_API UPlanModellerGameInstance : public UGameInstance
 {
 	GENERATED_BODY()
+	
 	__override virtual void Init() override;
 
 public:

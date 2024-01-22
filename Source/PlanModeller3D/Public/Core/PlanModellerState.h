@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Controllers/Foundation/FoundationControllerData.h"
+#include "Controllers/Furnitures/FurnitureControllerData.h"
 #include "GameFramework/GameStateBase.h"
 #include "PlanModellerState.generated.h"
 
@@ -12,17 +14,17 @@ class PLANMODELLER3D_API APlanModellerState : public AGameStateBase
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<class ARoomActor> RoomActorClass;
-	
-	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<class AWallActor> WallActorClass;
+	UPROPERTY(EditDefaultsOnly, Category = "Foundation")
+	UFoundationControllerData* FoundationControllerData;
 
-	UPROPERTY(BlueprintReadOnly)
-	TArray<ARoomActor*> RoomActors;
+	UPROPERTY(BlueprintReadOnly, Category = "Foundation")
+	class UFoundationController* FoundationController;
 
-	UPROPERTY(BlueprintReadOnly)
-	TArray<AWallActor*> WallActors;
+	UPROPERTY(EditDefaultsOnly, Category = "Furniture")
+	UFurnitureControllerData* FurnitureControllerData;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Furniture")
+	class UFurnitureController* FurnitureController;
 
 	virtual void BeginPlay() override;
 	

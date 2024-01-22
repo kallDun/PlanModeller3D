@@ -7,9 +7,10 @@
 #include "Services/Level/LevelTransitionData.h"
 
 
-void ULevelTransitionController::Init(ULevelTransitionData* InLevelTransitionData)
+void ULevelTransitionController::Init_Implementation(UPrimaryDataAsset* TransitionData)
 {
-	Data = InLevelTransitionData;
+	IInitializable::Init_Implementation(TransitionData);
+	Data = CastChecked<ULevelTransitionData>(TransitionData);
 	LoadLevel(Data->InitialLevelType);
 }
 

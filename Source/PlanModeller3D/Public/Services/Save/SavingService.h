@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Services/Initialization/Initializable.h"
 #include "UObject/Object.h"
 #include "SavingService.generated.h"
 
@@ -11,7 +12,7 @@ class USavingServiceData;
 class USaveGameData;
 
 UCLASS(Blueprintable, BlueprintType)
-class PLANMODELLER3D_API USavingService : public UObject
+class PLANMODELLER3D_API USavingService : public UObject, public IInitializable
 {
 	GENERATED_BODY()
 
@@ -24,9 +25,8 @@ public:
 
 	UPROPERTY(BlueprintReadOnly)
 	USaveGameData* CurrentSaveGame;
-	
-	UFUNCTION()
-	void Init(USavingServiceData* SavingServiceData);
+
+	virtual void Init_Implementation(UPrimaryDataAsset* SavingServiceData) override;
 	
 	UFUNCTION()
 	static TArray<USaveGameData*> GetSaveGames(const int SlotsToLoad);

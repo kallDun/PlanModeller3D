@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Actors/Generated/WallActor.h"
+#include "Actors/Foundation/WallActor.h"
 #include "Core/CoreFunctionLib.h"
 #include "Services/Save/SavingService.h"
 #include "Services/Save/Data/SaveGameData.h"
