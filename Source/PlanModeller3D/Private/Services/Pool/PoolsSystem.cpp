@@ -21,7 +21,7 @@ void UPoolsSystem::Init_Implementation(UPrimaryDataAsset* PoolSystemData)
 
 UPoolService* UPoolsSystem::CreatePool(const FPoolData PoolData)
 {
-	UPoolService* Pool = NewObject<UPoolService>(UCoreFunctionLib::GetPMInstance(this));
+	UPoolService* Pool = NewObject<UPoolService>(this);
 	Pool->Init(PoolData);
 	Pools.Add(PoolData.PoolID, Pool);
 	return Pool;

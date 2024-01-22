@@ -23,11 +23,7 @@ private:
 	UPoolsSystem* PoolsSystem;
 
 public:
-	UFUNCTION()
 	virtual void Init_Implementation(UPrimaryDataAsset* ManagerData) override;
-
-	UFUNCTION()
-	void Init2(UPrimaryDataAsset* ManagerData);
 
 	UFUNCTION(BlueprintCallable)
 	UPanelUI* GetPanel(FName PanelName, UObject* Parent) const;

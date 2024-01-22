@@ -17,15 +17,6 @@ void UPlanModellerGameInstance::Init()
 	Super::Init();
 	TransitionController = UServicesAbstractFactory::CreateService<ULevelTransitionController>(this, LevelTransitionData);
 	SavingService = UServicesAbstractFactory::CreateService<USavingService>(this, SavingServiceData);
-
-	
-	//PoolsSystem = UServicesAbstractFactory::CreateService<UPoolsSystem>(this, PoolsData);
-
-	PoolsSystem = NewObject<UPoolsSystem>(this, UPoolsSystem::StaticClass());
-	//PoolsSystem->Init_Implementation(PoolsData);
-	
-	//ManagerUI = UServicesAbstractFactory::CreateService<UManagerUI>(this, ManagerUIData);
-
-	ManagerUI = NewObject<UManagerUI>(this);
-	ManagerUI->Init2(ManagerUIData);
+	PoolsSystem = UServicesAbstractFactory::CreateService<UPoolsSystem>(this, PoolsData);
+	ManagerUI = UServicesAbstractFactory::CreateService<UManagerUI>(this, ManagerUIData);
 }

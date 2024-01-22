@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
+#include "Core/CoreFunctionLib.h"
 #include "Services/Pool/PoolData.h"
 #include "Services/Pool/PoolService.h"
 #include "Services/Pool/PoolsSystem.h"
@@ -12,22 +13,9 @@
 void UManagerUI::Init_Implementation(UPrimaryDataAsset* ManagerData)
 {
 	IInitializable::Init_Implementation(ManagerData);
+	
 	Data = Cast<UManagerUIData>(ManagerData);
-
-	for (auto PanelData : Data->Panels)
-	{
-		const FPoolData PoolData = FPoolData(PanelData.UseNameAsPoolID ? PanelData.Name : PanelData.PoolID,
-			PanelData.PanelClass, 1, PanelData.bIsSingleton ? 1 : PanelData.MaxCount,
-			ELevelTransitionPoolBehaviour::Hide,
-			EPoolRule::None, 0,
-			EPoolRule::AddConstant, 1);
-		PoolsSystem->CreatePool(PoolData);
-	}
-}
-
-void UManagerUI::Init2(UPrimaryDataAsset* ManagerData)
-{
-	Data = Cast<UManagerUIData>(ManagerData);
+	PoolsSystem = UCoreFunctionLib::GetPoolsSystem(this); 
 
 	for (auto PanelData : Data->Panels)
 	{
