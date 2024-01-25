@@ -2,10 +2,8 @@
 
 
 #include "Services/Save/SavingService.h"
-#include "JsonObjectConverter.h"
 #include "Kismet/GameplayStatics.h"
-#include "Services/Save/Data/SaveGameData.h"
-#include "Models/Plan/DMPlan.h"
+#include "Models/SaveData/PlanModellerSaveData.h"
 #include "Services/Save/SavingServiceData.h"
 
 
@@ -16,12 +14,12 @@ void USavingService::Init_Implementation(UPrimaryDataAsset* SavingServiceData)
 	SaveGames = GetSaveGames(Data->SlotsCount);
 }
 
-TArray<USaveGameData*> USavingService::GetSaveGames(const int SlotsToLoad)
+TArray<UPlanModellerSaveData*> USavingService::GetSaveGames(const int SlotsToLoad)
 {
-	TArray<USaveGameData*> SaveGames = {};
+	TArray<UPlanModellerSaveData*> SaveGames = {};
 	for (int i = 0; i < SlotsToLoad; i++)
 	{
-		SaveGames.Add(Cast<USaveGameData>(UGameplayStatics::LoadGameFromSlot(FString::FromInt(i), 0)));
+		SaveGames.Add(Cast<UPlanModellerSaveData>(UGameplayStatics::LoadGameFromSlot(FString::FromInt(i), 0)));
 	}
 	return SaveGames;
 }
@@ -48,13 +46,12 @@ void USavingService::DeleteSave(const int SlotIndex)
 
 void USavingService::CreateNewSaveGame(const int SlotIndex, FString SaveName, const FString FilePath)
 {
-	USaveGameData* NewSaveGame = Cast<USaveGameData>(UGameplayStatics::CreateSaveGameObject(USaveGameData::StaticClass()));
+	UPlanModellerSaveData* NewSaveGame = Cast<UPlanModellerSaveData>(UGameplayStatics::CreateSaveGameObject(UPlanModellerSaveData::StaticClass()));
+	NewSaveGame->FilePath = FilePath;
+	NewSaveGame->Init(SaveName);
+	
 	NewSaveGame->SaveName = SaveName;
 	CurrentSaveGame = NewSaveGame;
-
-	if (FString FileData = ""; FFileHelper::LoadFileToString(FileData, *FilePath))
-	{
-		FJsonObjectConverter::JsonObjectStringToUStruct<FDMPlan>(FileData, &NewSaveGame->Plan2D, 0, 0);
-	}
+	
 	SaveGame(SlotIndex);
 }

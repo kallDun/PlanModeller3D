@@ -41,10 +41,11 @@ UPanelUI* UManagerUI::GetPanel(FName PanelName, UObject* Parent) const
 		return nullptr;
 	}
 
-	const auto Pool = PoolsSystem->GetPool(PanelData->UseNameAsPoolID ? PanelData->Name : PanelData->PoolID);
+	const auto PoolID = PanelData->UseNameAsPoolID ? PanelData->Name : PanelData->PoolID;
+	const auto Pool = PoolsSystem->GetPool(PoolID);
 	if (!Pool)
 	{
-		UE_LOG(LogTemp, Error, TEXT("Pool with name %s not found"), *PanelData->PoolID.ToString());
+		UE_LOG(LogTemp, Error, TEXT("Pool with name %s not found"), *PoolID.ToString());
 		return nullptr;
 	}
 

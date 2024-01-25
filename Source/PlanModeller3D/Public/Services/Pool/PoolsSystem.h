@@ -20,7 +20,7 @@ private:
 
 public:
 	virtual void Init_Implementation(UPrimaryDataAsset* PoolSystemData) override;
-
+	
 	UFUNCTION(BlueprintCallable)
 	UPoolService* CreatePool(FPoolData PoolData);
 
@@ -29,4 +29,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void DestroyPool(FName PoolName);
+
+private:
+	UFUNCTION()
+	void UnregisterPool(UPoolService* Service);
 };

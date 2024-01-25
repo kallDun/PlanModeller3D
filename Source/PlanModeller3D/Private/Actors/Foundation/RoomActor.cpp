@@ -3,8 +3,8 @@
 
 #include "Actors/Foundation/RoomActor.h"
 #include "Core/CoreFunctionLib.h"
+#include "Models/SaveData/PlanModellerSaveData.h"
 #include "Services/Save/SavingService.h"
-#include "Services/Save/Data/SaveGameData.h"
 
 
 void ARoomActor::Init_Implementation(const FDMRoom Room)
@@ -13,14 +13,14 @@ void ARoomActor::Init_Implementation(const FDMRoom Room)
 	if (const auto SavingService = UCoreFunctionLib::GetSavingService(this))
 	{
 		const auto Save = SavingService->CurrentSaveGame;
-		if (Save->Plan3D.Rooms.Contains(DMRoom.Id))
+		if (Save->Plan3D->Rooms.Contains(DMRoom.Id))
 		{
-			MRoom = Save->Plan3D.Rooms[DMRoom.Id];
+			MRoom = Save->Plan3D->Rooms[DMRoom.Id];
 		}
 		else
 		{
 			MRoom = FMRoom();
-			Save->Plan3D.Rooms.Add(DMRoom.Id, MRoom);
+			Save->Plan3D->Rooms.Add(DMRoom.Id, MRoom);
 		}
 	}
 }

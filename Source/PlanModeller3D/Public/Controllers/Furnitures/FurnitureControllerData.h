@@ -17,6 +17,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<FFurnitureData> Furnitures;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Pool", meta=(ClampMin=4))
+	int InitPoolSizeForOneFurniture = 16;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Pool", meta=(ClampMin=16))
+	int MaxPoolSizeForOneFurniture = 8192;
+
 	__override virtual FPrimaryAssetId GetPrimaryAssetId() const override
 	{
 		return FPrimaryAssetId("FurnitureControllerData", GetFName());

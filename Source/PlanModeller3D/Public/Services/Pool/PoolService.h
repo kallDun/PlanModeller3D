@@ -8,6 +8,7 @@
 #include "UObject/Object.h"
 #include "PoolService.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FPoolServiceDispose, UPoolService*, Service);
 
 class ULevelTransitionController;
 
@@ -27,12 +28,15 @@ private:
 	TArray<UObject*> FreePool = {};
 
 	UPROPERTY()
-	FPoolData Data;
-
-	UPROPERTY()
 	bool bIsInitialized = false;
 	
 public:
+	UPROPERTY(BlueprintReadOnly)
+	FPoolData Data;
+	
+	UPROPERTY(BlueprintAssignable)
+	FPoolServiceDispose OnDispose;
+	
 	UFUNCTION()
 	void Init(const FPoolData& PoolData);
 

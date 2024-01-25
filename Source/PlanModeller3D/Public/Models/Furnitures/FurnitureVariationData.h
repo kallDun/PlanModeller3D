@@ -9,6 +9,9 @@ struct FFurnitureVariationData
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString Name;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FVector Size;
 	
 	

@@ -6,7 +6,7 @@
 #include "UObject/Interface.h"
 #include "LoadedFromSave.generated.h"
 
-class USaveGameData;
+class UPlanModellerSaveData;
 
 UINTERFACE(MinimalAPI, BlueprintType, Blueprintable)
 class ULoadedFromSave : public UInterface
@@ -20,6 +20,6 @@ class PLANMODELLER3D_API ILoadedFromSave
 
 public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void LoadFromSave(USaveGameData* Save);
+	void LoadFromSave(UPlanModellerSaveData* Save);
 	
 };

@@ -36,6 +36,8 @@ void UPoolService::Dispose()
 
 	TransitionController->OnLevelUnloadedEvent.RemoveDynamic(this, &UPoolService::OnLevelUnloaded);
 	TransitionController->OnLevelLoadedEvent.RemoveDynamic(this, &UPoolService::OnLevelLoaded);
+
+	OnDispose.Broadcast(this);
 }
 
 // PUBLIC

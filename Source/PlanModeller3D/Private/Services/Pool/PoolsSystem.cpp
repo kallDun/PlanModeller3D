@@ -20,6 +20,7 @@ UPoolService* UPoolsSystem::CreatePool(const FPoolData PoolData)
 {
 	UPoolService* Pool = NewObject<UPoolService>(this);
 	Pool->Init(PoolData);
+	Pool->OnDispose.AddDynamic(this, &UPoolsSystem::UnregisterPool);
 	Pools.Add(PoolData.PoolID, Pool);
 	return Pool;
 }
@@ -34,6 +35,10 @@ void UPoolsSystem::DestroyPool(const FName PoolName)
 	if (Pools.Contains(PoolName))
 	{
 		Pools[PoolName]->Dispose();
-		Pools.Remove(PoolName);
 	}
+}
+
+void UPoolsSystem::UnregisterPool(UPoolService* Service)
+{
+	Pools.Remove(Service->Data.PoolID);
 }

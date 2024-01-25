@@ -7,7 +7,6 @@
 #include "Core/CoreFunctionLib.h"
 #include "Services/Initialization/ServicesAbstractFactory.h"
 #include "Services/Save/SavingService.h"
-#include "Services/Save/Data/SaveGameData.h"
 
 
 void APlanModellerState::BeginPlay()

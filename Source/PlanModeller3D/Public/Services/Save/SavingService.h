@@ -9,7 +9,7 @@
 
 
 class USavingServiceData;
-class USaveGameData;
+class UPlanModellerSaveData;
 
 UCLASS(Blueprintable, BlueprintType)
 class PLANMODELLER3D_API USavingService : public UObject, public IInitializable
@@ -21,15 +21,15 @@ public:
 	USavingServiceData* Data;
 	
 	UPROPERTY(BlueprintReadOnly)
-	TArray<USaveGameData*> SaveGames;
+	TArray<UPlanModellerSaveData*> SaveGames;
 
 	UPROPERTY(BlueprintReadOnly)
-	USaveGameData* CurrentSaveGame;
+	UPlanModellerSaveData* CurrentSaveGame;
 
 	virtual void Init_Implementation(UPrimaryDataAsset* SavingServiceData) override;
 	
 	UFUNCTION()
-	static TArray<USaveGameData*> GetSaveGames(const int SlotsToLoad);
+	static TArray<UPlanModellerSaveData*> GetSaveGames(const int SlotsToLoad);
 
 	UFUNCTION(BlueprintCallable)
 	void LoadGame(int SlotIndex);

@@ -5,7 +5,7 @@
 #include "Actors/Foundation/RoomActor.h"
 #include "Actors/Foundation/WallActor.h"
 #include "Controllers/Foundation/FoundationControllerData.h"
-#include "Services/Save/Data/SaveGameData.h"
+#include "Models/SaveData/PlanModellerSaveData.h"
 
 
 void UFoundationController::Init_Implementation(UPrimaryDataAsset* DataAsset)
@@ -14,7 +14,7 @@ void UFoundationController::Init_Implementation(UPrimaryDataAsset* DataAsset)
 	Data = Cast<UFoundationControllerData>(DataAsset);
 }
 
-void UFoundationController::LoadFromSave_Implementation(USaveGameData* Save)
+void UFoundationController::LoadFromSave_Implementation(UPlanModellerSaveData* Save)
 {
 	ILoadedFromSave::LoadFromSave_Implementation(Save);
 	for (const auto RoomDto : Save->Plan2D.Rooms)

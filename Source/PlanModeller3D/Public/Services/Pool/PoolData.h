@@ -4,6 +4,7 @@
 #include "LevelTransitionPoolBehaviour.h"
 #include "PoolInitializationType.h"
 #include "PoolRule.h"
+#include "Actors/Furnitures/Furniture.h"
 #include "UObject/Object.h"
 #include "PoolData.generated.h"
 
@@ -43,5 +44,4 @@ struct FPoolData
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	EPoolInitializationType InitializationType;
-	
 };

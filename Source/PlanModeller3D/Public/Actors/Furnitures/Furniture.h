@@ -8,6 +8,7 @@
 #include "Services/Pool/PoolObject.h"
 #include "Furniture.generated.h"
 
+struct FMFurniture;
 class UPoolService;
 
 UCLASS(Abstract, Blueprintable, BlueprintType)
@@ -20,12 +21,17 @@ public:
 
 	UPROPERTY(BlueprintReadOnly)
 	FFurnitureData Data;
+
+	UPROPERTY(BlueprintReadOnly)
+	FString ID;
 	
 	UFUNCTION()
-	void Init(const FFurnitureData& FurnitureData);
+	void Init(const FFurnitureData& FurnitureData, const FMFurniture& Model, const FString& Identifier);
+
+	UFUNCTION(BlueprintNativeEvent)
+	void UpdateView(const FMFurniture& Model);
 
 	virtual void GetFromPool_Implementation(UPoolService* Pool) override;
 
 	virtual void ReturnToPool_Implementation(UPoolService* Pool) override;
-	
 };

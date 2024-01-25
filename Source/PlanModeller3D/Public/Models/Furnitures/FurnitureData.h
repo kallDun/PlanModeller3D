@@ -5,19 +5,21 @@
 #include "FurnitureVariationData.h"
 #include "FurnitureData.generated.h"
 
+class AFurniture;
+
 USTRUCT(BlueprintType)
 struct FFurnitureData
 {
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Furniture")
-	FString Name;
+	FName Name;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Furniture")
 	EFurniturePlacementType PlacementType;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Furniture")
-	TSubclassOf<class AFurniture> FurnitureClass;
+	TSubclassOf<AFurniture> FurnitureClass;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Construct Data")
 	FVector ForwardVector;
@@ -46,6 +48,10 @@ struct FFurnitureData
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Pool",
 		meta = (EditCondition = "!UseNameAsPoolID", EditConditionHides=true))
-	FString PoolID;
+	FName PoolID;
 	
+	FName GetPoolID() const
+	{
+		return UseNameAsPoolID ? Name : PoolID;
+	}
 };
