@@ -13,14 +13,14 @@ void AWallActor::Init_Implementation(const FDMWall Wall)
 	if (const auto SavingService = UCoreFunctionLib::GetSavingService(this))
 	{
 		const auto Save = SavingService->CurrentSaveGame;
-		if (Save->Plan3D->Walls.Contains(DMWall.Id))
+		if (Save->Plan3D.Walls.Contains(DMWall.Id))
 		{
-			MWall = Save->Plan3D->Walls[DMWall.Id];
+			MWall = Save->Plan3D.Walls[DMWall.Id];
 		}
 		else
 		{
 			MWall = FMWall();
-			Save->Plan3D->Walls.Add(DMWall.Id, MWall);
+			Save->Plan3D.Walls.Add(DMWall.Id, MWall);
 		}
 		for (auto Door : Save->Plan2D.Doors)
 		{

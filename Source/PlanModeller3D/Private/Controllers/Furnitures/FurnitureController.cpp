@@ -35,17 +35,11 @@ void UFurnitureController::LoadFromSave_Implementation(UPlanModellerSaveData* Sa
 {
 	ILoadedFromSave::LoadFromSave_Implementation(Save);
 	SaveData = Save;
-	for (auto Furniture : Save->Plan3D->Furnitures)
+	for (auto Furniture : Save->Plan3D.Furnitures)
 	{
 		CreateFurniture(Furniture.Value, nullptr, Furniture.Key);
 	}
 	SaveData->OnModelChanged.AddDynamic(this, &UFurnitureController::OnModelChanged);
-}
-
-void UFurnitureController::BeginDestroy()
-{
-	UObject::BeginDestroy();
-	SaveData->OnModelChanged.RemoveDynamic(this, &UFurnitureController::OnModelChanged);
 }
 
 AFurniture* UFurnitureController::CreateFurniture(const FMFurniture& FurnitureModel, AActor* Parent, const FString& Id)
@@ -90,7 +84,7 @@ void UFurnitureController::OnModelChanged(ECrudActionType ActionType, EPlanModel
 	
 	if (ActionType == ECrudActionType::Create)
 	{
-		CreateFurniture(SaveData->Plan3D->Furnitures[ObjectId], nullptr, ObjectId);
+		CreateFurniture(SaveData->Plan3D.Furnitures[ObjectId], nullptr, ObjectId);
 	}
 	else if (ActionType == ECrudActionType::Delete)
 	{
@@ -98,6 +92,6 @@ void UFurnitureController::OnModelChanged(ECrudActionType ActionType, EPlanModel
 	}
 	else if (ActionType == ECrudActionType::Update)
 	{
-		FurnituresMap[ObjectId]->UpdateView(SaveData->Plan3D->Furnitures[ObjectId]);
+		FurnituresMap[ObjectId]->UpdateView(SaveData->Plan3D.Furnitures[ObjectId]);
 	}
 }

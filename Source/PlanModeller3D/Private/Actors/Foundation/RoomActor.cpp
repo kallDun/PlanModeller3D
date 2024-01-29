@@ -13,14 +13,14 @@ void ARoomActor::Init_Implementation(const FDMRoom Room)
 	if (const auto SavingService = UCoreFunctionLib::GetSavingService(this))
 	{
 		const auto Save = SavingService->CurrentSaveGame;
-		if (Save->Plan3D->Rooms.Contains(DMRoom.Id))
+		if (Save->Plan3D.Rooms.Contains(DMRoom.Id))
 		{
-			MRoom = Save->Plan3D->Rooms[DMRoom.Id];
+			MRoom = Save->Plan3D.Rooms[DMRoom.Id];
 		}
 		else
 		{
 			MRoom = FMRoom();
-			Save->Plan3D->Rooms.Add(DMRoom.Id, MRoom);
+			Save->Plan3D.Rooms.Add(DMRoom.Id, MRoom);
 		}
 	}
 }

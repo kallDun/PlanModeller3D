@@ -37,8 +37,6 @@ public:
 	virtual void Init_Implementation(UPrimaryDataAsset* DataAsset) override;
 	
 	virtual void LoadFromSave_Implementation(UPlanModellerSaveData* Save) override;
-
-	virtual void BeginDestroy() override;
 	
 private:
 	UFUNCTION()

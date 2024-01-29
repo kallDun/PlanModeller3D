@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "JsonObjectConverter.h"
+#include "Kismet/KismetStringLibrary.h"
 #include "Models/Plan/DMPlan.h"
 #include "Models/Plan3D/MPlan.h"
 #include "Services/Save/AbstractSaveData.h"
@@ -28,16 +29,31 @@ public:
 	FDMPlan Plan2D;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UMPlan* Plan3D;
+	FMPlan Plan3D;
 
 	virtual void Init(const FString& Name) override
 	{
 		Super::Init(Name);
-
 		if (FString FileData = ""; FFileHelper::LoadFileToString(FileData, *FilePath))
 		{
 			FJsonObjectConverter::JsonObjectStringToUStruct<FDMPlan>(FileData, &Plan2D, 0, 0);
 		}
-		Plan3D = NewObject<UMPlan>(this);
 	}
+	
+	UFUNCTION(BlueprintCallable)
+	FString GetUniqueFurnitureID() const;
 };
+
+inline FString UPlanModellerSaveData::GetUniqueFurnitureID() const
+{
+	int MaxID = 0;
+	for (auto Furniture : Plan3D.Furnitures)
+	{
+		const int ID = UKismetStringLibrary::Conv_StringToInt(Furniture.Key);
+		if (ID > MaxID)
+		{
+			MaxID = ID;
+		}
+	}
+	return FString::FromInt(MaxID + 1);
+}

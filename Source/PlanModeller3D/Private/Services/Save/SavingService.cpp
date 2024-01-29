@@ -49,9 +49,6 @@ void USavingService::CreateNewSaveGame(const int SlotIndex, FString SaveName, co
 	UPlanModellerSaveData* NewSaveGame = Cast<UPlanModellerSaveData>(UGameplayStatics::CreateSaveGameObject(UPlanModellerSaveData::StaticClass()));
 	NewSaveGame->FilePath = FilePath;
 	NewSaveGame->Init(SaveName);
-	
-	NewSaveGame->SaveName = SaveName;
 	CurrentSaveGame = NewSaveGame;
-	
 	SaveGame(SlotIndex);
 }
