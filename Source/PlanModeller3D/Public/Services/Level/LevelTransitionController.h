@@ -8,11 +8,10 @@
 #include "UObject/Object.h"
 #include "LevelTransitionController.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnLevelUnloaded, ELevelType, Level);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnLevelLoaded, ELevelType, Level);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FLevelLoadingEvent, ELevelType, Level);
 
 class ULevelTransitionData;
-class UUserWidget;
+class UPanelUI;
 
 UCLASS(BlueprintType)
 class PLANMODELLER3D_API ULevelTransitionController : public UObject, public IInitializable
@@ -21,11 +20,14 @@ class PLANMODELLER3D_API ULevelTransitionController : public UObject, public IIn
 
 public:
 	UPROPERTY(BlueprintAssignable)
-	FOnLevelUnloaded OnLevelUnloadedEvent;
-
+	FLevelLoadingEvent OnLevelStartedLoadingEvent;
+	
 	UPROPERTY(BlueprintAssignable)
-	FOnLevelLoaded OnLevelLoadedEvent;
-
+	FLevelLoadingEvent OnLevelLoadedEvent;
+	
+	UPROPERTY(BlueprintAssignable)
+	FLevelLoadingEvent OnLevelUnloadedEvent;
+	
 	UPROPERTY(BlueprintReadOnly)
 	ELevelType CurrentLevelType;
 	
@@ -43,11 +45,17 @@ private:
 	ULevelTransitionData* Data;
 	
 	UPROPERTY()
-	UUserWidget* LoadingScreen;
+	UPanelUI* LoadingScreen;
 
 	UFUNCTION()
-	void CreateLoadingScreen();
+	void OnStreamLevelLoaded();
 
 	UFUNCTION()
-	void OnLevelLoaded();
+	void OnStartLoadingLevel(ELevelType Level);
+	
+	UFUNCTION()
+	void OnLevelLoaded(ELevelType LevelType);
+
+	UFUNCTION()
+	void OnLevelUnloaded(ELevelType LevelType);
 };

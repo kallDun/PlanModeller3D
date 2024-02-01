@@ -9,16 +9,19 @@
 #include "Services/Save/SavingService.h"
 
 
-void APlanModellerState::BeginPlay()
+void APlanModellerState::LoadLevel_Implementation()
 {
-	Super::BeginPlay();
-
+	Super::LoadLevel_Implementation();
+	
 	FoundationController = UServicesAbstractFactory::CreateService<UFoundationController>(this, FoundationControllerData);
 	FurnitureController = UServicesAbstractFactory::CreateService<UFurnitureController>(this, FurnitureControllerData);
 	
 	if (const auto SavingService = UCoreFunctionLib::GetSavingService(this))
 	{
-		const auto Save = SavingService->CurrentSaveGame;
-		FoundationController->LoadFromSave_Implementation(Save);
+		if (const auto Save = SavingService->CurrentSaveGame)
+		{
+			FoundationController->LoadFromSave_Implementation(Save);
+			FurnitureController->LoadFromSave_Implementation(Save);
+		}
 	}
 }

@@ -2,15 +2,21 @@
 
 
 #include "Services/Level/LevelTransitionController.h"
-#include "Blueprint/UserWidget.h"
+#include "Core/CoreFunctionLib.h"
 #include "Kismet/GameplayStatics.h"
 #include "Services/Level/LevelTransitionData.h"
+#include "Services/UI/ManagerUI.h"
 
 
 void ULevelTransitionController::Init_Implementation(UPrimaryDataAsset* TransitionData)
 {
 	IInitializable::Init_Implementation(TransitionData);
 	Data = CastChecked<ULevelTransitionData>(TransitionData);
+
+	OnLevelStartedLoadingEvent.AddDynamic(this, &ULevelTransitionController::OnStartLoadingLevel);
+	OnLevelLoadedEvent.AddDynamic(this, &ULevelTransitionController::OnLevelLoaded);
+	OnLevelUnloadedEvent.AddDynamic(this, &ULevelTransitionController::OnLevelUnloaded);
+	
 	LoadLevel(Data->InitialLevelType);
 }
 
@@ -28,18 +34,9 @@ void ULevelTransitionController::LoadLevel(const ELevelType LevelType)
 		return;
 	}
 	
-	const FName LevelPath = Data->LevelPaths[LevelType];
-	UE_LOG(LogTemp, Warning, TEXT("Loading level %s"), *LevelPath.ToString());
-
-	if (CurrentLevelType != ELevelType::None)
-	{
-		OnLevelUnloadedEvent.Broadcast(CurrentLevelType);
-	}
-
+	const FName LevelPath = Data->LevelPaths[LevelType];	
 	UGameplayStatics::OpenLevel(this, LevelPath);
-
 	CurrentLevelType = LevelType;
-	OnLevelLoadedEvent.Broadcast(CurrentLevelType);
 }
 
 void ULevelTransitionController::LoadStreamLevel(ELevelType LevelType)
@@ -57,35 +54,42 @@ void ULevelTransitionController::LoadStreamLevel(ELevelType LevelType)
 	}
 	
 	const FName LevelPath = Data->LevelPaths[LevelType];
-	UE_LOG(LogTemp, Warning, TEXT("Loading level %s"), *LevelPath.ToString());
-
-	if (CurrentLevelType != ELevelType::None)
-	{
-		OnLevelUnloadedEvent.Broadcast(CurrentLevelType);
-	}
-	CurrentLevelType = LevelType;
 	
 	FLatentActionInfo LatentInfo;
 	LatentInfo.CallbackTarget = this;
-	LatentInfo.ExecutionFunction = "OnLevelLoaded";
+	LatentInfo.ExecutionFunction = "OnStreamLevelLoaded";
 	LatentInfo.UUID = 0;
 	LatentInfo.Linkage = 0;
 	
 	UGameplayStatics::LoadStreamLevel(this, LevelPath, true, true, LatentInfo);
-	CreateLoadingScreen();
+	CurrentLevelType = LevelType;
 }
 
-void ULevelTransitionController::CreateLoadingScreen()
+
+// --------- Event handlers ----------
+ 
+void ULevelTransitionController::OnStreamLevelLoaded()
 {
-	LoadingScreen = CreateWidget<UUserWidget>(GetWorld(), Data->LoadingScreenClass, FName("Loading Screen"));
-	LoadingScreen->AddToViewport();
+	UE_LOG(LogTemp, Warning, TEXT("Stream level %s loaded"), *Data->LevelPaths[CurrentLevelType].ToString());
 }
 
-void ULevelTransitionController::OnLevelLoaded()
+void ULevelTransitionController::OnStartLoadingLevel(ELevelType Level)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Level loaded"));
-	LoadingScreen->RemoveFromParent();
-	LoadingScreen->Destruct();
-	LoadingScreen = nullptr;
-	OnLevelLoadedEvent.Broadcast(CurrentLevelType);
+	UE_LOG(LogTemp, Warning, TEXT("Level %s started loading"), *Data->LevelPaths[Level].ToString());
+	LoadingScreen = UCoreFunctionLib::GetManagerUI(this)->GetPanel(Data->LoadingScreenName, nullptr);
+}
+
+void ULevelTransitionController::OnLevelLoaded(ELevelType Level)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Level %s loaded"), *Data->LevelPaths[Level].ToString());
+	if (LoadingScreen)
+	{
+		UCoreFunctionLib::GetManagerUI(this)->ReturnPanel(LoadingScreen);
+		LoadingScreen = nullptr;
+	}
+}
+
+void ULevelTransitionController::OnLevelUnloaded(ELevelType Level)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Level %s unloaded"), *Data->LevelPaths[Level].ToString());
 }

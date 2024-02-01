@@ -32,4 +32,7 @@ struct FPanelUIData
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(EditCondition="!bIsSingleton", EditConditionHides=true, ClampMin=2))
 	int MaxCount = 16;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	ELevelTransitionPoolBehaviour LevelTransitionBehaviour;
 };

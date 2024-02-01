@@ -110,11 +110,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EpicGames.Tracing", "..\..\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EpicGames.UHT", "..\..\..\..\..\Program Files\UE_5.3\Engine\Source\Programs\Shared\EpicGames.UHT\EpicGames.UHT.csproj", "{12AECD0F-6454-3526-8041-CD36C7498C98}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarketplaceRules", "..\..\..\..\..\Program Files\UE_5.3\Engine\Intermediate\Build\BuildRulesProjects\MarketplaceRules\MarketplaceRules.csproj", "{5E47AD7A-74D6-3455-B2CB-E0803DC76687}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UE5ProgramRules", "..\..\..\..\..\Program Files\UE_5.3\Engine\Intermediate\Build\BuildRulesProjects\UE5ProgramRules\UE5ProgramRules.csproj", "{57F85C1F-CC90-37FC-89ED-D5EB7688E530}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UE5Rules", "..\..\..\..\..\Program Files\UE_5.3\Engine\Intermediate\Build\BuildRulesProjects\UE5Rules\UE5Rules.csproj", "{746A86ED-9E89-36AC-BB45-C0E0A39AA7CE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlanModeller3DModuleRules", "Intermediate\Build\BuildRulesProjects\PlanModeller3DModuleRules\PlanModeller3DModuleRules.csproj", "{04D3CF87-57BA-383A-8252-2EBBA4C3D9C2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlanModeller3DModuleRules", "Intermediate\Build\BuildRulesProjects\PlanModeller3DModuleRules\PlanModeller3DModuleRules.csproj", "{8E09AFFD-D1C0-3A95-B333-0D52D7293F84}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Visualizers", "Visualizers", "{1CCEC849-CC72-4C59-8C36-2F7C38706D4C}"
 	ProjectSection(SolutionItems) = preProject
@@ -580,6 +582,16 @@ Global
 		{12AECD0F-6454-3526-8041-CD36C7498C98}.Development|Win64.Build.0 = Development|Any CPU
 		{12AECD0F-6454-3526-8041-CD36C7498C98}.Shipping|Win64.ActiveCfg = Development|Any CPU
 		{12AECD0F-6454-3526-8041-CD36C7498C98}.Shipping|Win64.Build.0 = Development|Any CPU
+		{5E47AD7A-74D6-3455-B2CB-E0803DC76687}.DebugGame Editor|Win64.ActiveCfg = Development|Any CPU
+		{5E47AD7A-74D6-3455-B2CB-E0803DC76687}.DebugGame Editor|Win64.Build.0 = Development|Any CPU
+		{5E47AD7A-74D6-3455-B2CB-E0803DC76687}.DebugGame|Win64.ActiveCfg = Development|Any CPU
+		{5E47AD7A-74D6-3455-B2CB-E0803DC76687}.DebugGame|Win64.Build.0 = Development|Any CPU
+		{5E47AD7A-74D6-3455-B2CB-E0803DC76687}.Development Editor|Win64.ActiveCfg = Development|Any CPU
+		{5E47AD7A-74D6-3455-B2CB-E0803DC76687}.Development Editor|Win64.Build.0 = Development|Any CPU
+		{5E47AD7A-74D6-3455-B2CB-E0803DC76687}.Development|Win64.ActiveCfg = Development|Any CPU
+		{5E47AD7A-74D6-3455-B2CB-E0803DC76687}.Development|Win64.Build.0 = Development|Any CPU
+		{5E47AD7A-74D6-3455-B2CB-E0803DC76687}.Shipping|Win64.ActiveCfg = Development|Any CPU
+		{5E47AD7A-74D6-3455-B2CB-E0803DC76687}.Shipping|Win64.Build.0 = Development|Any CPU
 		{57F85C1F-CC90-37FC-89ED-D5EB7688E530}.DebugGame Editor|Win64.ActiveCfg = Development|Any CPU
 		{57F85C1F-CC90-37FC-89ED-D5EB7688E530}.DebugGame Editor|Win64.Build.0 = Development|Any CPU
 		{57F85C1F-CC90-37FC-89ED-D5EB7688E530}.DebugGame|Win64.ActiveCfg = Development|Any CPU
@@ -600,16 +612,16 @@ Global
 		{746A86ED-9E89-36AC-BB45-C0E0A39AA7CE}.Development|Win64.Build.0 = Development|Any CPU
 		{746A86ED-9E89-36AC-BB45-C0E0A39AA7CE}.Shipping|Win64.ActiveCfg = Development|Any CPU
 		{746A86ED-9E89-36AC-BB45-C0E0A39AA7CE}.Shipping|Win64.Build.0 = Development|Any CPU
-		{04D3CF87-57BA-383A-8252-2EBBA4C3D9C2}.DebugGame Editor|Win64.ActiveCfg = Development|Any CPU
-		{04D3CF87-57BA-383A-8252-2EBBA4C3D9C2}.DebugGame Editor|Win64.Build.0 = Development|Any CPU
-		{04D3CF87-57BA-383A-8252-2EBBA4C3D9C2}.DebugGame|Win64.ActiveCfg = Development|Any CPU
-		{04D3CF87-57BA-383A-8252-2EBBA4C3D9C2}.DebugGame|Win64.Build.0 = Development|Any CPU
-		{04D3CF87-57BA-383A-8252-2EBBA4C3D9C2}.Development Editor|Win64.ActiveCfg = Development|Any CPU
-		{04D3CF87-57BA-383A-8252-2EBBA4C3D9C2}.Development Editor|Win64.Build.0 = Development|Any CPU
-		{04D3CF87-57BA-383A-8252-2EBBA4C3D9C2}.Development|Win64.ActiveCfg = Development|Any CPU
-		{04D3CF87-57BA-383A-8252-2EBBA4C3D9C2}.Development|Win64.Build.0 = Development|Any CPU
-		{04D3CF87-57BA-383A-8252-2EBBA4C3D9C2}.Shipping|Win64.ActiveCfg = Development|Any CPU
-		{04D3CF87-57BA-383A-8252-2EBBA4C3D9C2}.Shipping|Win64.Build.0 = Development|Any CPU
+		{8E09AFFD-D1C0-3A95-B333-0D52D7293F84}.DebugGame Editor|Win64.ActiveCfg = Development|Any CPU
+		{8E09AFFD-D1C0-3A95-B333-0D52D7293F84}.DebugGame Editor|Win64.Build.0 = Development|Any CPU
+		{8E09AFFD-D1C0-3A95-B333-0D52D7293F84}.DebugGame|Win64.ActiveCfg = Development|Any CPU
+		{8E09AFFD-D1C0-3A95-B333-0D52D7293F84}.DebugGame|Win64.Build.0 = Development|Any CPU
+		{8E09AFFD-D1C0-3A95-B333-0D52D7293F84}.Development Editor|Win64.ActiveCfg = Development|Any CPU
+		{8E09AFFD-D1C0-3A95-B333-0D52D7293F84}.Development Editor|Win64.Build.0 = Development|Any CPU
+		{8E09AFFD-D1C0-3A95-B333-0D52D7293F84}.Development|Win64.ActiveCfg = Development|Any CPU
+		{8E09AFFD-D1C0-3A95-B333-0D52D7293F84}.Development|Win64.Build.0 = Development|Any CPU
+		{8E09AFFD-D1C0-3A95-B333-0D52D7293F84}.Shipping|Win64.ActiveCfg = Development|Any CPU
+		{8E09AFFD-D1C0-3A95-B333-0D52D7293F84}.Shipping|Win64.Build.0 = Development|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -663,8 +675,9 @@ Global
 		{7CA3E613-F369-33BE-9005-C88F98E6E97E} = {57713676-9DBE-331C-AD10-26632AC9EE0C}
 		{0E23EC3E-F6D1-3099-ACEE-A9A726EF0E3B} = {57713676-9DBE-331C-AD10-26632AC9EE0C}
 		{12AECD0F-6454-3526-8041-CD36C7498C98} = {57713676-9DBE-331C-AD10-26632AC9EE0C}
+		{5E47AD7A-74D6-3455-B2CB-E0803DC76687} = {C2F57ECE-B26F-39D8-BDA7-C1D40BD8F180}
 		{57F85C1F-CC90-37FC-89ED-D5EB7688E530} = {C2F57ECE-B26F-39D8-BDA7-C1D40BD8F180}
 		{746A86ED-9E89-36AC-BB45-C0E0A39AA7CE} = {C2F57ECE-B26F-39D8-BDA7-C1D40BD8F180}
-		{04D3CF87-57BA-383A-8252-2EBBA4C3D9C2} = {C2F57ECE-B26F-39D8-BDA7-C1D40BD8F180}
+		{8E09AFFD-D1C0-3A95-B333-0D52D7293F84} = {C2F57ECE-B26F-39D8-BDA7-C1D40BD8F180}
 	EndGlobalSection
 EndGlobal

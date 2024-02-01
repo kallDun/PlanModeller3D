@@ -5,11 +5,11 @@
 #include "CoreMinimal.h"
 #include "Controllers/Foundation/FoundationControllerData.h"
 #include "Controllers/Furnitures/FurnitureControllerData.h"
-#include "GameFramework/GameStateBase.h"
+#include "Services/Level/LevelLoadGameState.h"
 #include "PlanModellerState.generated.h"
 
 UCLASS(Abstract, Blueprintable, BlueprintType)
-class PLANMODELLER3D_API APlanModellerState : public AGameStateBase
+class PLANMODELLER3D_API APlanModellerState : public ALevelLoadGameState
 {
 	GENERATED_BODY()
 
@@ -26,6 +26,7 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = "Furniture")
 	class UFurnitureController* FurnitureController;
 
-	virtual void BeginPlay() override;
+protected:
+	virtual void LoadLevel_Implementation() override;
 	
 };

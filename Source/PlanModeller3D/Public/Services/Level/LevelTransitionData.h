@@ -21,7 +21,7 @@ public:
 	ELevelType InitialLevelType;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TSubclassOf<UUserWidget> LoadingScreenClass;
+	FName LoadingScreenName;
 
 	__override virtual FPrimaryAssetId GetPrimaryAssetId() const override
 	{

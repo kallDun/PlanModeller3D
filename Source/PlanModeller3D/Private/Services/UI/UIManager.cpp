@@ -21,7 +21,7 @@ void UManagerUI::Init_Implementation(UPrimaryDataAsset* ManagerData)
 	{
 		const FPoolData PoolData = FPoolData(PanelData.UseNameAsPoolID ? PanelData.Name : PanelData.PoolID,
 			PanelData.PanelClass, 1, PanelData.bIsSingleton ? 1 : PanelData.MaxCount,
-			ELevelTransitionPoolBehaviour::Hide,
+			PanelData.LevelTransitionBehaviour,
 			EPoolRule::None, 0,
 			EPoolRule::AddConstant, 1,
 			EPoolInitializationType::Lazy);
