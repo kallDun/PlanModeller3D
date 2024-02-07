@@ -6,6 +6,8 @@
 #include "PanelUIData.generated.h"
 
 class UManagerUI;
+class UPanelUI;
+enum class ELevelTransitionPoolBehaviour : uint8;
 
 USTRUCT(BlueprintType)
 struct FPanelUIData

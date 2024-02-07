@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Object.h"
+#include "Services/Initialization/Initializable.h"
 #include "ManagerUI.generated.h"
 
 class UPoolsSystem;
