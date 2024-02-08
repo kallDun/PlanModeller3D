@@ -27,6 +27,9 @@ private:
 	UPROPERTY()
 	UManagerUI* ManagerUI;
 
+	UPROPERTY(meta=(BindWidget))
+	class UCanvasPanel* ChildrenContainer;
+
 protected:
 	virtual void NativeConstruct() override;
 
@@ -42,9 +45,6 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void CloseAll();
-
-	UFUNCTION(BlueprintCallable)
-	void CloseCurrentChildren();
 
 private:
 	UFUNCTION()

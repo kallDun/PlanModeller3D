@@ -2,6 +2,8 @@
 
 
 #include "Widgets/Game/SidePanel.h"
+
+#include "Components/CanvasPanel.h"
 #include "Core/CoreFunctionLib.h"
 #include "Services/UI/ManagerUI.h"
 #include "Services/UI/PanelUI.h"
@@ -40,11 +42,6 @@ void USidePanel::CloseAll()
 	{
 		OpenLastChildrenInThePool();
 	}
-	OnPanelClose.Broadcast();
-}
-
-void USidePanel::CloseCurrentChildren()
-{
 	if (CurrentChildren)
 	{
 		CurrentChildren->Close();
@@ -62,7 +59,7 @@ void USidePanel::OpenLastChildrenInThePool()
 	if (ChildrenPool.Num() > 0)
 	{
 		const auto Action = ChildrenPool.Last();
-		const auto Panel = ManagerUI->GetPanel(Action->SidePanelChildrenName, this);
+		const auto Panel = ManagerUI->GetPanel(Action->SidePanelChildrenName, ChildrenContainer);
 		if (UPanelUI* SidePanel = Cast<UPanelUI>(Panel))
 		{
 			Action->OpenSidePanelChildrenAction.ExecuteIfBound(SidePanel);
