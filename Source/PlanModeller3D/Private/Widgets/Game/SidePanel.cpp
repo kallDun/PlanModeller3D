@@ -3,7 +3,7 @@
 
 #include "Widgets/Game/SidePanel.h"
 
-#include "Components/CanvasPanel.h"
+#include "Components/SizeBox.h"
 #include "Core/CoreFunctionLib.h"
 #include "Services/UI/ManagerUI.h"
 #include "Services/UI/PanelUI.h"
@@ -58,11 +58,12 @@ void USidePanel::OpenLastChildrenInThePool()
 	}
 	if (ChildrenPool.Num() > 0)
 	{
-		const auto Action = ChildrenPool.Last();
+		const auto Action = ChildrenPool.Pop();
 		const auto Panel = ManagerUI->GetPanel(Action->SidePanelChildrenName, ChildrenContainer);
 		if (UPanelUI* SidePanel = Cast<UPanelUI>(Panel))
 		{
 			Action->OpenSidePanelChildrenAction.ExecuteIfBound(SidePanel);
 		}
+		CurrentChildren = Panel;
 	}
 }

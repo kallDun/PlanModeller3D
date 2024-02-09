@@ -28,7 +28,7 @@ private:
 	UManagerUI* ManagerUI;
 
 	UPROPERTY(meta=(BindWidget))
-	class UCanvasPanel* ChildrenContainer;
+	class USizeBox* ChildrenContainer;
 
 protected:
 	virtual void NativeConstruct() override;
