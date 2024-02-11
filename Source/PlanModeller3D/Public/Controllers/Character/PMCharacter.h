@@ -6,12 +6,22 @@
 #include "GameFramework/Character.h"
 #include "PMCharacter.generated.h"
 
+class UPMCharacterCamera;
+
 UCLASS(Abstract, BlueprintType)
 class PLANMODELLER3D_API APMCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
 public:
-	APMCharacter();
+	APMCharacter() = default;
 
+	UPROPERTY(BlueprintReadOnly, Category = "Camera")
+	TArray<UPMCharacterCamera*> Cameras = {};
+
+	UFUNCTION()
+	UPMCharacterCamera* GetCurrentCamera() const;
+
+	UFUNCTION(BlueprintNativeEvent)
+	void ResetSettingsToDefault();
 };
