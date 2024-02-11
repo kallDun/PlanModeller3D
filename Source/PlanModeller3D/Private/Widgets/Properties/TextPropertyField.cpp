@@ -12,12 +12,12 @@ void UTextPropertyField::NativeOnInitialized()
 }
 
 
-void UTextPropertyField::Init(const FText Name, const bool bIsReadOnly, const FOnGetStringValue GetValue, const FOnSetStringValue SetValue)
+void UTextPropertyField::Init(const FTextPropertyConstructObject InConstructObject)
 {
-	BaseInit(Name);
-	InputField->SetIsReadOnly(bIsReadOnly);
-	GetValueDelegate = GetValue;
-	SetValueDelegate = SetValue;
+	BaseInit(InConstructObject.Name);
+	InputField->SetIsReadOnly(InConstructObject.bIsReadOnly);
+	GetValueDelegate = InConstructObject.GetValue;
+	SetValueDelegate = InConstructObject.SetValue;
 	OnRevertButtonClicked();
 }
 

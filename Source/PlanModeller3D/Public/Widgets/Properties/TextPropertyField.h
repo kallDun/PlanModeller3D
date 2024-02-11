@@ -4,10 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "BasePropertyField.h"
+#include "TextPropertyConstructObject.h"
 #include "TextPropertyField.generated.h"
 
-DECLARE_DYNAMIC_DELEGATE_RetVal(FString, FOnGetStringValue);
-DECLARE_DYNAMIC_DELEGATE_OneParam(FOnSetStringValue, const FString, Value);
+
 
 UCLASS(Abstract, BlueprintType, Blueprintable)
 class PLANMODELLER3D_API UTextPropertyField : public UBasePropertyField
@@ -27,7 +27,7 @@ protected:
 
 public:
 	UFUNCTION(BlueprintCallable)
-	void Init(const FText Name, bool bIsReadOnly, FOnGetStringValue GetValue, FOnSetStringValue SetValue);
+	void Init(FTextPropertyConstructObject InConstructObject);
 	
 protected:
 	virtual void NativeOnInitialized() override;
