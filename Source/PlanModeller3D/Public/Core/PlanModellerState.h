@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Controllers/Character/CharactersManager.h"
+#include "Controllers/Character/CharactersManagerData.h"
 #include "Controllers/Foundation/FoundationControllerData.h"
 #include "Controllers/Furnitures/FurnitureControllerData.h"
 #include "Services/Level/LevelLoadGameState.h"
@@ -25,6 +27,12 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, Category = "Furniture")
 	class UFurnitureController* FurnitureController;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Characters")
+	UCharactersManagerData* CharactersManagerData;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Characters")
+	UCharactersManager* CharactersManager;
 
 protected:
 	virtual void LoadLevel_Implementation() override;

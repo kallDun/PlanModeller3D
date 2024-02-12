@@ -3,18 +3,18 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "PMCharacterCamera.h"
-#include "PMSpectatorCamera.generated.h"
+#include "PMCharacter.h"
+#include "PMSpectatorCharacter.generated.h"
 
-
-UCLASS(Abstract, meta=(BlueprintSpawnableComponent), Blueprintable, BlueprintType)
-class PLANMODELLER3D_API UPMSpectatorCamera : public UPMCharacterCamera
+UCLASS(Abstract, Blueprintable, BlueprintType)
+class PLANMODELLER3D_API APMSpectatorCharacter : public APMCharacter
 {
 	GENERATED_BODY()
 
-public:
-	UPMSpectatorCamera() = default;
+protected:
+	APMSpectatorCharacter() : APMCharacter() { }
 
+public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Properties", meta=(ClampMin=0f, ClampMax=180f))
 	float CameraFOV = 90.0f;
 	
@@ -24,9 +24,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Properties")
 	bool bIsColliding = false;
 
-	virtual void SelectCameraAsCurrent_Implementation() override;
+	virtual void SelectAsCurrent_Implementation() override;
 
-	virtual void OnDeselectCamera_Implementation() override;
+	virtual void OnDeselect_Implementation() override;
 	
 	virtual UPropertiesConstructData* GetProperties_Implementation() override;
 
@@ -39,4 +39,5 @@ private:
 
 	UFUNCTION() bool GetIsColliding() { return bIsColliding; }
 	UFUNCTION() void SetIsColliding(const bool bValue) { bIsColliding = bValue; }
+	
 };

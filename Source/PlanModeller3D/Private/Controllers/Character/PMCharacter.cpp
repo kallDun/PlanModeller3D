@@ -2,30 +2,31 @@
 
 
 #include "Controllers/Character/PMCharacter.h"
-#include "Camera/CameraComponent.h"
-#include "Controllers/Character/Camera/PMCharacterCamera.h"
+#include "Controllers/Character/CharactersManager.h"
+#include "Widgets/Properties/PropertiesConstructData.h"
 
 
-APMCharacter::APMCharacter()
+void APMCharacter::Init(UCharactersManager* InManager)
 {
-	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
-	CameraComponent->SetupAttachment(RootComponent);
-	CameraComponent->SetRelativeLocation(FVector(0.0f, 0.0f, 90.0f));
+	Manager = InManager;
 }
 
-UPMCharacterCamera* APMCharacter::GetCurrentCamera() const
+void APMCharacter::SelectAsCurrent_Implementation()
 {
-	for (const auto Camera : Cameras)
+	if (const auto CurrentCamera = Manager->GetCurrentCharacter())
 	{
-		if (Camera->bIsCurrentCamera)
-		{
-			return Camera;
-		}
+		CurrentCamera->OnDeselect();
 	}
-	return nullptr;
+	bIsCurrentCharacter = true;
+	Manager->PlayerController->Possess(this);
 }
 
-void APMCharacter::ResetSettingsToDefault_Implementation()
+void APMCharacter::OnDeselect_Implementation()
 {
-	
+	bIsCurrentCharacter = false;
+}
+
+UPropertiesConstructData* APMCharacter::GetProperties_Implementation()
+{
+	return NewObject<UPropertiesConstructData>();
 }

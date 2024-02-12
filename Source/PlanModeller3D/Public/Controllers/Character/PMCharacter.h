@@ -6,26 +6,37 @@
 #include "GameFramework/Character.h"
 #include "PMCharacter.generated.h"
 
-class UCameraComponent;
-class UPMCharacterCamera;
+class UPropertiesConstructData;
 
 UCLASS(Abstract, BlueprintType)
 class PLANMODELLER3D_API APMCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
+protected:
+	APMCharacter() { }
+
 public:
-	APMCharacter();
+	UPROPERTY()
+	class UCharactersManager* Manager;
 
-	UPROPERTY(VisibleAnywhere, Category = "Camera")
-	UCameraComponent* CameraComponent;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Properties")
+	FName CharacterName;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Camera")
-	TArray<UPMCharacterCamera*> Cameras = {};
+	UPROPERTY(BlueprintReadOnly)
+	bool bIsCurrentCharacter = false;
 
-	UFUNCTION()
-	UPMCharacterCamera* GetCurrentCamera() const;
+public:
+	UFUNCTION(BlueprintCallable)
+	void Init(UCharactersManager* InManager);
+	
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void SelectAsCurrent();
 
 	UFUNCTION(BlueprintNativeEvent)
-	void ResetSettingsToDefault();
+	void OnDeselect();
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	UPropertiesConstructData* GetProperties();
+	
 };
