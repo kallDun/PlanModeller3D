@@ -2,8 +2,16 @@
 
 
 #include "Controllers/Character/PMCharacter.h"
+#include "Camera/CameraComponent.h"
 #include "Controllers/Character/Camera/PMCharacterCamera.h"
 
+
+APMCharacter::APMCharacter()
+{
+	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
+	CameraComponent->SetupAttachment(RootComponent);
+	CameraComponent->SetRelativeLocation(FVector(0.0f, 0.0f, 90.0f));
+}
 
 UPMCharacterCamera* APMCharacter::GetCurrentCamera() const
 {

@@ -7,7 +7,7 @@
 #include "PMSpectatorCamera.generated.h"
 
 
-UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
+UCLASS(Abstract, meta=(BlueprintSpawnableComponent), Blueprintable, BlueprintType)
 class PLANMODELLER3D_API UPMSpectatorCamera : public UPMCharacterCamera
 {
 	GENERATED_BODY()
@@ -18,7 +18,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Properties", meta=(ClampMin=0f, ClampMax=180f))
 	float CameraFOV = 90.0f;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Properties", meta=(ClampMin=0f))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Properties", meta=(ClampMin=0f, ClampMax=100f))
 	float CameraSpeed = 10.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Properties")
@@ -28,4 +28,15 @@ public:
 
 	virtual void OnDeselectCamera_Implementation() override;
 	
+	virtual UPropertiesConstructData* GetProperties_Implementation() override;
+
+private:
+	UFUNCTION() double GetCameraFOV() { return CameraFOV; }
+	UFUNCTION() void SetCameraFOV(const double Value) { CameraFOV = Value; }
+
+	UFUNCTION() double GetCameraSpeed() { return CameraSpeed; }
+	UFUNCTION() void SetCameraSpeed(const double Value) { CameraSpeed = Value; }
+
+	UFUNCTION() bool GetIsColliding() { return bIsColliding; }
+	UFUNCTION() void SetIsColliding(const bool bValue) { bIsColliding = bValue; }
 };

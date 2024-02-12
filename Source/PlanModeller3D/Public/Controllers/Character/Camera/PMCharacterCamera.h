@@ -7,7 +7,9 @@
 #include "PMCharacterCamera.generated.h"
 
 
-UCLASS(Abstract, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
+class UPropertiesConstructData;
+
+UCLASS(Abstract, BlueprintType)
 class PLANMODELLER3D_API UPMCharacterCamera : public UActorComponent
 {
 	GENERATED_BODY()
@@ -21,7 +23,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Properties")
 	FName CameraName;
 
-	UPROPERTY(EditInstanceOnly)
+	UPROPERTY(EditAnywhere, Category = "Properties")
 	bool bIsDefaultCamera = false;
 
 	UPROPERTY(BlueprintReadOnly)
@@ -36,5 +38,7 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent)
 	void OnDeselectCamera();
-	
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	UPropertiesConstructData* GetProperties(); 
 };

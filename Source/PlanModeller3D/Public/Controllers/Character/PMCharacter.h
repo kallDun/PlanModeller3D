@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "PMCharacter.generated.h"
 
+class UCameraComponent;
 class UPMCharacterCamera;
 
 UCLASS(Abstract, BlueprintType)
@@ -14,7 +15,10 @@ class PLANMODELLER3D_API APMCharacter : public ACharacter
 	GENERATED_BODY()
 
 public:
-	APMCharacter() = default;
+	APMCharacter();
+
+	UPROPERTY(VisibleAnywhere, Category = "Camera")
+	UCameraComponent* CameraComponent;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Camera")
 	TArray<UPMCharacterCamera*> Cameras = {};

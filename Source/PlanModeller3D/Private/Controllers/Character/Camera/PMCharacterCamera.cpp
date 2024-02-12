@@ -3,6 +3,7 @@
 
 #include "Controllers/Character/Camera/PMCharacterCamera.h"
 #include "Controllers/Character/PMCharacter.h"
+#include "Widgets/Properties/PropertiesConstructData.h"
 
 
 void UPMCharacterCamera::Init(APMCharacter* InCharacter)
@@ -28,4 +29,9 @@ void UPMCharacterCamera::SelectCameraAsCurrent_Implementation()
 void UPMCharacterCamera::OnDeselectCamera_Implementation()
 {
 	bIsCurrentCamera = false;
+}
+
+UPropertiesConstructData* UPMCharacterCamera::GetProperties_Implementation()
+{
+	return NewObject<UPropertiesConstructData>();
 }
