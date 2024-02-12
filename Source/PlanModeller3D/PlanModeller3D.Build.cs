@@ -10,7 +10,7 @@ public class PlanModeller3D : ModuleRules
 	
 		PublicDependencyModuleNames.AddRange(new[]
 		{
-			"Core", "CoreUObject", "UMG", "Engine", "InputCore", "Json", "JsonUtilities", "ProceduralMeshComponent", "GeometryFramework", "GeometryScriptingEditor"
+			"Core", "CoreUObject", "UMG", "Engine", "InputCore", "Json", "JsonUtilities", "ProceduralMeshComponent", "GeometryFramework", "GeometryScriptingEditor", "EnhancedInput"
 		});
 
 		// Uncomment if you are using Slate UI

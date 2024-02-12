@@ -16,6 +16,10 @@ class PLANMODELLER3D_API APMCharacter : public ACharacter
 protected:
 	APMCharacter() { }
 
+private:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"), Category = "Input")
+	class UInputMappingContext* PlayerInputMappingContext;
+	
 public:
 	UPROPERTY()
 	class UCharactersManager* Manager;
