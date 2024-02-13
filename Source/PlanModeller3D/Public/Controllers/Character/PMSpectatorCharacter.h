@@ -23,10 +23,6 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Properties")
 	bool bIsColliding = false;
-
-	virtual void SelectAsCurrent_Implementation() override;
-
-	virtual void OnDeselect_Implementation() override;
 	
 	virtual UPropertiesConstructData* GetProperties_Implementation() override;
 

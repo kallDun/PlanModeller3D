@@ -16,10 +16,11 @@ class PLANMODELLER3D_API USavingService : public UObject, public IInitializable
 {
 	GENERATED_BODY()
 
-public:
+private:
 	UPROPERTY()
 	USavingServiceData* Data;
 	
+public:
 	UPROPERTY(BlueprintReadOnly)
 	TArray<UPlanModellerSaveData*> SaveGames;
 

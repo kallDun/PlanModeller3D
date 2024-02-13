@@ -7,16 +7,6 @@
 #include "Widgets/Properties/PropertiesConstructData.h"
 
 
-void APMSpectatorCharacter::SelectAsCurrent_Implementation()
-{
-	Super::SelectAsCurrent_Implementation();
-}
-
-void APMSpectatorCharacter::OnDeselect_Implementation()
-{
-	Super::OnDeselect_Implementation();
-}
-
 UPropertiesConstructData* APMSpectatorCharacter::GetProperties_Implementation()
 {
 	UPropertiesConstructData* Data = Super::GetProperties_Implementation();
@@ -40,7 +30,7 @@ UPropertiesConstructData* APMSpectatorCharacter::GetProperties_Implementation()
 	FOnSetBoolValue SetIsColliding = FOnSetBoolValue();
 	SetIsColliding.BindDynamic(this, &APMSpectatorCharacter::SetIsColliding);
 	Data->BoolProperties.Add(FBoolPropertyConstructObject(
-		0, FText::FromString("Is Colliding"), false, GetIsColliding, SetIsColliding));
+		2, FText::FromString("Is Colliding"), false, GetIsColliding, SetIsColliding));
 	
 	return Data;
 }

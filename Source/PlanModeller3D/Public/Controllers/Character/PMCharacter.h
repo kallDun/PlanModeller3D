@@ -16,6 +16,9 @@ class PLANMODELLER3D_API APMCharacter : public ACharacter
 protected:
 	APMCharacter() { }
 
+	UPROPERTY(BlueprintReadOnly)
+	class USavingService* SavingService;
+
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"), Category = "Input")
 	class UInputMappingContext* PlayerInputMappingContext;
@@ -29,6 +32,18 @@ public:
 
 	UPROPERTY(BlueprintReadOnly)
 	bool bIsCurrentCharacter = false;
+
+	UPROPERTY(BlueprintReadOnly)
+	bool bWasPlayedBefore = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Properties")
+	bool bResetLocationAndRotation = false;
+	
+	UPROPERTY(BlueprintReadOnly)
+	FVector SavedLocation;
+
+	UPROPERTY(BlueprintReadOnly)
+	FRotator SavedRotation;
 
 public:
 	UFUNCTION(BlueprintCallable)
@@ -46,5 +61,12 @@ public:
 protected:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void OnUpdateProperties();
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void ResetStartLocationAndRotation();
+
+private:
+	UFUNCTION() bool GetResetLocationAndRotation() { return bResetLocationAndRotation; }
+	UFUNCTION() void SetResetLocationAndRotation(const bool bValue) { bResetLocationAndRotation = bValue; }
 	
 };

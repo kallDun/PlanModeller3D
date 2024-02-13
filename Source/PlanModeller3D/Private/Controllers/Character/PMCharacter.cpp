@@ -2,15 +2,16 @@
 
 
 #include "Controllers/Character/PMCharacter.h"
-
 #include "EnhancedInputSubsystems.h"
 #include "Controllers/Character/CharactersManager.h"
+#include "Core/CoreFunctionLib.h"
 #include "Widgets/Properties/PropertiesConstructData.h"
 
 
 void APMCharacter::Init(UCharactersManager* InManager)
 {
 	Manager = InManager;
+	SavingService = UCoreFunctionLib::GetSavingService(this);
 }
 
 void APMCharacter::SelectAsCurrent_Implementation()
@@ -19,8 +20,6 @@ void APMCharacter::SelectAsCurrent_Implementation()
 	{
 		CurrentCamera->OnDeselect();
 	}
-	bIsCurrentCharacter = true;
-	OnUpdateProperties();
 
 	Manager->PlayerController->Possess(this);
 	if (Manager->PlayerController)
@@ -35,16 +34,40 @@ void APMCharacter::SelectAsCurrent_Implementation()
 			Subsystem->AddMappingContext(PlayerInputMappingContext, 0);
 		}
 	}
+
+	bIsCurrentCharacter = true;
+	if (bResetLocationAndRotation || !bWasPlayedBefore)
+	{
+		ResetStartLocationAndRotation();
+		bWasPlayedBefore = true;
+	}
+	SetActorLocation(SavedLocation);
+	SetActorRotation(SavedRotation);
+	OnUpdateProperties();
 }
 
 void APMCharacter::OnDeselect_Implementation()
 {
 	bIsCurrentCharacter = false;
+	SavedLocation = GetActorLocation();
+	SavedRotation = GetActorRotation();
+	SetActorLocation(FVector(0.0f, 0.0f, -1000.0f));
 }
 
 UPropertiesConstructData* APMCharacter::GetProperties_Implementation()
 {
-	return NewObject<UPropertiesConstructData>();
+	UPropertiesConstructData* const Data = NewObject<UPropertiesConstructData>();
+
+	FOnGetBoolValue GetResetLocationAndRotation = FOnGetBoolValue();
+	GetResetLocationAndRotation.BindDynamic(this, &APMCharacter::GetResetLocationAndRotation);
+	FOnSetBoolValue SetResetLocationAndRotation = FOnSetBoolValue();
+	SetResetLocationAndRotation.BindDynamic(this, &APMCharacter::SetResetLocationAndRotation);
+	Data->BoolProperties.Add(FBoolPropertyConstructObject(
+		-1, FText::FromString("Reset Location On Setup"), false, GetResetLocationAndRotation, SetResetLocationAndRotation));
+
+	return Data;
 }
+
+void APMCharacter::ResetStartLocationAndRotation_Implementation() { }
 
 void APMCharacter::OnUpdateProperties_Implementation() { }

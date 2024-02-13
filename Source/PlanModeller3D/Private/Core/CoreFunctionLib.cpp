@@ -48,3 +48,21 @@ UManagerUI* UCoreFunctionLib::GetManagerUI(const UObject* WorldContextObject)
 {
 	return GetPMInstance(WorldContextObject)->ManagerUI;
 }
+
+// CONTROLLERS
+
+UFoundationController* UCoreFunctionLib::GetFoundationController(const UObject* WorldContextObject)
+{
+	return GetPMState(WorldContextObject)->FoundationController;
+}
+
+UFurnitureController* UCoreFunctionLib::GetFurnitureController(const UObject* WorldContextObject)
+{
+	return GetPMState(WorldContextObject)->FurnitureController;
+}
+
+UCharactersManager* UCoreFunctionLib::GetCharactersManager(const UObject* WorldContextObject)
+{
+	return GetPMState(WorldContextObject)->CharactersManager;
+}
+
