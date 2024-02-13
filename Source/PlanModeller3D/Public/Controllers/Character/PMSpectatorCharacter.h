@@ -32,12 +32,20 @@ public:
 
 private:
 	UFUNCTION() double GetCameraFOV() { return CameraFOV; }
-	UFUNCTION() void SetCameraFOV(const double Value) { CameraFOV = Value; }
+	UFUNCTION() void SetCameraFOV(const double Value)
+	{
+		CameraFOV = Value;
+		OnUpdateProperties();
+	}
 
 	UFUNCTION() double GetCameraSpeed() { return CameraSpeed; }
 	UFUNCTION() void SetCameraSpeed(const double Value) { CameraSpeed = Value; }
 
 	UFUNCTION() bool GetIsColliding() { return bIsColliding; }
-	UFUNCTION() void SetIsColliding(const bool bValue) { bIsColliding = bValue; }
+	UFUNCTION() void SetIsColliding(const bool bValue)
+	{
+		bIsColliding = bValue;
+		OnUpdateProperties();
+	}
 	
 };

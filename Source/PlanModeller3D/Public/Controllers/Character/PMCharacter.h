@@ -21,7 +21,7 @@ private:
 	class UInputMappingContext* PlayerInputMappingContext;
 	
 public:
-	UPROPERTY()
+	UPROPERTY(BlueprintReadOnly)
 	class UCharactersManager* Manager;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Properties")
@@ -42,5 +42,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	UPropertiesConstructData* GetProperties();
+
+protected:
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void OnUpdateProperties();
 	
 };

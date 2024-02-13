@@ -20,8 +20,9 @@ void APMCharacter::SelectAsCurrent_Implementation()
 		CurrentCamera->OnDeselect();
 	}
 	bIsCurrentCharacter = true;
-	Manager->PlayerController->Possess(this);
+	OnUpdateProperties();
 
+	Manager->PlayerController->Possess(this);
 	if (Manager->PlayerController)
 	{
 		// Get the Enhanced Input Local Player Subsystem from the Local Player related to our Player Controller.
@@ -45,3 +46,5 @@ UPropertiesConstructData* APMCharacter::GetProperties_Implementation()
 {
 	return NewObject<UPropertiesConstructData>();
 }
+
+void APMCharacter::OnUpdateProperties_Implementation() { }
