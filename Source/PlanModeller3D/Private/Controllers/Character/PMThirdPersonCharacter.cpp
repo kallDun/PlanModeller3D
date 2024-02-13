@@ -27,17 +27,17 @@ UPropertiesConstructData* APMThirdPersonCharacter::GetProperties_Implementation(
 void APMThirdPersonCharacter::ResetStartLocationAndRotation_Implementation()
 {
 	auto Rooms = SavingService->CurrentSaveGame->Plan2D.Rooms;
-	auto Room = Rooms.FindByPredicate([this](const FDMRoom& InRoom) { return InRoom.Id == RoomID; });
+	auto Room = Rooms.FindByPredicate([this](const FDMRoom& InRoom) { return InRoom.Id == GetCharacterSettings().RoomID; });
 	if (Room)
 	{
 		const FVector2D Center = UVector2D_MathLib::GetCenter(Room->Points);
-		SavedLocation = FVector(Center.X, Center.Y, Room->Height + Room->HeightFromFloor);
-		SavedRotation = FRotator();
+		GetCharacterSettings().SavedLocation = FVector(Center.X, Center.Y, Room->Height + Room->HeightFromFloor);
+		GetCharacterSettings().SavedRotation = FRotator();
 	}
 	else if (Rooms.Num() > 0)
 	{
 		const FVector2D Center = UVector2D_MathLib::GetCenter(Rooms[0].Points);
-		SavedLocation = FVector(Center.X, Center.Y, Rooms[0].Height + Rooms[0].HeightFromFloor);
-		SavedRotation = FRotator();
+		GetCharacterSettings().SavedLocation = FVector(Center.X, Center.Y, Rooms[0].Height + Rooms[0].HeightFromFloor);
+		GetCharacterSettings().SavedRotation = FRotator();
 	}
 }

@@ -26,7 +26,7 @@ APMCharacter* UCharactersManager::GetCurrentCharacter() const
 {
 	for (const auto Character : Characters)
 	{
-		if (Character->bIsCurrentCharacter)
+		if (Character->GetIsCurrentCharacter())
 		{
 			return Character;
 		}

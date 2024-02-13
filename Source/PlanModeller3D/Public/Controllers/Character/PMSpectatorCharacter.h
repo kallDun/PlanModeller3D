@@ -15,33 +15,5 @@ protected:
 	APMSpectatorCharacter() : APMCharacter() { }
 
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Properties", meta=(ClampMin=0f, ClampMax=180f))
-	float CameraFOV = 90.0f;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Properties", meta=(ClampMin=0f, ClampMax=100f))
-	float CameraSpeed = 10.0f;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Properties")
-	bool bIsColliding = false;
-	
 	virtual UPropertiesConstructData* GetProperties_Implementation() override;
-
-private:
-	UFUNCTION() double GetCameraFOV() { return CameraFOV; }
-	UFUNCTION() void SetCameraFOV(const double Value)
-	{
-		CameraFOV = Value;
-		OnUpdateProperties();
-	}
-
-	UFUNCTION() double GetCameraSpeed() { return CameraSpeed; }
-	UFUNCTION() void SetCameraSpeed(const double Value) { CameraSpeed = Value; }
-
-	UFUNCTION() bool GetIsColliding() { return bIsColliding; }
-	UFUNCTION() void SetIsColliding(const bool bValue)
-	{
-		bIsColliding = bValue;
-		OnUpdateProperties();
-	}
-	
 };

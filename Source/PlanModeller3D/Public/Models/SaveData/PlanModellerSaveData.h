@@ -9,6 +9,7 @@
 #include "Models/Plan3D/MPlan.h"
 #include "Services/Save/AbstractSaveData.h"
 #include "UObject/Object.h"
+#include "Controllers/Character/CharacterSettings.h"
 #include "PlanModellerSaveData.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnModelChanged, ECrudActionType, ActionType, EPlanModelType, ModelType, FString, ObjectId);
@@ -30,6 +31,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FMPlan Plan3D;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TMap<FName, FCharacterSettings> CharactersSettings = {};
 
 	virtual void Init(const FString& Name) override
 	{

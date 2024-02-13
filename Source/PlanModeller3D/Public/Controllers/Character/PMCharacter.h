@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CharacterSettings.h"
 #include "GameFramework/Character.h"
 #include "PMCharacter.generated.h"
 
@@ -19,32 +20,55 @@ protected:
 	UPROPERTY(BlueprintReadOnly)
 	class USavingService* SavingService;
 
-private:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"), Category = "Input")
-	class UInputMappingContext* PlayerInputMappingContext;
-	
 public:
-	UPROPERTY(BlueprintReadOnly)
-	class UCharactersManager* Manager;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Properties")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PM Character")
 	FName CharacterName;
-
-	UPROPERTY(BlueprintReadOnly)
-	bool bIsCurrentCharacter = false;
-
-	UPROPERTY(BlueprintReadOnly)
-	bool bWasPlayedBefore = false;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Properties")
-	bool bResetLocationAndRotation = false;
 	
-	UPROPERTY(BlueprintReadOnly)
-	FVector SavedLocation;
+protected:
+	UPROPERTY(BlueprintReadOnly, Category = "PM Character")
+	class UCharactersManager* Manager;
+	
+private:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"), Category = "PM Character")
+	class UInputMappingContext* PlayerInputMappingContext;
 
-	UPROPERTY(BlueprintReadOnly)
-	FRotator SavedRotation;
+	UPROPERTY(EditAnywhere, Category = "PM Character")
+	FCharacterSettings DefaultSettings;
 
+// GETTERS & SETTERS	
+protected:
+	UFUNCTION(BlueprintCallable)
+	FCharacterSettings& GetCharacterSettings() const;
+
+	UFUNCTION(BlueprintCallable)
+	void SetCharacterSettings(const FCharacterSettings& InSettings) const;
+
+	UFUNCTION() double GetCameraFOV() { return GetCharacterSettings().CameraFOV; }
+	UFUNCTION() void SetCameraFOV(const double Value)
+	{
+		GetCharacterSettings().CameraFOV = Value;
+		OnUpdateProperties();
+	}
+
+	UFUNCTION() double GetCameraSpeed() { return GetCharacterSettings().CameraSpeed; }
+	UFUNCTION() void SetCameraSpeed(const double Value) { GetCharacterSettings().CameraSpeed = Value; }
+
+	UFUNCTION() bool GetIsColliding() { return GetCharacterSettings().bIsColliding; }
+	UFUNCTION() void SetIsColliding(const bool bValue)
+	{
+		GetCharacterSettings().bIsColliding = bValue;
+		OnUpdateProperties();
+	}
+
+public:
+	UFUNCTION(BlueprintCallable)
+	bool GetIsCurrentCharacter() const { return GetCharacterSettings().bIsCurrentCharacter; }
+
+private:
+	UFUNCTION() bool GetResetLocationAndRotation() { return GetCharacterSettings().bResetLocationAndRotation; }
+	UFUNCTION() void SetResetLocationAndRotation(const bool bValue) { GetCharacterSettings().bResetLocationAndRotation = bValue; }
+
+// FUNCTIONS
 public:
 	UFUNCTION(BlueprintCallable)
 	void Init(UCharactersManager* InManager);
@@ -64,9 +88,5 @@ protected:
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void ResetStartLocationAndRotation();
-
-private:
-	UFUNCTION() bool GetResetLocationAndRotation() { return bResetLocationAndRotation; }
-	UFUNCTION() void SetResetLocationAndRotation(const bool bValue) { bResetLocationAndRotation = bValue; }
 	
 };

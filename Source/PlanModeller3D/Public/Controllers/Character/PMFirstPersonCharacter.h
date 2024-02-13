@@ -14,22 +14,8 @@ class PLANMODELLER3D_API APMFirstPersonCharacter : public APMCharacter
 protected:
 	APMFirstPersonCharacter() : APMCharacter() { }
 
-public:
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Properties", meta=(ClampMin=0f, ClampMax=180f))
-	float CameraFOV = 90.0f;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Properties", meta=(ClampMin=0f, ClampMax=180f))
-	FString RoomID;
-	
+public:	
 	virtual UPropertiesConstructData* GetProperties_Implementation() override;
 
 	virtual void ResetStartLocationAndRotation_Implementation() override;
-
-private:
-	UFUNCTION() double GetCameraFOV() { return CameraFOV; }
-	UFUNCTION() void SetCameraFOV(const double Value)
-	{
-		CameraFOV = Value;
-		OnUpdateProperties();
-	}	
 };

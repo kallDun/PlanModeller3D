@@ -5,6 +5,8 @@
 #include "EnhancedInputSubsystems.h"
 #include "Controllers/Character/CharactersManager.h"
 #include "Core/CoreFunctionLib.h"
+#include "Models/SaveData/PlanModellerSaveData.h"
+#include "Services/Save/SavingService.h"
 #include "Widgets/Properties/PropertiesConstructData.h"
 
 
@@ -35,22 +37,22 @@ void APMCharacter::SelectAsCurrent_Implementation()
 		}
 	}
 
-	bIsCurrentCharacter = true;
-	if (bResetLocationAndRotation || !bWasPlayedBefore)
+	GetCharacterSettings().bIsCurrentCharacter = true;
+	if (GetCharacterSettings().bResetLocationAndRotation || !GetCharacterSettings().bWasPlayedBefore)
 	{
 		ResetStartLocationAndRotation();
-		bWasPlayedBefore = true;
+		GetCharacterSettings().bWasPlayedBefore = true;
 	}
-	SetActorLocation(SavedLocation);
-	SetActorRotation(SavedRotation);
+	SetActorLocation(GetCharacterSettings().SavedLocation);
+	SetActorRotation(GetCharacterSettings().SavedRotation);
 	OnUpdateProperties();
 }
 
 void APMCharacter::OnDeselect_Implementation()
 {
-	bIsCurrentCharacter = false;
-	SavedLocation = GetActorLocation();
-	SavedRotation = GetActorRotation();
+	GetCharacterSettings().bIsCurrentCharacter = false;
+	GetCharacterSettings().SavedLocation = GetActorLocation();
+	GetCharacterSettings().SavedRotation = GetActorRotation();
 	SetActorLocation(FVector(0.0f, 0.0f, -1000.0f));
 }
 
@@ -67,6 +69,30 @@ UPropertiesConstructData* APMCharacter::GetProperties_Implementation()
 
 	return Data;
 }
+
+
+FCharacterSettings& APMCharacter::GetCharacterSettings() const
+{
+	if (SavingService->CurrentSaveGame->CharactersSettings.Contains(CharacterName))
+	{
+		return SavingService->CurrentSaveGame->CharactersSettings[CharacterName];
+	}
+	SetCharacterSettings(DefaultSettings);
+	return GetCharacterSettings();
+}
+
+void APMCharacter::SetCharacterSettings(const FCharacterSettings& InSettings) const
+{
+	if (SavingService->CurrentSaveGame->CharactersSettings.Contains(CharacterName))
+	{
+		SavingService->CurrentSaveGame->CharactersSettings[CharacterName] = InSettings;
+	}
+	else
+	{
+		SavingService->CurrentSaveGame->CharactersSettings.Add(CharacterName, InSettings);
+	}
+}
+
 
 void APMCharacter::ResetStartLocationAndRotation_Implementation() { }
 
