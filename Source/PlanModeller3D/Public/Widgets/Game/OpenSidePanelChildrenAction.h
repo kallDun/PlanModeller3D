@@ -8,7 +8,7 @@
 
 class UPanelUI;
 
-DECLARE_DYNAMIC_DELEGATE_OneParam(FOpenSidePanelChildrenAction, UPanelUI*, SidePanelChildren);
+DECLARE_DYNAMIC_DELEGATE_TwoParams(FOpenSidePanelChildrenAction, UPanelUI*, SidePanelChildren, int, Index);
 
 UCLASS()
 class PLANMODELLER3D_API UOpenSidePanelChildrenAction : public UObject
@@ -19,6 +19,9 @@ public:
 	UPROPERTY()
 	FName SidePanelChildrenName;
 
+	UPROPERTY()
+	int Index;
+	
 	UPROPERTY()
 	FOpenSidePanelChildrenAction OpenSidePanelChildrenAction;
 };

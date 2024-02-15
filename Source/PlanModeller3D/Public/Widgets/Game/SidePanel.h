@@ -38,7 +38,7 @@ public:
 	FOnSidePanelClose OnPanelClose;
     	
 	UFUNCTION(BlueprintCallable)
-	void OpenChildren(FName SidePanelChildrenName, FOpenSidePanelChildrenAction OpenChildrenAction);
+	void OpenChildren(FName SidePanelChildrenName, const int Index, FOpenSidePanelChildrenAction OpenChildrenAction);
 
 	UFUNCTION(BlueprintCallable)
 	void CloseLast();
