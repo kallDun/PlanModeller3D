@@ -19,7 +19,17 @@ void UCharactersManager::Init_Implementation(UPrimaryDataAsset* DataAsset)
 		Character->Init(this);
 		Characters.Add(Character);
 	}
-	Characters[Data->DefaultCharacterIndex]->SelectAsCurrent();
+	for (const auto Character : Characters)
+	{
+		if (Character->GetIsCurrentCharacter())
+		{
+			Character->SelectAsCurrent();
+		}
+		else
+		{
+			Character->OnDeselect();
+		}
+	}
 }
 
 APMCharacter* UCharactersManager::GetCurrentCharacter() const

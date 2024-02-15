@@ -17,9 +17,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<TSubclassOf<APMCharacter>> CharacterClasses;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int DefaultCharacterIndex = 0;
-
 	__override virtual FPrimaryAssetId GetPrimaryAssetId() const override
 	{
 		return FPrimaryAssetId("CharactersManagerData", GetFName());

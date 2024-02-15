@@ -45,15 +45,19 @@ void APMCharacter::SelectAsCurrent_Implementation()
 	}
 	SetActorLocation(GetCharacterSettings().SavedLocation);
 	SetActorRotation(GetCharacterSettings().SavedRotation);
+	SetActorHiddenInGame(false);
 	OnUpdateProperties();
 }
 
 void APMCharacter::OnDeselect_Implementation()
 {
+	if (GetCharacterSettings().bIsCurrentCharacter)
+	{
+		GetCharacterSettings().SavedLocation = GetActorLocation();
+		GetCharacterSettings().SavedRotation = GetActorRotation();
+	}
 	GetCharacterSettings().bIsCurrentCharacter = false;
-	GetCharacterSettings().SavedLocation = GetActorLocation();
-	GetCharacterSettings().SavedRotation = GetActorRotation();
-	SetActorLocation(FVector(0.0f, 0.0f, -1000.0f));
+	SetActorHiddenInGame(true);
 }
 
 UPropertiesConstructData* APMCharacter::GetProperties_Implementation()
