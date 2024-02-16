@@ -26,7 +26,8 @@ void UNumberPropertyField::Init(const FNumberPropertyConstructObject InConstruct
 	SetValueDelegate = InConstructObject.SetValue;
 	NumberType = InConstructObject.NumberType;
 
-	if (InConstructObject.bIsClamped)
+	bIsSliderEnabled = InConstructObject.bIsClamped;
+	if (bIsSliderEnabled)
 	{
 		InputField->SetVisibility(ESlateVisibility::Collapsed);
 		InputSlider->SetVisibility(ESlateVisibility::Visible);
@@ -48,6 +49,8 @@ void UNumberPropertyField::OnApplyButtonClicked()
 	Super::OnApplyButtonClicked();
 	SetValueDelegate.Execute(GetNumberValue());
 	InputField->SetText(FText::FromString(std::to_string(GetValueDelegate.Execute()).c_str()));
+	InputSlider->SetValue(GetValueDelegate.Execute());
+	SliderValueText->SetText(FText::FromString(std::to_string(GetValueDelegate.Execute()).c_str()));
 	SetButtonsVisibility(false);
 }
 
@@ -69,21 +72,21 @@ bool UNumberPropertyField::IsNumberValid() const
 
 double UNumberPropertyField::GetNumberValue() const
 {
-	if (bIsSliderEnabled) return InputSlider->GetValue();
 	double RetVal; 
-	FDefaultValueHelper::ParseDouble(InputField->GetText().ToString(), RetVal);
+	if (bIsSliderEnabled)
+	{
+		RetVal = InputSlider->GetValue();
+	}
+	else
+	{
+		FDefaultValueHelper::ParseDouble(InputField->GetText().ToString(), RetVal);
+	}	
 	switch (NumberType)
 	{
 		case ENumberType::NT_Integer:
 			return FMath::RoundToInt(RetVal);
-		
-		case ENumberType::NT_Float:
-			return FMath::RoundToFloat(RetVal);
-		
-		case ENumberType::NT_Double:
-			return RetVal;
+		default: return RetVal;
 	}
-	return RetVal;
 }
 
 void UNumberPropertyField::OnInputFieldChanged(const FText& Text)
