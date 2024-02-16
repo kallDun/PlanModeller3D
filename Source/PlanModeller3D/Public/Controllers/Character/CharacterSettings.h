@@ -34,5 +34,4 @@ struct FCharacterSettings
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString RoomID;
-	
 };

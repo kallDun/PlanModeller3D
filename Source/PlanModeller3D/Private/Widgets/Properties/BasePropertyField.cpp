@@ -23,4 +23,6 @@ void UBasePropertyField::BaseInit(const FText Name)
 void UBasePropertyField::SetButtonsVisibility(const bool bVisible)
 {
 	ButtonsContainer->SetVisibility(bVisible ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+	ApplyButton->SetVisibility(ESlateVisibility::Visible);
+	RevertButton->SetVisibility(ESlateVisibility::Visible);
 }

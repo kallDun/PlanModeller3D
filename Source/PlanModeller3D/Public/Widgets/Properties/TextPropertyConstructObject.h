@@ -10,6 +10,9 @@ struct FTextPropertyConstructObject
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	int Order;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	FText Name;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)

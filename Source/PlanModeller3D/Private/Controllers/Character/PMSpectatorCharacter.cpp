@@ -29,8 +29,8 @@ UPropertiesConstructData* APMSpectatorCharacter::GetProperties_Implementation()
 	GetIsColliding.BindDynamic(this, &APMSpectatorCharacter::GetIsColliding);
 	FOnSetBoolValue SetIsColliding = FOnSetBoolValue();
 	SetIsColliding.BindDynamic(this, &APMSpectatorCharacter::SetIsColliding);
-	Data->BoolProperties.Add(FBoolPropertyConstructObject(
-		2, FText::FromString("Is Colliding"), false, GetIsColliding, SetIsColliding));
+	Data->BoolProperties.Add(FBoolPropertyConstructObject(2, FText::FromString("Is Colliding"),
+		GetIsColliding, SetIsColliding));
 	
 	return Data;
 }

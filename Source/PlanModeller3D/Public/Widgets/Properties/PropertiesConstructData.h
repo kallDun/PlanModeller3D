@@ -23,5 +23,32 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TArray<FBoolPropertyConstructObject> BoolProperties = {};
-	
+
+	TArray<int> GetPropertiesOrder() const
+	{
+		TArray<int> PropertiesOrder = {};
+		for (auto Property : NumberProperties)
+		{
+			if (!PropertiesOrder.Contains(Property.Order))
+			{
+				PropertiesOrder.Add(Property.Order);
+			}
+		}
+		for (auto Property : TextProperties)
+		{
+			if (!PropertiesOrder.Contains(Property.Order))
+			{
+				PropertiesOrder.Add(Property.Order);
+			}
+		}
+		for (auto Property : BoolProperties)
+		{
+			if (!PropertiesOrder.Contains(Property.Order))
+			{
+				PropertiesOrder.Add(Property.Order);
+			}
+		}
+		PropertiesOrder.Sort();
+		return PropertiesOrder;
+	}
 };

@@ -9,14 +9,16 @@ struct FBoolPropertyConstructObject
 {
 	GENERATED_BODY()
 
+	FBoolPropertyConstructObject() = default;
+	
+	FBoolPropertyConstructObject(int Order, const FText& Name, const FOnGetBoolValue& GetValue,
+		const FOnSetBoolValue& SetValue): Order(Order),Name(Name),GetValue(GetValue),SetValue(SetValue){ }
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	int Order;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	FText Name;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	bool bIsReadOnly;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	FOnGetBoolValue GetValue;

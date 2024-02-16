@@ -68,8 +68,8 @@ UPropertiesConstructData* APMCharacter::GetProperties_Implementation()
 	GetResetLocationAndRotation.BindDynamic(this, &APMCharacter::GetResetLocationAndRotation);
 	FOnSetBoolValue SetResetLocationAndRotation = FOnSetBoolValue();
 	SetResetLocationAndRotation.BindDynamic(this, &APMCharacter::SetResetLocationAndRotation);
-	Data->BoolProperties.Add(FBoolPropertyConstructObject(
-		-1, FText::FromString("Reset Location On Setup"), false, GetResetLocationAndRotation, SetResetLocationAndRotation));
+	Data->BoolProperties.Add(FBoolPropertyConstructObject(-1, FText::FromString("Reset Location On Setup"),
+		GetResetLocationAndRotation, SetResetLocationAndRotation));
 
 	return Data;
 }
