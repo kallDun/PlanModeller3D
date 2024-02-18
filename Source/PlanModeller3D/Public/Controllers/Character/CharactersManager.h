@@ -7,6 +7,8 @@
 #include "UObject/Object.h"
 #include "CharactersManager.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCharacterAction, APMCharacter*, Character);
+
 class APMCharacter;
 class UCharactersManagerData;
 
@@ -23,6 +25,12 @@ protected:
 public:
 	UPROPERTY(BlueprintReadOnly)
 	TArray<APMCharacter*> Characters = {};
+
+	UPROPERTY(BlueprintAssignable)
+	FCharacterAction OnBeforeCharacterSelected;
+	
+	UPROPERTY(BlueprintAssignable)
+	FCharacterAction OnCharacterSelected;
 
 	UPROPERTY(BlueprintReadOnly)
 	APlayerController* PlayerController;

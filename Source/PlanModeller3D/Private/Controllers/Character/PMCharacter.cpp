@@ -18,6 +18,8 @@ void APMCharacter::Init(UCharactersManager* InManager)
 
 void APMCharacter::SelectAsCurrent_Implementation()
 {
+	Manager->OnBeforeCharacterSelected.Broadcast(this);
+	
 	if (const auto CurrentCamera = Manager->GetCurrentCharacter())
 	{
 		CurrentCamera->OnDeselect();
@@ -47,6 +49,8 @@ void APMCharacter::SelectAsCurrent_Implementation()
 	SetActorRotation(GetCharacterSettings().SavedRotation);
 	SetActorHiddenInGame(false);
 	OnUpdateProperties();
+
+	Manager->OnCharacterSelected.Broadcast(this);
 }
 
 void APMCharacter::OnDeselect_Implementation()
@@ -97,6 +101,15 @@ void APMCharacter::SetCharacterSettings(const FCharacterSettings& InSettings) co
 	}
 }
 
+void APMCharacter::AddInstrument_Implementation(ACharacterInstrument* Instrument)
+{
+	ActiveInstrument = Instrument;
+}
+
+void APMCharacter::RemoveActiveInstrument_Implementation()
+{
+	ActiveInstrument = nullptr;
+}
 
 void APMCharacter::ResetStartLocationAndRotation_Implementation() { }
 

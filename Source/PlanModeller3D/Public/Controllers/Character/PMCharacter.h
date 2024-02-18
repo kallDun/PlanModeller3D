@@ -7,6 +7,7 @@
 #include "GameFramework/Character.h"
 #include "PMCharacter.generated.h"
 
+class ACharacterInstrument;
 class UPropertiesConstructData;
 
 UCLASS(Abstract, BlueprintType)
@@ -21,18 +22,21 @@ protected:
 	class USavingService* SavingService;
 
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PM Character")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PM Character State")
 	FName CharacterName;
+
+	UPROPERTY(BlueprintReadOnly, Category = "PM Character State")
+	ACharacterInstrument* ActiveInstrument;
 	
 protected:
-	UPROPERTY(BlueprintReadOnly, Category = "PM Character")
+	UPROPERTY(BlueprintReadOnly, Category = "PM Character State")
 	class UCharactersManager* Manager;
 	
 private:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"), Category = "PM Character")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"), Category = "PM Character State")
 	class UInputMappingContext* PlayerInputMappingContext;
 
-	UPROPERTY(EditAnywhere, Category = "PM Character")
+	UPROPERTY(EditAnywhere, Category = "PM Character State")
 	FCharacterSettings DefaultSettings;
 
 // GETTERS & SETTERS	
@@ -78,6 +82,12 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent)
 	void OnDeselect();
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void AddInstrument(ACharacterInstrument* Instrument);
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void RemoveActiveInstrument();
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	UPropertiesConstructData* GetProperties();
