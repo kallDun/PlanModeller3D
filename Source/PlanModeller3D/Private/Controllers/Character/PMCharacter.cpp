@@ -61,6 +61,7 @@ void APMCharacter::OnDeselect_Implementation()
 		GetCharacterSettings().SavedRotation = GetActorRotation();
 	}
 	GetCharacterSettings().bIsCurrentCharacter = false;
+	
 	SetActorHiddenInGame(true);
 }
 

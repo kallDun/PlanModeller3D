@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "InstrumentsManager.h"
+#include "InstrumentType.h"
 #include "GameFramework/Actor.h"
 #include "CharacterInstrument.generated.h"
 
@@ -20,6 +21,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Instrument State")
 	FString InstrumentName;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Instrument State")
+	EInstrumentType InstrumentType;
+	
 	UPROPERTY(BlueprintReadOnly, Category = "Instrument State")
 	UInstrumentsManager* Manager;
 	
@@ -27,7 +31,7 @@ public:
 	APMCharacter* Character;
 	
 	UPROPERTY(BlueprintAssignable, Category = "Instrument State")
-	FInstrumentAction OnInstrumentCalled;
+	FInstrumentAction OnInstrumentUsed;
 
 	UFUNCTION()
 	void Init(UInstrumentsManager* InstrumentsManager);
@@ -43,4 +47,7 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnDeactivated();
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void Use();
 };

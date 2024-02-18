@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "CharacterSettings.h"
+#include "Components/CapsuleComponent.h"
 #include "GameFramework/Character.h"
 #include "PMCharacter.generated.h"
 

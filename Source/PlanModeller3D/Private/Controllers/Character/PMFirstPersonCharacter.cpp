@@ -2,6 +2,7 @@
 
 
 #include "Controllers/Character/PMFirstPersonCharacter.h"
+#include "Components/CapsuleComponent.h"
 #include "Models/SaveData/PlanModellerSaveData.h"
 #include "Services/Save/SavingService.h"
 #include "Utils/Vector2D_MathLib.h"
@@ -30,13 +31,15 @@ void APMFirstPersonCharacter::ResetStartLocationAndRotation_Implementation()
 	if (Room)
 	{
 		const FVector2D Center = UVector2D_MathLib::GetCenter(Room->Points);
-		GetCharacterSettings().SavedLocation = FVector(Center.X, Center.Y, Room->Height + Room->HeightFromFloor);
+		GetCharacterSettings().SavedLocation = FVector(Center.X, Center.Y,
+			Room->Height + Room->HeightFromFloor + GetCapsuleComponent()->GetScaledCapsuleHalfHeight());
 		GetCharacterSettings().SavedRotation = FRotator();
 	}
 	else if (Rooms.Num() > 0)
 	{
 		const FVector2D Center = UVector2D_MathLib::GetCenter(Rooms[0].Points);
-		GetCharacterSettings().SavedLocation = FVector(Center.X, Center.Y, Rooms[0].Height + Rooms[0].HeightFromFloor);
+		GetCharacterSettings().SavedLocation = FVector(Center.X, Center.Y,
+			Rooms[0].Height + Rooms[0].HeightFromFloor + GetCapsuleComponent()->GetScaledCapsuleHalfHeight());
 		GetCharacterSettings().SavedRotation = FRotator();
 	}
 }

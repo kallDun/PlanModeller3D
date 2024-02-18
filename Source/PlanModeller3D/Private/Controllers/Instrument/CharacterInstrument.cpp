@@ -18,11 +18,16 @@ void ACharacterInstrument::Activate(APMCharacter* InCharacter)
 
 void ACharacterInstrument::Deactivate()
 {
-	Character = nullptr;
-	OnInstrumentCalled.Clear();
+	OnInstrumentUsed.Clear();
 	if (Character->ActiveInstrument == this)
 	{
 		Character->RemoveActiveInstrument();
 	}
 	OnDeactivated();
+	Character = nullptr;
+}
+
+void ACharacterInstrument::Use_Implementation()
+{
+	OnInstrumentUsed.Broadcast();
 }
