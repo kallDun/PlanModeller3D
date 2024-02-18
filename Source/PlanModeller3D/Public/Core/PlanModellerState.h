@@ -3,12 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Controllers/Character/CharactersManager.h"
 #include "Controllers/Character/CharactersManagerData.h"
 #include "Controllers/Foundation/FoundationControllerData.h"
 #include "Controllers/Furnitures/FurnitureControllerData.h"
+#include "Controllers/Instrument/InstrumentsManagerData.h"
 #include "Services/Level/LevelLoadGameState.h"
 #include "PlanModellerState.generated.h"
+
 
 UCLASS(Abstract, Blueprintable, BlueprintType)
 class PLANMODELLER3D_API APlanModellerState : public ALevelLoadGameState
@@ -16,23 +17,29 @@ class PLANMODELLER3D_API APlanModellerState : public ALevelLoadGameState
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(EditDefaultsOnly, Category = "Foundation")
+	UPROPERTY(EditDefaultsOnly, Category = "State")
 	UFoundationControllerData* FoundationControllerData;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Foundation")
+	UPROPERTY(BlueprintReadOnly, Category = "State")
 	class UFoundationController* FoundationController;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Furniture")
+	UPROPERTY(EditDefaultsOnly, Category = "State")
 	UFurnitureControllerData* FurnitureControllerData;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Furniture")
+	UPROPERTY(BlueprintReadOnly, Category = "State")
 	class UFurnitureController* FurnitureController;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Characters")
+	UPROPERTY(EditDefaultsOnly, Category = "State")
 	UCharactersManagerData* CharactersManagerData;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Characters")
-	UCharactersManager* CharactersManager;
+	UPROPERTY(BlueprintReadOnly, Category = "State")
+	class UCharactersManager* CharactersManager;
+
+	UPROPERTY(EditDefaultsOnly, Category = "State")
+	UInstrumentsManagerData* InstrumentsManagerData;
+
+	UPROPERTY(BlueprintReadOnly, Category = "State")
+	class UInstrumentsManager* InstrumentsManager;
 
 protected:
 	virtual void LoadLevel_Implementation() override;

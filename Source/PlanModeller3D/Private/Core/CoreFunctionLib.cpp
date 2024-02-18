@@ -66,3 +66,8 @@ UCharactersManager* UCoreFunctionLib::GetCharactersManager(const UObject* WorldC
 	return GetPMState(WorldContextObject)->CharactersManager;
 }
 
+UInstrumentsManager* UCoreFunctionLib::GetInstrumentsManager(const UObject* WorldContextObject)
+{
+	return GetPMState(WorldContextObject)->InstrumentsManager;
+}
+

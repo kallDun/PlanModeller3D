@@ -6,6 +6,7 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "CoreFunctionLib.generated.h"
 
+class UInstrumentsManager;
 class UCharactersManager;
 class UFurnitureController;
 class UFoundationController;
@@ -60,5 +61,8 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Core", meta=(HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	static UCharactersManager* GetCharactersManager(const UObject* WorldContextObject);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Core", meta=(HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+	static UInstrumentsManager* GetInstrumentsManager(const UObject* WorldContextObject);
 	
 };
