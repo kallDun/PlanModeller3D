@@ -7,6 +7,7 @@
 #include "Widgets/Properties/BoolPropertyField.h"
 #include "Widgets/Properties/NumberPropertyField.h"
 #include "Widgets/Properties/PropertiesConstructData.h"
+#include "Widgets/Properties/SceneObjectPropertyField.h"
 #include "Widgets/Properties/TextPropertyField.h"
 #include "Widgets/Properties/Factory/PropertiesFactoryData.h"
 
@@ -17,7 +18,39 @@ TArray<UBasePropertyField*> UPropertiesFactory::CreateProperties(const UObject* 
 	TArray<UBasePropertyField*> WidgetsArray = {};
 	const UManagerUI* UIManager = UCoreFunctionLib::GetManagerUI(WorldContextObject);
 
-	TArray<int> PropertiesOrder = Properties->GetPropertiesOrder();
+
+	TArray<int> PropertiesOrder = {};
+	for (auto Property : Properties->NumberProperties)
+	{
+		if (!PropertiesOrder.Contains(Property.Order))
+		{
+			PropertiesOrder.Add(Property.Order);
+		}
+	}
+	for (auto Property : Properties->TextProperties)
+	{
+		if (!PropertiesOrder.Contains(Property.Order))
+		{
+			PropertiesOrder.Add(Property.Order);
+		}
+	}
+	for (auto Property : Properties->BoolProperties)
+	{
+		if (!PropertiesOrder.Contains(Property.Order))
+		{
+			PropertiesOrder.Add(Property.Order);
+		}
+	}
+	for (auto Property : Properties->SceneObjectProperties)
+	{
+		if (!PropertiesOrder.Contains(Property.Order))
+		{
+			PropertiesOrder.Add(Property.Order);
+		}
+	}
+	PropertiesOrder.Sort();
+
+	
 	for (const int Order : PropertiesOrder)
 	{
 		for (auto Property : Properties->TextProperties)
@@ -53,6 +86,18 @@ TArray<UBasePropertyField*> UPropertiesFactory::CreateProperties(const UObject* 
 				{
 					BoolProperty->Init(Property);
 					WidgetsArray.Add(BoolProperty);
+				}
+			}
+		}
+		for (auto Property : Properties->SceneObjectProperties)
+		{
+			if (Property.Order == Order)
+			{
+				const auto Widget = UIManager->GetPanel(Data->SceneObjectPropertyName, Parent);
+				if (USceneObjectPropertyField* SceneObjectProperty = Cast<USceneObjectPropertyField>(Widget))
+				{
+					SceneObjectProperty->Init(Property);
+					WidgetsArray.Add(SceneObjectProperty);
 				}
 			}
 		}

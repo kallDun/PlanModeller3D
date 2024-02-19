@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "CharacterSettings.h"
 #include "Components/CapsuleComponent.h"
+#include "Controllers/Instrument/Selection/SceneObjectSelection.h"
 #include "GameFramework/Character.h"
 #include "PMCharacter.generated.h"
 
@@ -63,6 +64,16 @@ protected:
 	{
 		GetCharacterSettings().bIsColliding = bValue;
 		OnUpdateProperties();
+	}
+
+	UFUNCTION() FSceneObjectSelection GetRoom()
+	{
+		return FSceneObjectSelection(EInstrumentAvailableSelection::IAS_Room, GetCharacterSettings().RoomID);
+	}
+	UFUNCTION() void SetRoom(const FSceneObjectSelection Selection)
+	{
+		if (Selection.SelectionType != EInstrumentAvailableSelection::IAS_Room) return;
+		GetCharacterSettings().RoomID = Selection.SelectionId;
 	}
 
 public:

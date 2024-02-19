@@ -33,6 +33,9 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Instrument State")
 	FInstrumentAction OnInstrumentUsed;
 
+	UPROPERTY(BlueprintAssignable, Category = "Instrument State")
+	FInstrumentAction OnInstrumentDeactivated;
+
 	UFUNCTION()
 	void Init(UInstrumentsManager* InstrumentsManager);
 

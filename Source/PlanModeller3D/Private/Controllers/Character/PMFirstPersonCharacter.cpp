@@ -13,13 +13,20 @@
 UPropertiesConstructData* APMFirstPersonCharacter::GetProperties_Implementation()
 {
 	UPropertiesConstructData* Data = Super::GetProperties_Implementation();
+
+	FOnGetSceneObjectValue GetRoom = FOnGetSceneObjectValue();
+	GetRoom.BindDynamic(this, &APMFirstPersonCharacter::GetRoom);
+	FOnSetSceneObjectValue SetRoom = FOnSetSceneObjectValue();
+	SetRoom.BindDynamic(this, &APMFirstPersonCharacter::SetRoom);
+	Data->SceneObjectProperties.Add(FSceneObjectPropertyConstructObject(
+		0, FText::FromString("Spawn Room"), static_cast<uint8>(EInstrumentAvailableSelection::IAS_Room), GetRoom, SetRoom));
 	
 	FOnGetNumberValue GetCameraFOV = FOnGetNumberValue();
 	GetCameraFOV.BindDynamic(this, &APMFirstPersonCharacter::GetCameraFOV);
 	FOnSetNumberValue SetCameraFOV = FOnSetNumberValue();
 	SetCameraFOV.BindDynamic(this, &APMFirstPersonCharacter::SetCameraFOV);
 	Data->NumberProperties.Add(FNumberPropertyConstructObject(
-		0, FText::FromString("Camera FOV"), false, ENumberType::NT_Float, GetCameraFOV, SetCameraFOV, 0.0f, 180.0f));
+		1, FText::FromString("Camera FOV"), false, ENumberType::NT_Float, GetCameraFOV, SetCameraFOV, 0.0f, 180.0f));
 	
 	return Data;
 }

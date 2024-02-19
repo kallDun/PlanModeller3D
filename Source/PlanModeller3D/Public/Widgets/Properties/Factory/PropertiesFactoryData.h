@@ -21,6 +21,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FName NumberPropertyName;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FName SceneObjectPropertyName;
 
 	__override virtual FPrimaryAssetId GetPrimaryAssetId() const override
 	{

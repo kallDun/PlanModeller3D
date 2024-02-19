@@ -18,8 +18,7 @@ ASelectionCharacterInstrument::ASelectionCharacterInstrument()
 
 void ASelectionCharacterInstrument::Use_Implementation()
 {
-	CurrentSelection = EInstrumentAvailableSelection::IAS_None;
-	CurrentSelectionId = "";
+	SelectedSceneObject = FSceneObjectSelection();
 	
 	// make linetrace, get hit actor, check if it's a valid selection, if it is, set it as current selection
 	// if it's not a valid selection, do nothing
@@ -41,8 +40,7 @@ void ASelectionCharacterInstrument::Use_Implementation()
 			{
 				if (auto Room = Cast<ARoomActor>(HitActor))
 				{
-					CurrentSelection = EInstrumentAvailableSelection::IAS_Room;
-					CurrentSelectionId = Room->DMRoom.Id;
+					SelectedSceneObject = FSceneObjectSelection(EInstrumentAvailableSelection::IAS_Room, Room->DMRoom.Id);
 				}
 			}
 			else if (Contains(static_cast<EInstrumentAvailableSelection>(AvailableSelections),
@@ -50,8 +48,7 @@ void ASelectionCharacterInstrument::Use_Implementation()
 			{
 				if (auto Wall = Cast<AWallActor>(HitActor))
 				{
-					CurrentSelection = EInstrumentAvailableSelection::IAS_Wall;
-					CurrentSelectionId = Wall->DMWall.Id;
+					SelectedSceneObject = FSceneObjectSelection(EInstrumentAvailableSelection::IAS_Wall, Wall->DMWall.Id);
 				}
 			}
 			else if (Contains(static_cast<EInstrumentAvailableSelection>(AvailableSelections),
@@ -59,8 +56,7 @@ void ASelectionCharacterInstrument::Use_Implementation()
 			{
 				if (auto Furniture = Cast<AFurniture>(HitActor))
 				{
-					CurrentSelection = EInstrumentAvailableSelection::IAS_Furniture;
-					CurrentSelectionId = Furniture->ID;
+					SelectedSceneObject = FSceneObjectSelection(EInstrumentAvailableSelection::IAS_Furniture, Furniture->ID);
 				}
 			}
 			// else if TODO: add check for prop

@@ -44,6 +44,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	ACharacterInstrument* GetInstrument(const FString& InstrumentName);
 
+	UFUNCTION(BlueprintCallable)
+	FString GetInstrumentName(TSubclassOf<ACharacterInstrument> InstrumentType);
+
 private:
 	UFUNCTION()
 	void OnBeforeCharacterSelected(APMCharacter* Character);

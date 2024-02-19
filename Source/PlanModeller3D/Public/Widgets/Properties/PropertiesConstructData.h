@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "BoolPropertyConstructObject.h"
 #include "NumberPropertyConstructObject.h"
+#include "SceneObjectPropertyConstructObject.h"
 #include "TextPropertyConstructObject.h"
 #include "UObject/Object.h"
 #include "PropertiesConstructData.generated.h"
@@ -24,31 +25,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TArray<FBoolPropertyConstructObject> BoolProperties = {};
 
-	TArray<int> GetPropertiesOrder() const
-	{
-		TArray<int> PropertiesOrder = {};
-		for (auto Property : NumberProperties)
-		{
-			if (!PropertiesOrder.Contains(Property.Order))
-			{
-				PropertiesOrder.Add(Property.Order);
-			}
-		}
-		for (auto Property : TextProperties)
-		{
-			if (!PropertiesOrder.Contains(Property.Order))
-			{
-				PropertiesOrder.Add(Property.Order);
-			}
-		}
-		for (auto Property : BoolProperties)
-		{
-			if (!PropertiesOrder.Contains(Property.Order))
-			{
-				PropertiesOrder.Add(Property.Order);
-			}
-		}
-		PropertiesOrder.Sort();
-		return PropertiesOrder;
-	}
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TArray<FSceneObjectPropertyConstructObject> SceneObjectProperties = {};
 };

@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "InstrumentAvailableSelection.h"
+#include "SceneObjectSelection.h"
 #include "Controllers/Instrument/CharacterInstrument.h"
 #include "SelectionCharacterInstrument.generated.h"
 
@@ -25,11 +25,8 @@ public:
 		meta = (Bitmask, BitmaskEnum = "EInstrumentAvailableSelection"))
 	uint8 AvailableSelections;
 	
-	UPROPERTY(BlueprintReadOnly)
-	EInstrumentAvailableSelection CurrentSelection;
-
-	UPROPERTY(BlueprintReadOnly)
-	FString CurrentSelectionId;
+	UPROPERTY(BlueprintReadOnly, Category = "Instrument State")
+	FSceneObjectSelection SelectedSceneObject;
 
 	virtual void Use_Implementation() override;
 };
