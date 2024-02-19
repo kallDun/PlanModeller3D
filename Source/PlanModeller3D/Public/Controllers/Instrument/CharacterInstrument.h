@@ -53,4 +53,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Use();
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void Preview();
 };

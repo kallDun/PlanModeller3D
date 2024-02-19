@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "CharacterSettings.h"
-#include "Components/CapsuleComponent.h"
 #include "Controllers/Instrument/Selection/SceneObjectSelection.h"
 #include "GameFramework/Character.h"
 #include "PMCharacter.generated.h"
@@ -68,12 +67,16 @@ protected:
 
 	UFUNCTION() FSceneObjectSelection GetRoom()
 	{
-		return FSceneObjectSelection(EInstrumentAvailableSelection::IAS_Room, GetCharacterSettings().RoomID);
+		return FSceneObjectSelection(
+			EInstrumentAvailableSelection::IAS_Room,
+			GetCharacterSettings().RoomID,
+			GetCharacterSettings().RoomName);
 	}
 	UFUNCTION() void SetRoom(const FSceneObjectSelection Selection)
 	{
 		if (Selection.SelectionType != EInstrumentAvailableSelection::IAS_Room) return;
 		GetCharacterSettings().RoomID = Selection.SelectionId;
+		GetCharacterSettings().RoomName = Selection.SelectionName;
 	}
 
 public:
@@ -100,6 +103,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void RemoveActiveInstrument();
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	USceneComponent* GetLinetraceInstrumentCastComponent() const;
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	UPropertiesConstructData* GetProperties();

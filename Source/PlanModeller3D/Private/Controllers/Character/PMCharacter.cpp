@@ -3,6 +3,7 @@
 
 #include "Controllers/Character/PMCharacter.h"
 #include "EnhancedInputSubsystems.h"
+#include "Components/CapsuleComponent.h"
 #include "Controllers/Character/CharactersManager.h"
 #include "Core/CoreFunctionLib.h"
 #include "Models/SaveData/PlanModellerSaveData.h"
@@ -110,6 +111,11 @@ void APMCharacter::AddInstrument_Implementation(ACharacterInstrument* Instrument
 void APMCharacter::RemoveActiveInstrument_Implementation()
 {
 	ActiveInstrument = nullptr;
+}
+
+USceneComponent* APMCharacter::GetLinetraceInstrumentCastComponent_Implementation() const
+{
+	return GetCapsuleComponent();
 }
 
 void APMCharacter::ResetStartLocationAndRotation_Implementation() { }

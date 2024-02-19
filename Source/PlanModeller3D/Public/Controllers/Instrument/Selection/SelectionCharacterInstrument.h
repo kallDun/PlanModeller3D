@@ -13,14 +13,6 @@ class PLANMODELLER3D_API ASelectionCharacterInstrument : public ACharacterInstru
 	GENERATED_BODY()
 
 public:
-	ASelectionCharacterInstrument();
-	
-	UPROPERTY(BlueprintReadWrite, Category = "Instrument State")
-	UStaticMeshComponent* RootMesh;
-	
-	UPROPERTY(BlueprintReadWrite, Category = "Instrument State")
-	UStaticMeshComponent* LinetraceMesh;
-	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Instrument State",
 		meta = (Bitmask, BitmaskEnum = "EInstrumentAvailableSelection"))
 	uint8 AvailableSelections;
@@ -28,5 +20,17 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = "Instrument State")
 	FSceneObjectSelection SelectedSceneObject;
 
+	UPROPERTY(BlueprintReadOnly, Category = "Instrument State")
+	FSceneObjectSelection PreviewedSceneObject;
+
 	virtual void Use_Implementation() override;
+
+	virtual void Preview_Implementation() override;
+
+protected:
+	UFUNCTION()
+	AActor* GetHitActorFromLinetrace() const;
+	
+	UFUNCTION()
+	FSceneObjectSelection GetSelectionFromHitActor(AActor* HitActor);
 };

@@ -29,6 +29,10 @@ void ACharacterInstrument::Deactivate()
 	Character = nullptr;
 }
 
+void ACharacterInstrument::Preview_Implementation()
+{
+}
+
 void ACharacterInstrument::Use_Implementation()
 {
 	OnInstrumentUsed.Broadcast();

@@ -10,14 +10,17 @@ struct FSceneObjectSelection
 
 	FSceneObjectSelection() {}
 
-	FSceneObjectSelection(const EInstrumentAvailableSelection SelectionType, const FString& SelectionId) :
-		SelectionType(SelectionType), SelectionId(SelectionId) {}
+	FSceneObjectSelection(const EInstrumentAvailableSelection SelectionType, const FString& SelectionId, const FString& SelectionName) :
+		SelectionType(SelectionType), SelectionId(SelectionId), SelectionName(SelectionName) {}
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	EInstrumentAvailableSelection SelectionType = EInstrumentAvailableSelection::IAS_None;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString SelectionId = "None";
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString SelectionName = "None";
 
 	bool operator==(const FSceneObjectSelection& Other) const
 	{

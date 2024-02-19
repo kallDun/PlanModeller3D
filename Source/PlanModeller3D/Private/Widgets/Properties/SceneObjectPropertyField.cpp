@@ -67,6 +67,7 @@ void USceneObjectPropertyField::OnApplyButtonClicked()
 	Super::OnApplyButtonClicked();
 	SetValueDelegate.Execute(CurrentValue);
 	SetButtonsVisibility(false);
+	UpdateCurrentValue(GetValueDelegate.Execute());
 }
 
 void USceneObjectPropertyField::OnRevertButtonClicked()
@@ -79,5 +80,5 @@ void USceneObjectPropertyField::OnRevertButtonClicked()
 void USceneObjectPropertyField::UpdateCurrentValue_Implementation(const FSceneObjectSelection& InSceneObject)
 {
 	CurrentValue = InSceneObject;
-	SceneObjectName->SetText(FText::FromString(InSceneObject.SelectionId));
+	SceneObjectName->SetText(FText::FromString(InSceneObject.SelectionName));
 }

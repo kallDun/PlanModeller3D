@@ -2,6 +2,8 @@
 
 
 #include "Controllers/Character/PMThirdPersonCharacter.h"
+
+#include "Components/CapsuleComponent.h"
 #include "Models/Plan/DMRoom.h"
 #include "Models/SaveData/PlanModellerSaveData.h"
 #include "Services/Save/SavingService.h"
@@ -48,5 +50,7 @@ void APMThirdPersonCharacter::ResetStartLocationAndRotation_Implementation()
 		GetCharacterSettings().SavedLocation = FVector(Center.X, Center.Y,
 			Rooms[0].Height + Rooms[0].HeightFromFloor + GetCapsuleComponent()->GetScaledCapsuleHalfHeight());
 		GetCharacterSettings().SavedRotation = FRotator();
+		GetCharacterSettings().RoomID = Rooms[0].Id;
+		GetCharacterSettings().RoomName = Rooms[0].Name;
 	}
 }

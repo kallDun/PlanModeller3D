@@ -8,23 +8,25 @@
 #include "Components/StaticMeshComponent.h"
 
 
-ASelectionCharacterInstrument::ASelectionCharacterInstrument()
-{
-	RootMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("RootMesh"));
-	LinetraceMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("LinetraceMesh"));
-	RootComponent = RootMesh;
-	LinetraceMesh->SetupAttachment(RootMesh);
-}
-
 void ASelectionCharacterInstrument::Use_Implementation()
 {
-	SelectedSceneObject = FSceneObjectSelection();
-	
+	SelectedSceneObject = GetSelectionFromHitActor(GetHitActorFromLinetrace());
+	Super::Use_Implementation();
+}
+
+void ASelectionCharacterInstrument::Preview_Implementation()
+{
+	const auto HitActor = GetHitActorFromLinetrace();
+	PreviewedSceneObject = GetSelectionFromHitActor(HitActor);
+}
+
+AActor* ASelectionCharacterInstrument::GetHitActorFromLinetrace() const
+{
 	// make linetrace, get hit actor, check if it's a valid selection, if it is, set it as current selection
 	// if it's not a valid selection, do nothing
-	
-	auto Start = LinetraceMesh->GetComponentLocation();
-	auto End = Start + (LinetraceMesh->GetForwardVector() * 1000);
+	auto Component = Character->GetLinetraceInstrumentCastComponent();
+	auto Start = Component->GetComponentLocation();
+	auto End = Start + (Component->GetForwardVector() * 1000);
 	auto Hit = FHitResult(ForceInit);
 	auto Params = FCollisionQueryParams();
 	Params.AddIgnoredActor(this);
@@ -35,33 +37,42 @@ void ASelectionCharacterInstrument::Use_Implementation()
 	{
 		if (auto HitActor = Hit.GetActor())
 		{
-			if (Contains(static_cast<EInstrumentAvailableSelection>(AvailableSelections),
-				EInstrumentAvailableSelection::IAS_Room))
-			{
-				if (auto Room = Cast<ARoomActor>(HitActor))
-				{
-					SelectedSceneObject = FSceneObjectSelection(EInstrumentAvailableSelection::IAS_Room, Room->DMRoom.Id);
-				}
-			}
-			else if (Contains(static_cast<EInstrumentAvailableSelection>(AvailableSelections),
-				EInstrumentAvailableSelection::IAS_Wall))
-			{
-				if (auto Wall = Cast<AWallActor>(HitActor))
-				{
-					SelectedSceneObject = FSceneObjectSelection(EInstrumentAvailableSelection::IAS_Wall, Wall->DMWall.Id);
-				}
-			}
-			else if (Contains(static_cast<EInstrumentAvailableSelection>(AvailableSelections),
-				EInstrumentAvailableSelection::IAS_Furniture))
-			{
-				if (auto Furniture = Cast<AFurniture>(HitActor))
-				{
-					SelectedSceneObject = FSceneObjectSelection(EInstrumentAvailableSelection::IAS_Furniture, Furniture->ID);
-				}
-			}
-			// else if TODO: add check for prop
+			return HitActor;
 		}
 	}
+	return nullptr;
+}
 
-	Super::Use_Implementation();
+FSceneObjectSelection ASelectionCharacterInstrument::GetSelectionFromHitActor(AActor* HitActor)
+{
+	if (Contains(static_cast<EInstrumentAvailableSelection>(AvailableSelections),
+				EInstrumentAvailableSelection::IAS_Room))
+	{
+		if (const auto Room = Cast<ARoomActor>(HitActor))
+		{
+			return FSceneObjectSelection(EInstrumentAvailableSelection::IAS_Room,
+				Room->DMRoom.Id, Room->DMRoom.Name);
+		}
+	}
+	if (Contains(static_cast<EInstrumentAvailableSelection>(AvailableSelections),
+		EInstrumentAvailableSelection::IAS_Wall))
+	{
+		if (const auto Wall = Cast<AWallActor>(HitActor))
+		{
+			return FSceneObjectSelection(EInstrumentAvailableSelection::IAS_Wall,
+				Wall->DMWall.Id, Wall->DMWall.Name);
+		}
+	}
+	if (Contains(static_cast<EInstrumentAvailableSelection>(AvailableSelections),
+		EInstrumentAvailableSelection::IAS_Furniture))
+	{
+		if (const auto Furniture = Cast<AFurniture>(HitActor))
+		{
+			return FSceneObjectSelection(EInstrumentAvailableSelection::IAS_Furniture,
+				Furniture->ID, Furniture->Data.Name.ToString());
+		}
+	}
+	// else if TODO: add check for prop
+
+	return FSceneObjectSelection();
 }
