@@ -83,6 +83,10 @@ UPropertiesConstructData* APMCharacter::GetProperties_Implementation()
 
 FCharacterSettings& APMCharacter::GetCharacterSettings() const
 {
+	if (!SavingService->CurrentSaveGame)
+	{
+		SavingService->CurrentSaveGame = NewObject<UPlanModellerSaveData>();
+	}
 	if (SavingService->CurrentSaveGame->CharactersSettings.Contains(CharacterName))
 	{
 		return SavingService->CurrentSaveGame->CharactersSettings[CharacterName];

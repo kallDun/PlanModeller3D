@@ -26,7 +26,7 @@ AActor* ASelectionCharacterInstrument::GetHitActorFromLinetrace() const
 	// if it's not a valid selection, do nothing
 	auto Component = Character->GetLinetraceInstrumentCastComponent();
 	auto Start = Component->GetComponentLocation();
-	auto End = Start + (Component->GetForwardVector() * 1000);
+	auto End = Start + (Component->GetForwardVector() * 4000);
 	auto Hit = FHitResult(ForceInit);
 	auto Params = FCollisionQueryParams();
 	Params.AddIgnoredActor(this);
@@ -35,6 +35,11 @@ AActor* ASelectionCharacterInstrument::GetHitActorFromLinetrace() const
 
 	if (bool bHit = GetWorld()->LineTraceSingleByChannel(Hit, Start, End, ECC_Visibility, Params))
 	{
+		DrawDebugLine(
+			GetWorld(),Start,Hit.Location,
+			FColor(255, 0, 0),false, -1, 0,12.333
+		);
+		
 		if (auto HitActor = Hit.GetActor())
 		{
 			return HitActor;
