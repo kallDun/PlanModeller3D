@@ -40,10 +40,10 @@ public:
 	void Init(UInstrumentsManager* InstrumentsManager);
 
 	UFUNCTION()
-	void Activate(APMCharacter* InCharacter);
+	virtual void Activate(APMCharacter* InCharacter);
 
 	UFUNCTION()
-	void Deactivate();
+	virtual void Deactivate();
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnActivated();

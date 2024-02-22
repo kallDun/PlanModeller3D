@@ -6,6 +6,7 @@
 #include "Actors/Foundation/WallActor.h"
 #include "Actors/Furnitures/Furniture.h"
 #include "Components/StaticMeshComponent.h"
+#include "Controllers/Instrument/Selection/ActorSelectable.h"
 
 
 void ASelectionCharacterInstrument::Use_Implementation()
@@ -16,8 +17,32 @@ void ASelectionCharacterInstrument::Use_Implementation()
 
 void ASelectionCharacterInstrument::Preview_Implementation()
 {
-	const auto HitActor = GetHitActorFromLinetrace();
-	PreviewedSceneObject = GetSelectionFromHitActor(HitActor);
+	if (PreviewedActor && PreviewedActor->GetClass()->ImplementsInterface(UActorSelectable::StaticClass()))
+	{
+		const auto PoolObject = Cast<IActorSelectable>(PreviewedActor);
+		PoolObject->Execute_HideSelectionPreview(PreviewedActor);
+	}
+	
+	PreviewedActor = GetHitActorFromLinetrace();
+	PreviewedSceneObject = GetSelectionFromHitActor(PreviewedActor);
+
+	if (PreviewedActor && PreviewedActor->GetClass()->ImplementsInterface(UActorSelectable::StaticClass()))
+	{
+		const auto PoolObject = Cast<IActorSelectable>(PreviewedActor);
+		PoolObject->Execute_ShowSelectionPreview(PreviewedActor);
+	}
+}
+
+void ASelectionCharacterInstrument::Deactivate()
+{
+	Super::Deactivate();
+	
+	if (PreviewedActor && PreviewedActor->GetClass()->ImplementsInterface(UActorSelectable::StaticClass()))
+	{
+		const auto PoolObject = Cast<IActorSelectable>(PreviewedActor);
+		PoolObject->Execute_HideSelectionPreview(PreviewedActor);
+	}
+	PreviewedActor = nullptr;
 }
 
 AActor* ASelectionCharacterInstrument::GetHitActorFromLinetrace() const
@@ -35,10 +60,8 @@ AActor* ASelectionCharacterInstrument::GetHitActorFromLinetrace() const
 
 	if (bool bHit = GetWorld()->LineTraceSingleByChannel(Hit, Start, End, ECC_Visibility, Params))
 	{
-		DrawDebugLine(
-			GetWorld(),Start,Hit.Location,
-			FColor(255, 0, 0),false, -1, 0,12.333
-		);
+		/*DrawDebugLine(GetWorld(),Start,Hit.Location,
+			FColor(255, 0, 0),false, -1, 0,12.333);*/
 		
 		if (auto HitActor = Hit.GetActor())
 		{

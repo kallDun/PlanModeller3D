@@ -7,10 +7,16 @@
 #include "Controllers/Instrument/CharacterInstrument.h"
 #include "SelectionCharacterInstrument.generated.h"
 
+class IActorSelectable;
+
 UCLASS(Abstract, Blueprintable, BlueprintType)
 class PLANMODELLER3D_API ASelectionCharacterInstrument : public ACharacterInstrument
 {
 	GENERATED_BODY()
+
+protected:
+	UPROPERTY()
+	AActor* PreviewedActor;
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Instrument State",
@@ -26,6 +32,8 @@ public:
 	virtual void Use_Implementation() override;
 
 	virtual void Preview_Implementation() override;
+
+	virtual void Deactivate() override;
 
 protected:
 	UFUNCTION()
