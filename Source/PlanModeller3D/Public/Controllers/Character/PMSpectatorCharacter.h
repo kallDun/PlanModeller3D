@@ -16,4 +16,6 @@ protected:
 
 public:
 	virtual UPropertiesConstructData* GetProperties_Implementation() override;
+
+	virtual FLinetraceRay GetInstrumentLinetraceRay_Implementation() const override;
 };

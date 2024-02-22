@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "CharacterSettings.h"
+#include "Controllers/Instrument/LinetraceRay.h"
 #include "Controllers/Instrument/Selection/SceneObjectSelection.h"
 #include "GameFramework/Character.h"
 #include "PMCharacter.generated.h"
@@ -105,7 +106,7 @@ public:
 	void RemoveActiveInstrument();
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	USceneComponent* GetLinetraceInstrumentCastComponent() const;
+	FLinetraceRay GetInstrumentLinetraceRay() const;
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	UPropertiesConstructData* GetProperties();

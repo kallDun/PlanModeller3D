@@ -117,9 +117,12 @@ void APMCharacter::RemoveActiveInstrument_Implementation()
 	ActiveInstrument = nullptr;
 }
 
-USceneComponent* APMCharacter::GetLinetraceInstrumentCastComponent_Implementation() const
+FLinetraceRay APMCharacter::GetInstrumentLinetraceRay_Implementation() const
 {
-	return GetCapsuleComponent();
+	const auto Component = GetCapsuleComponent();
+	const auto Start = Component->GetComponentLocation();
+	const auto End = Start + (Component->GetForwardVector() * 4000);
+	return FLinetraceRay(Start, End);
 }
 
 void APMCharacter::ResetStartLocationAndRotation_Implementation() { }

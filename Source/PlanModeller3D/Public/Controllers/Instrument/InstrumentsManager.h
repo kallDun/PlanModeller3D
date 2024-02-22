@@ -8,6 +8,8 @@
 #include "UObject/Object.h"
 #include "InstrumentsManager.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FInstrumentManagerAction);
+
 class UCharactersManager;
 class UInstrumentsManagerData;
 class ACharacterInstrument;
@@ -31,6 +33,12 @@ public:
 	
 	UPROPERTY(BlueprintReadOnly)
 	ACharacterInstrument* ActiveInstrument;
+
+	UPROPERTY(BlueprintAssignable)
+	FInstrumentManagerAction OnInstrumentActivated;
+
+	UPROPERTY(BlueprintAssignable)
+	FInstrumentManagerAction OnInstrumentDeactivated;
 
 public:
 	virtual void Init_Implementation(UPrimaryDataAsset* DataAsset) override;

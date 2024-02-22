@@ -2,6 +2,8 @@
 
 
 #include "Controllers/Character/PMSpectatorCharacter.h"
+
+#include "Controllers/Character/CharactersManager.h"
 #include "Widgets/Properties/BoolPropertyConstructObject.h"
 #include "Widgets/Properties/NumberPropertyConstructObject.h"
 #include "Widgets/Properties/PropertiesConstructData.h"
@@ -33,4 +35,16 @@ UPropertiesConstructData* APMSpectatorCharacter::GetProperties_Implementation()
 		GetIsColliding, SetIsColliding));
 	
 	return Data;
+}
+
+FLinetraceRay APMSpectatorCharacter::GetInstrumentLinetraceRay_Implementation() const
+{
+	FVector WorldLocation;
+	FVector WorldDirection;
+	if (bool bIsMouseCursorOnViewport = Manager->PlayerController->DeprojectMousePositionToWorld(WorldLocation, WorldDirection))
+	{
+		constexpr float RayLength = 4000;
+		return FLinetraceRay(WorldLocation, WorldLocation + WorldDirection * RayLength);
+	}
+	return FLinetraceRay();
 }

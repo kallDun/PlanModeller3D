@@ -32,6 +32,7 @@ ACharacterInstrument* UInstrumentsManager::ActivateInstrument(const FString& Ins
 		auto Character = CharactersManager->GetCurrentCharacter();
 		Instrument->Activate(Character);
 		ActiveInstrument = Instrument;
+		OnInstrumentActivated.Broadcast();
 		return Instrument;
 	}
 	return nullptr;
@@ -43,6 +44,7 @@ void UInstrumentsManager::DeactivateCurrentInstrument()
 	{
 		ActiveInstrument->Deactivate();
 		ActiveInstrument = nullptr;
+		OnInstrumentDeactivated.Broadcast();
 	}
 }
 

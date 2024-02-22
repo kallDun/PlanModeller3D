@@ -18,7 +18,7 @@ class PLANMODELLER3D_API ACharacterInstrument : public AActor
 public:
 	ACharacterInstrument() = default;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Instrument State")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Instrument State")
 	FString InstrumentName;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Instrument State")

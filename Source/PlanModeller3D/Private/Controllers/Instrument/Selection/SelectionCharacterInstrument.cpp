@@ -5,7 +5,7 @@
 #include "Actors/Foundation/RoomActor.h"
 #include "Actors/Foundation/WallActor.h"
 #include "Actors/Furnitures/Furniture.h"
-#include "Components/StaticMeshComponent.h"
+#include "Controllers/Instrument/LinetraceRay.h"
 #include "Controllers/Instrument/Selection/ActorSelectable.h"
 
 
@@ -25,6 +25,11 @@ void ASelectionCharacterInstrument::Preview_Implementation()
 	
 	PreviewedActor = GetHitActorFromLinetrace();
 	PreviewedSceneObject = GetSelectionFromHitActor(PreviewedActor);
+
+	if (PreviewedSceneObject.SelectionType == EInstrumentAvailableSelection::IAS_None)
+	{
+		PreviewedActor = nullptr;
+	}
 
 	if (PreviewedActor && PreviewedActor->GetClass()->ImplementsInterface(UActorSelectable::StaticClass()))
 	{
@@ -49,9 +54,7 @@ AActor* ASelectionCharacterInstrument::GetHitActorFromLinetrace() const
 {
 	// make linetrace, get hit actor, check if it's a valid selection, if it is, set it as current selection
 	// if it's not a valid selection, do nothing
-	auto Component = Character->GetLinetraceInstrumentCastComponent();
-	auto Start = Component->GetComponentLocation();
-	auto End = Start + (Component->GetForwardVector() * 4000);
+	auto [Start, End] = Character->GetInstrumentLinetraceRay();
 	auto Hit = FHitResult(ForceInit);
 	auto Params = FCollisionQueryParams();
 	Params.AddIgnoredActor(this);
