@@ -17,6 +17,9 @@ class PLANMODELLER3D_API AWallActor : public AGeneratedDynamicMeshActor
 public:
 	AWallActor() = default;
 
+	UPROPERTY(BlueprintReadOnly)
+	int MaterialsCount;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FDMWall	DMWall;
 
@@ -29,7 +32,27 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<FDMDoorWindow> DMWindows = {};
 
+private:
+	UPROPERTY()
+	int CurrentIndex;
+	
+public:
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	int GetMaterialIndexForDoorWindow()
+	{
+		CurrentIndex++;
+		return CurrentIndex;
+	}
+	
+public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Init(FDMWall Wall);
 
+private:
+	UFUNCTION()
+	void InitMaterials();
+
+	UFUNCTION()
+	bool TryToSetMaterial(FName MaterialID, int Index) const;
+	
 };
