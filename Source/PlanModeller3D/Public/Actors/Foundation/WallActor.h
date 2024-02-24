@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GeometryActors/GeneratedDynamicMeshActor.h"
+#include "FoundationActor.h"
 #include "Models/Plan/DMDoorWindow.h"
 #include "Models/Plan/DMWall.h"
 #include "Models/Plan3D/MWall.h"
@@ -13,7 +13,7 @@
 struct FVector2DArray;
 
 UCLASS(Abstract, Blueprintable, BlueprintType)
-class PLANMODELLER3D_API AWallActor : public AGeneratedDynamicMeshActor 
+class PLANMODELLER3D_API AWallActor : public AFoundationActor 
 {
 	GENERATED_BODY()
 
@@ -64,8 +64,5 @@ protected:
 private:
 	UFUNCTION()
 	void InitMaterials();
-
-	UFUNCTION()
-	bool TryToSetMaterial(FName MaterialID, int Index) const;
 	
 };

@@ -51,6 +51,11 @@ UManagerUI* UCoreFunctionLib::GetManagerUI(const UObject* WorldContextObject)
 
 // CONTROLLERS
 
+UMaterialsManager* UCoreFunctionLib::GetMaterialsManager(const UObject* WorldContextObject)
+{
+	return GetPMState(WorldContextObject)->MaterialsManager;
+}
+
 UFoundationController* UCoreFunctionLib::GetFoundationController(const UObject* WorldContextObject)
 {
 	return GetPMState(WorldContextObject)->FoundationController;

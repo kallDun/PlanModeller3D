@@ -7,6 +7,7 @@
 #include "Controllers/Foundation/FoundationControllerData.h"
 #include "Controllers/Furnitures/FurnitureControllerData.h"
 #include "Controllers/Instrument/InstrumentsManagerData.h"
+#include "Controllers/Material/MaterialsManagerData.h"
 #include "Services/Level/LevelLoadGameState.h"
 #include "PlanModellerState.generated.h"
 
@@ -17,6 +18,12 @@ class PLANMODELLER3D_API APlanModellerState : public ALevelLoadGameState
 	GENERATED_BODY()
 
 public:
+	UPROPERTY(EditDefaultsOnly, Category = "State")
+	UMaterialsManagerData* MaterialsManagerData;
+
+	UPROPERTY(BlueprintReadOnly, Category = "State")
+	class UMaterialsManager* MaterialsManager;
+	
 	UPROPERTY(EditDefaultsOnly, Category = "State")
 	UFoundationControllerData* FoundationControllerData;
 

@@ -6,6 +6,7 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "CoreFunctionLib.generated.h"
 
+class UMaterialsManager;
 class UInstrumentsManager;
 class UCharactersManager;
 class UFurnitureController;
@@ -53,6 +54,9 @@ public:
 
 	// CONTROLLERS
 
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Core", meta=(HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+	static UMaterialsManager* GetMaterialsManager(const UObject* WorldContextObject);
+	
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Core", meta=(HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	static UFoundationController* GetFoundationController(const UObject* WorldContextObject);
 

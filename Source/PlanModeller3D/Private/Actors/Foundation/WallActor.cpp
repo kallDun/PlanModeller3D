@@ -4,7 +4,7 @@
 #include "Actors/Foundation/WallActor.h"
 #include "Core/CoreFunctionLib.h"
 #include "Models/SaveData/PlanModellerSaveData.h"
-#include "Controllers/Material/SavedMaterialData.h"
+#include "Models/Material/SavedMaterialData.h"
 #include "Services/Save/SavingService.h"
 #include "Utils/Vector2DArray.h"
 #include "Utils/Vector2D_MathLib.h"
@@ -144,11 +144,4 @@ void AWallActor::InitMaterials()
 		MWall.Materials.Add(FSavedMaterialData(WallName, MaterialsCount, FName()));
 		TryToSetMaterial(Mat->MaterialID, MaterialsCount);
 	}
-}
-
-bool AWallActor::TryToSetMaterial(FName MaterialID, const int Index) const
-{
-	UMaterialInterface* Material = nullptr;
-	GetDynamicMeshComponent()->SetMaterial(Index, Material);
-	return Material != nullptr;
 }

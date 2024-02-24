@@ -2,6 +2,7 @@
 
 
 #include "Core/PlanModellerState.h"
+#include "Controllers/Material/MaterialsManager.h"
 #include "Controllers/Foundation/FoundationController.h"
 #include "Controllers/Furnitures/FurnitureController.h"
 #include "Controllers/Character/CharactersManager.h"
@@ -15,6 +16,7 @@ void APlanModellerState::LoadLevel_Implementation()
 {
 	Super::LoadLevel_Implementation();
 	
+	MaterialsManager = UServicesAbstractFactory::CreateService<UMaterialsManager>(this, MaterialsManagerData);
 	FoundationController = UServicesAbstractFactory::CreateService<UFoundationController>(this, FoundationControllerData);
 	FurnitureController = UServicesAbstractFactory::CreateService<UFurnitureController>(this, FurnitureControllerData);
 	CharactersManager = UServicesAbstractFactory::CreateService<UCharactersManager>(this, CharactersManagerData);

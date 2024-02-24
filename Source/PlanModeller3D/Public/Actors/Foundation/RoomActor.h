@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "FoundationActor.h"
 #include "GameFramework/Actor.h"
 #include "GeometryActors/GeneratedDynamicMeshActor.h"
 #include "Models/Plan/DMRoom.h"
@@ -10,7 +11,7 @@
 #include "RoomActor.generated.h"
 
 UCLASS(Abstract, Blueprintable, BlueprintType)
-class PLANMODELLER3D_API ARoomActor : public AGeneratedDynamicMeshActor 
+class PLANMODELLER3D_API ARoomActor : public AFoundationActor 
 {
 	GENERATED_BODY()
 
