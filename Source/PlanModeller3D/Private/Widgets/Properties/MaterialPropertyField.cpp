@@ -21,27 +21,28 @@ void UMaterialPropertyField::Init(const FMaterialPropertyConstructObject InConst
 	SidePanel = InSidePanel;
 	GetValueDelegate = InConstructObject.GetValue;
 	SetValueDelegate = InConstructObject.SetValue;
+	MaterialIndex = InConstructObject.MaterialIndex;
 	OnRevertButtonClicked();
 }
 
 void UMaterialPropertyField::OnApplyButtonClicked()
 {
 	Super::OnApplyButtonClicked();
-	SetValueDelegate.Execute(MaterialID);
+	SetValueDelegate.Execute(MaterialID, MaterialIndex);
 	SetButtonsVisibility(false);	
 }
 
 void UMaterialPropertyField::OnRevertButtonClicked()
 {
 	Super::OnRevertButtonClicked();
-	MaterialChangedEventHandler(GetValueDelegate.Execute());
-	SetValueDelegate.Execute(MaterialID);
+	MaterialChangedEventHandler(GetValueDelegate.Execute(MaterialIndex));
+	SetValueDelegate.Execute(MaterialID, MaterialIndex);
 	SetButtonsVisibility(false);
 }
 
 void UMaterialPropertyField::MaterialChangedEventHandler(FName ID)
 {
-	SetValueDelegate.Execute(ID);
+	SetValueDelegate.Execute(ID, MaterialIndex);
 	MaterialID = ID;
 	const FStoredMaterialData Data = UCoreFunctionLib::GetMaterialsManager(this)->GetMaterialData(ID);
 	OnMaterialChanged(Data);

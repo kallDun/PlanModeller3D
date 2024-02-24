@@ -35,6 +35,9 @@ protected:
 
 	UPROPERTY()
 	FOnSetMaterialValue SetValueDelegate;
+
+	UPROPERTY()
+	int MaterialIndex;
 	
 	UPROPERTY()
 	FName MaterialID;

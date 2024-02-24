@@ -8,45 +8,46 @@
 #include "Services/Save/SavingService.h"
 #include "Utils/Vector2DArray.h"
 #include "Utils/Vector2D_MathLib.h"
+#include "Widgets/Properties/PropertiesConstructData.h"
 
 
 void AWallActor::Init_Implementation(const FDMWall Wall)
 {
 	DMWall = Wall;
-	if (const auto SavingService = UCoreFunctionLib::GetSavingService(this))
+	SavingService = UCoreFunctionLib::GetSavingService(this);
+	
+	const auto Save = SavingService->CurrentSaveGame;
+	if (Save->Plan3D.Walls.Contains(DMWall.Id))
 	{
-		const auto Save = SavingService->CurrentSaveGame;
-		if (Save->Plan3D.Walls.Contains(DMWall.Id))
+		MWall = Save->Plan3D.Walls[DMWall.Id];
+	}
+	else
+	{
+		MWall = FMWall();
+		Save->Plan3D.Walls.Add(DMWall.Id, MWall);
+	}
+	for (auto Door : Save->Plan2D.Doors)
+	{
+		if (Door.WallId == DMWall.Id)
 		{
-			MWall = Save->Plan3D.Walls[DMWall.Id];
-		}
-		else
-		{
-			MWall = FMWall();
-			Save->Plan3D.Walls.Add(DMWall.Id, MWall);
-		}
-		for (auto Door : Save->Plan2D.Doors)
-		{
-			if (Door.WallId == DMWall.Id)
-			{
-				DMDoors.Add(Door);
-			}
-		}
-		for (auto Window : Save->Plan2D.Windows)
-		{
-			if (Window.WallId == DMWall.Id)
-			{
-				DMWindows.Add(Window);
-			}
-		}
-		for (auto Room : Save->Plan2D.Rooms)
-		{
-			if (DMWall.IsConnectedToRoom(Room))
-			{
-				DMRooms.Add(Room);
-			}
+			DMDoors.Add(Door);
 		}
 	}
+	for (auto Window : Save->Plan2D.Windows)
+	{
+		if (Window.WallId == DMWall.Id)
+		{
+			DMWindows.Add(Window);
+		}
+	}
+	for (auto Room : Save->Plan2D.Rooms)
+	{
+		if (DMWall.IsConnectedToRoom(Room))
+		{
+			DMRooms.Add(Room);
+		}
+	}
+	
 	InitMaterials();
 }
 
@@ -147,13 +148,56 @@ void AWallActor::InitMaterials()
 		MWall.Materials.Add(FSavedMaterialData(WallName, MaterialsCount, FName()));
 		TryToSetMaterial(FName(), MaterialsCount);
 	}
+
+	SaveMWall();
 }
 
 UPropertiesConstructData* AWallActor::GetProperties_Implementation()
 {
-	auto Properties = Super::GetProperties_Implementation();
+	UPropertiesConstructData* Properties = Super::GetProperties_Implementation();
 
-	
+	for (FSavedMaterialData MaterialData : MWall.Materials)
+	{
+		FOnGetMaterialValue GetMaterial = FOnGetMaterialValue();
+		GetMaterial.BindDynamic(this, &AWallActor::GetMaterialValue);
+		FOnSetMaterialValue SetMaterial = FOnSetMaterialValue();
+		SetMaterial.BindDynamic(this, &AWallActor::SetMaterialValue);
+		Properties->MaterialProperties.Add(FMaterialPropertyConstructObject(
+			MaterialData.Index, FText::FromString(MaterialData.MaterialName),
+			GetMaterial, SetMaterial, MaterialData.Index));
+	}
 	
 	return Properties;
+}
+
+// GETTERS & SETTERS
+
+void AWallActor::SaveMWall()
+{
+	const auto Save = SavingService->CurrentSaveGame;
+	Save->Plan3D.Walls[DMWall.Id] = MWall;
+}
+
+FName AWallActor::GetMaterialValue(const int Index)
+{
+	if (const FSavedMaterialData* Mat = MWall.Materials.FindByPredicate([Index](const FSavedMaterialData& Element)
+	{
+		return Element.Index == Index;
+	}))
+	{
+		return Mat->MaterialID;
+	}
+	return FName();
+}
+
+void AWallActor::SetMaterialValue(const FName Value, const int Index)
+{
+	if (FSavedMaterialData* Mat = MWall.Materials.FindByPredicate([Index](const FSavedMaterialData& Element)
+	{
+		return Element.Index == Index;
+	}))
+	{
+		Mat->MaterialID = Value;
+		SaveMWall();
+	}
 }

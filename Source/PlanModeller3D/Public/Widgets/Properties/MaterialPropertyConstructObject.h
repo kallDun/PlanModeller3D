@@ -1,8 +1,8 @@
 #pragma once
 #include "MaterialPropertyConstructObject.generated.h"
 
-DECLARE_DYNAMIC_DELEGATE_RetVal(FName, FOnGetMaterialValue);
-DECLARE_DYNAMIC_DELEGATE_OneParam(FOnSetMaterialValue, const FName, Value);
+DECLARE_DYNAMIC_DELEGATE_RetVal_OneParam(FName, FOnGetMaterialValue, const int, MaterialIndex);
+DECLARE_DYNAMIC_DELEGATE_TwoParams(FOnSetMaterialValue, const FName, Value, const int, MaterialIndex);
 
 USTRUCT(BlueprintType)
 struct FMaterialPropertyConstructObject
@@ -20,5 +20,8 @@ struct FMaterialPropertyConstructObject
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	FOnSetMaterialValue SetValue;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	int MaterialIndex;
 	
 };

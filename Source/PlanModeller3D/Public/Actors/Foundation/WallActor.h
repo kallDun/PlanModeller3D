@@ -40,6 +40,9 @@ public:
 
 private:
 	UPROPERTY()
+	class USavingService* SavingService;
+	
+	UPROPERTY()
 	int CurrentIndex;
 	
 public:
@@ -53,7 +56,7 @@ public:
 public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Init(FDMWall Wall);
-
+	
 	virtual UPropertiesConstructData* GetProperties_Implementation() override;
 
 protected:
@@ -65,5 +68,12 @@ protected:
 
 	UFUNCTION()
 	void InitMaterials();
+
+private:
+	UFUNCTION() void SaveMWall();
+	
+	UFUNCTION() FName GetMaterialValue(const int Index);
+	
+	UFUNCTION() void SetMaterialValue(const FName Value, const int Index);
 	
 };
