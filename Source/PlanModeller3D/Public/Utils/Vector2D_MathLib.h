@@ -14,5 +14,8 @@ class PLANMODELLER3D_API UVector2D_MathLib : public UBlueprintFunctionLibrary
 public:
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Core")
 	static FVector2D GetCenter(const TArray<FVector2D>& Points);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Core")
+	static TArray<FVector2D> GetSquareFromTwoPoints(const FVector2D& Point1, const FVector2D& Point2, const float Thickness);
 	
 };

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "DMRoom.h"
 #include "DMWall.generated.h"
 
 USTRUCT(BlueprintType)
@@ -49,4 +50,22 @@ public:
 	
 	UPROPERTY(BlueprintReadWrite)
 	TArray<FString> WallDependentModelsIds;
+
+	TArray<FVector2D> GetConnectedPoints(const FDMRoom& Room)
+	{
+		TArray<FVector2D> ConnectedPoints;
+		for (const auto& Point : Points)
+		{
+			if (Room.Points.Contains(Point))
+			{
+				ConnectedPoints.Add(Point);
+			}
+		}
+		return ConnectedPoints;
+	}
+
+	bool IsConnectedToRoom(const FDMRoom& Room)
+	{
+		return GetConnectedPoints(Room).Num() >= 2;
+	}
 };

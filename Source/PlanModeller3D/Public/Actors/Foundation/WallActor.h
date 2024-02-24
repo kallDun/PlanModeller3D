@@ -9,6 +9,9 @@
 #include "Models/Plan3D/MWall.h"
 #include "WallActor.generated.h"
 
+
+struct FVector2DArray;
+
 UCLASS(Abstract, Blueprintable, BlueprintType)
 class PLANMODELLER3D_API AWallActor : public AGeneratedDynamicMeshActor 
 {
@@ -25,6 +28,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FMWall MWall;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<FDMRoom> DMRooms = {};
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<FDMDoorWindow> DMDoors = {};
@@ -48,6 +54,13 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Init(FDMWall Wall);
 
+protected:
+	UFUNCTION(BlueprintCallable)
+	void InitializeMaterialVerticesForRooms();
+	
+	UFUNCTION(BlueprintImplementableEvent)
+	void InitMaterialForRoom(FVector2DArray Pts, int Index);
+	
 private:
 	UFUNCTION()
 	void InitMaterials();

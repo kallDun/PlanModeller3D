@@ -6,6 +6,8 @@
 #include "Models/SaveData/PlanModellerSaveData.h"
 #include "Controllers/Material/SavedMaterialData.h"
 #include "Services/Save/SavingService.h"
+#include "Utils/Vector2DArray.h"
+#include "Utils/Vector2D_MathLib.h"
 
 
 void AWallActor::Init_Implementation(const FDMWall Wall)
@@ -37,13 +39,31 @@ void AWallActor::Init_Implementation(const FDMWall Wall)
 				DMWindows.Add(Window);
 			}
 		}
+		for (auto Room : Save->Plan2D.Rooms)
+		{
+			if (DMWall.IsConnectedToRoom(Room))
+			{
+				DMRooms.Add(Room);
+			}
+		}
 	}
 	InitMaterials();
 }
 
+void AWallActor::InitializeMaterialVerticesForRooms()
+{
+	for (int i = 0; i < DMRooms.Num(); ++i)
+	{
+		const int Index = i + 1 + DMDoors.Num() + DMWindows.Num();
+		auto ConnectedPoints = DMWall.GetConnectedPoints(DMRooms[i]);
+		InitMaterialForRoom(FVector2DArray(UVector2D_MathLib::GetSquareFromTwoPoints(
+			ConnectedPoints[0], ConnectedPoints[1], 0.1f)), Index);
+	}
+}
+
 void AWallActor::InitMaterials()
 {
-	MaterialsCount = DMDoors.Num() + DMWindows.Num() + 1;
+	MaterialsCount = DMDoors.Num() + DMWindows.Num() + DMRooms.Num() + 1;
 	
 	auto MaterialsSet = TArray<UMaterialInterface*>();
 	for (int i = 0; i <= MaterialsCount; ++i)
@@ -51,7 +71,6 @@ void AWallActor::InitMaterials()
 		MaterialsSet.Add(nullptr);
 	}
 	GetDynamicMeshComponent()->ConfigureMaterialSet(MaterialsSet);
-
 
 	// SETUP DOORS MATERIAL
 	for (int i = 0; i < DMDoors.Num(); ++i)
@@ -91,8 +110,27 @@ void AWallActor::InitMaterials()
 		}
 	}
 
+	// SETUP ROOMS MATERIAL
+	for (int i = 0; i < DMRooms.Num(); ++i)
+	{
+		int Index = i + 1 + DMDoors.Num() + DMWindows.Num();
+		auto Name = "Room " + FString::FromInt(i + 1) + " (" + DMRooms[i].Name + ")";
+		if (FSavedMaterialData* Mat = MWall.Materials.FindByPredicate([Index](const FSavedMaterialData& Element) { return Element.Index == Index; }))
+		{
+			Mat->MaterialName = Name;
+			if (!TryToSetMaterial(Mat->MaterialID, Index))
+			{
+				Mat->MaterialID = FName();
+			}
+		}
+		else
+		{
+			MWall.Materials.Add(FSavedMaterialData(Name, Index, FName()));
+		}
+	}
+
 	// SETUP WALL MATERIAL
-	const auto WallName = "Wall Material";
+	const auto WallName = "Base Material";
 	if (FSavedMaterialData* Mat = MWall.Materials.FindByPredicate([this](const FSavedMaterialData& Element) { return Element.Index == MaterialsCount; }))
 	{
 		Mat->MaterialName = WallName;
