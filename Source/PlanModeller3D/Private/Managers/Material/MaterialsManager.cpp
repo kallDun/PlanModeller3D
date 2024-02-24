@@ -16,14 +16,19 @@ TArray<FStoredMaterialData> UMaterialsManager::GetMaterials() const
 	return Data->Materials;
 }
 
-UMaterialInterface* UMaterialsManager::GetMaterial(const FName MaterialID) const
+FStoredMaterialData UMaterialsManager::GetMaterialData(FName MaterialID) const
 {
 	for (auto Mat : GetMaterials())
 	{
 		if (Mat.ID == MaterialID)
 		{
-			return Mat.Interface;
+			return Mat;
 		}
 	}
-	return nullptr;
+	return FStoredMaterialData();
+}
+
+UMaterialInterface* UMaterialsManager::GetMaterialInterface(const FName MaterialID) const
+{
+	return GetMaterialData(MaterialID).Interface;
 }

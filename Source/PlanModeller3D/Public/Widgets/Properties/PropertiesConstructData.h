@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "BoolPropertyConstructObject.h"
+#include "MaterialPropertyConstructObject.h"
 #include "NumberPropertyConstructObject.h"
 #include "SceneObjectPropertyConstructObject.h"
 #include "TextPropertyConstructObject.h"
@@ -27,4 +28,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TArray<FSceneObjectPropertyConstructObject> SceneObjectProperties = {};
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TArray<FMaterialPropertyConstructObject> MaterialProperties = {};
 };

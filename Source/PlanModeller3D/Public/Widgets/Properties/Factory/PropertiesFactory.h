@@ -6,6 +6,7 @@
 #include "UObject/Object.h"
 #include "PropertiesFactory.generated.h"
 
+class USidePanel;
 class UPropertiesConstructData;
 class UPropertiesFactoryData;
 class UBasePropertyField;
@@ -17,7 +18,7 @@ class PLANMODELLER3D_API UPropertiesFactory : public UBlueprintFunctionLibrary
 
 public:
 	UFUNCTION(BlueprintCallable, Category = "Widgets", meta=(HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-	static TArray<UBasePropertyField*> CreateProperties(const UObject* WorldContextObject, UObject* Parent,
+	static TArray<UBasePropertyField*> CreateProperties(const UObject* WorldContextObject, UObject* Parent, USidePanel* SidePanel,
 														const UPropertiesConstructData* Properties, UPropertiesFactoryData* Data);
 	
 };

@@ -26,4 +26,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Init(FDMRoom Room);
+
+	virtual UPropertiesConstructData* GetProperties_Implementation() override;
+	
 };

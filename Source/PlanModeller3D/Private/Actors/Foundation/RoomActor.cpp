@@ -24,3 +24,12 @@ void ARoomActor::Init_Implementation(const FDMRoom Room)
 		}
 	}
 }
+
+UPropertiesConstructData* ARoomActor::GetProperties_Implementation()
+{
+	auto Properties = Super::GetProperties_Implementation();
+
+	
+	
+	return Properties;
+}

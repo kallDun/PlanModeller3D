@@ -24,4 +24,7 @@ public:
 	
 	UPROPERTY()
 	FOpenSidePanelChildrenAction OpenSidePanelChildrenAction;
+	
+	UPROPERTY() // Optional
+	UPanelUI* SidePanelChildren;
 };

@@ -148,3 +148,12 @@ void AWallActor::InitMaterials()
 		TryToSetMaterial(FName(), MaterialsCount);
 	}
 }
+
+UPropertiesConstructData* AWallActor::GetProperties_Implementation()
+{
+	auto Properties = Super::GetProperties_Implementation();
+
+	
+	
+	return Properties;
+}

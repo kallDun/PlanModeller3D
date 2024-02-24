@@ -22,13 +22,10 @@ private:
 	TArray<UOpenSidePanelChildrenAction*> ChildrenPool = {};
 
 	UPROPERTY()
-	UPanelUI* CurrentChildren = nullptr;
-
-	UPROPERTY()
 	UManagerUI* ManagerUI;
 
 	UPROPERTY(meta=(BindWidget))
-	class USizeBox* ChildrenContainer;
+	class UWidgetSwitcher* ChildrenContainer;
 
 protected:
 	virtual void NativeConstruct() override;
@@ -47,6 +44,9 @@ public:
 	void CloseAll();
 
 private:
+	UFUNCTION()
+	void CloseLastChildrenInThePool(bool HideFromScene);
+	
 	UFUNCTION()
 	void OpenLastChildrenInThePool();
 };

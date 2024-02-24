@@ -5,6 +5,7 @@
 #include "Core/CoreFunctionLib.h"
 #include "Services/UI/ManagerUI.h"
 #include "Widgets/Properties/BoolPropertyField.h"
+#include "Widgets/Properties/MaterialPropertyField.h"
 #include "Widgets/Properties/NumberPropertyField.h"
 #include "Widgets/Properties/PropertiesConstructData.h"
 #include "Widgets/Properties/SceneObjectPropertyField.h"
@@ -12,7 +13,7 @@
 #include "Widgets/Properties/Factory/PropertiesFactoryData.h"
 
 
-TArray<UBasePropertyField*> UPropertiesFactory::CreateProperties(const UObject* WorldContextObject, UObject* Parent,
+TArray<UBasePropertyField*> UPropertiesFactory::CreateProperties(const UObject* WorldContextObject, UObject* Parent, USidePanel* SidePanel,
                                                                  const UPropertiesConstructData* Properties, UPropertiesFactoryData* Data)
 {
 	TArray<UBasePropertyField*> WidgetsArray = {};
@@ -42,6 +43,13 @@ TArray<UBasePropertyField*> UPropertiesFactory::CreateProperties(const UObject* 
 		}
 	}
 	for (auto Property : Properties->SceneObjectProperties)
+	{
+		if (!PropertiesOrder.Contains(Property.Order))
+		{
+			PropertiesOrder.Add(Property.Order);
+		}
+	}
+	for (auto Property : Properties->MaterialProperties)
 	{
 		if (!PropertiesOrder.Contains(Property.Order))
 		{
@@ -98,6 +106,18 @@ TArray<UBasePropertyField*> UPropertiesFactory::CreateProperties(const UObject* 
 				{
 					SceneObjectProperty->Init(Property);
 					WidgetsArray.Add(SceneObjectProperty);
+				}
+			}
+		}
+		for (auto Property : Properties->MaterialProperties)
+		{
+			if (Property.Order == Order)
+			{
+				const auto Widget = UIManager->GetPanel(Data->MaterialPropertyName, Parent);
+				if (UMaterialPropertyField* MaterialProperty = Cast<UMaterialPropertyField>(Widget))
+				{
+					MaterialProperty->Init(Property, SidePanel);
+					WidgetsArray.Add(MaterialProperty);
 				}
 			}
 		}

@@ -54,14 +54,15 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Init(FDMWall Wall);
 
+	virtual UPropertiesConstructData* GetProperties_Implementation() override;
+
 protected:
 	UFUNCTION(BlueprintCallable)
 	void InitializeMaterialVerticesForRooms();
 	
 	UFUNCTION(BlueprintImplementableEvent)
 	void InitMaterialForRoom(FVector2DArray Pts, int Index);
-	
-private:
+
 	UFUNCTION()
 	void InitMaterials();
 	

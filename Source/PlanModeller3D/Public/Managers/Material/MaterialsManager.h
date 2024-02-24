@@ -26,6 +26,9 @@ public:
 	TArray<FStoredMaterialData> GetMaterials() const;
 	
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-	UMaterialInterface* GetMaterial(FName MaterialID) const;
+	UMaterialInterface* GetMaterialInterface(FName MaterialID) const;
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	FStoredMaterialData GetMaterialData(FName MaterialID) const;
 	
 };

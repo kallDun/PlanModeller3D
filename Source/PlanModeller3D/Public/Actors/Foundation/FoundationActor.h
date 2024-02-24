@@ -7,6 +7,8 @@
 #include "GeometryActors/GeneratedDynamicMeshActor.h"
 #include "FoundationActor.generated.h"
 
+class UPropertiesConstructData;
+
 UCLASS(Abstract, BlueprintType)
 class PLANMODELLER3D_API AFoundationActor : public AGeneratedDynamicMeshActor
 {
@@ -15,6 +17,9 @@ class PLANMODELLER3D_API AFoundationActor : public AGeneratedDynamicMeshActor
 public:
 	AFoundationActor() = default;
 
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	UPropertiesConstructData* GetProperties();
+	
 protected:	
 	UFUNCTION()
 	bool TryToSetMaterial(FName MaterialID, int Index) const;
