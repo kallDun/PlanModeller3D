@@ -2,11 +2,11 @@
 
 
 #include "Widgets/Properties/SceneObjectPropertyField.h"
+#include "Actors/Instrument/SelectionCharacterInstrument.h"
 #include "Components/Button.h"
 #include "Components/RichTextBlock.h"
-#include "Controllers/Instrument/InstrumentsManager.h"
-#include "Controllers/Instrument/Selection/SelectionCharacterInstrument.h"
 #include "Core/CoreFunctionLib.h"
+#include "Managers/Instrument/InstrumentsManager.h"
 
 
 void USceneObjectPropertyField::NativeOnInitialized()

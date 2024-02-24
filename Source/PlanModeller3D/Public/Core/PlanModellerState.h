@@ -3,11 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Controllers/Character/CharactersManagerData.h"
-#include "Controllers/Foundation/FoundationControllerData.h"
-#include "Controllers/Furnitures/FurnitureControllerData.h"
-#include "Controllers/Instrument/InstrumentsManagerData.h"
-#include "Controllers/Material/MaterialsManagerData.h"
+#include "Managers/Character/CharactersManagerData.h"
+#include "Managers/Foundation/FoundationControllerData.h"
+#include "Managers/Furnitures/FurnitureControllerData.h"
+#include "Managers/Instrument/InstrumentsManagerData.h"
+#include "Managers/Material/MaterialsManagerData.h"
 #include "Services/Level/LevelLoadGameState.h"
 #include "PlanModellerState.generated.h"
 

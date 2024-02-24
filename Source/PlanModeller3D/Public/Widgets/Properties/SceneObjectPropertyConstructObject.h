@@ -1,5 +1,5 @@
 #pragma once
-#include "Controllers/Instrument/Selection/SceneObjectSelection.h"
+#include "Models/Instrument/SceneObjectSelection.h"
 #include "SceneObjectPropertyConstructObject.generated.h"
 
 DECLARE_DYNAMIC_DELEGATE_RetVal(FSceneObjectSelection, FOnGetSceneObjectValue);

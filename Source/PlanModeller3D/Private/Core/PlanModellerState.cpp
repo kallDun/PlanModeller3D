@@ -2,11 +2,11 @@
 
 
 #include "Core/PlanModellerState.h"
-#include "Controllers/Material/MaterialsManager.h"
-#include "Controllers/Foundation/FoundationController.h"
-#include "Controllers/Furnitures/FurnitureController.h"
-#include "Controllers/Character/CharactersManager.h"
-#include "Controllers/Instrument/InstrumentsManager.h"
+#include "Managers/Material/MaterialsManager.h"
+#include "Managers/Foundation/FoundationController.h"
+#include "Managers/Furnitures/FurnitureController.h"
+#include "Managers/Character/CharactersManager.h"
+#include "Managers/Instrument/InstrumentsManager.h"
 #include "Services/Initialization/ServicesAbstractFactory.h"
 #include "Core/CoreFunctionLib.h"
 #include "Services/Save/SavingService.h"

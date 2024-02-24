@@ -2,8 +2,8 @@
 
 
 #include "Actors/Foundation/FoundationActor.h"
-#include "Controllers/Material/MaterialsManager.h"
 #include "Core/CoreFunctionLib.h"
+#include "Managers/Material/MaterialsManager.h"
 
 
 bool AFoundationActor::TryToSetMaterial(const FName MaterialID, const int Index) const

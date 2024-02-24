@@ -88,6 +88,7 @@ void AWallActor::InitMaterials()
 		else
 		{
 			MWall.Materials.Add(FSavedMaterialData(Name, Index, FName()));
+			TryToSetMaterial(FName(), Index);
 		}
 	}
 
@@ -107,6 +108,7 @@ void AWallActor::InitMaterials()
 		else
 		{
 			MWall.Materials.Add(FSavedMaterialData(Name, Index, FName()));
+			TryToSetMaterial(FName(), Index);
 		}
 	}
 
@@ -126,6 +128,7 @@ void AWallActor::InitMaterials()
 		else
 		{
 			MWall.Materials.Add(FSavedMaterialData(Name, Index, FName()));
+			TryToSetMaterial(FName(), Index);
 		}
 	}
 
@@ -142,6 +145,6 @@ void AWallActor::InitMaterials()
 	else
 	{
 		MWall.Materials.Add(FSavedMaterialData(WallName, MaterialsCount, FName()));
-		TryToSetMaterial(Mat->MaterialID, MaterialsCount);
+		TryToSetMaterial(FName(), MaterialsCount);
 	}
 }
