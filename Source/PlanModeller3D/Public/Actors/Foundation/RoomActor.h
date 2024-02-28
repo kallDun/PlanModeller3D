@@ -24,11 +24,27 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FMRoom MRoom;
 
+	UPROPERTY()
+	class USavingService* SavingService;
+
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Init(FDMRoom Room);
-
+	
 	virtual UPropertiesConstructData* GetProperties_Implementation() override;
 
 	virtual FString GetActorName() const override;
+
+private:
+	UFUNCTION()
+	void InitMaterial();
+
+	UFUNCTION()
+	void SaveMRoom() const;
+
+	UFUNCTION()
+	FName GetMaterialValue(const int Index);
+	
+	UFUNCTION()
+	void SetMaterialValue(const FName Value, const int Index);
 	
 };
