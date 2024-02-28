@@ -39,8 +39,14 @@ protected:
 	UPROPERTY()
 	int MaterialIndex;
 	
-	UPROPERTY()
+	UPROPERTY(BlueprintReadOnly)
 	FName MaterialID;
+
+	UPROPERTY(BlueprintReadOnly)
+	FText PropertyName;
+
+	UPROPERTY(BlueprintReadOnly)
+	FText ParentName;
 
 public:
 	UFUNCTION(BlueprintCallable)

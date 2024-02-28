@@ -11,6 +11,7 @@ bool AFoundationActor::TryToSetMaterial(const FName MaterialID, const int Index)
 {
 	UMaterialInterface* Material = UCoreFunctionLib::GetMaterialsManager(this)->GetMaterialInterface(MaterialID);
 	GetDynamicMeshComponent()->SetMaterial(Index, Material);
+	GetDynamicMeshComponent()->MarkRenderStateDirty();
 	return Material != nullptr;
 }
 

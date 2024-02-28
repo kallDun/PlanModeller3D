@@ -16,6 +16,9 @@ struct FMaterialPropertyConstructObject
 	FText Name;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	FText ParentName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	FOnGetMaterialValue GetValue;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)

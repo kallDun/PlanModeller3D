@@ -164,6 +164,7 @@ UPropertiesConstructData* AWallActor::GetProperties_Implementation()
 		SetMaterial.BindDynamic(this, &AWallActor::SetMaterialValue);
 		Properties->MaterialProperties.Add(FMaterialPropertyConstructObject(
 			MaterialData.Index, FText::FromString(MaterialData.MaterialName),
+			FText::FromString(GetActorName()),
 			GetMaterial, SetMaterial, MaterialData.Index));
 	}
 	
@@ -202,6 +203,7 @@ void AWallActor::SetMaterialValue(const FName Value, const int Index)
 		return Element.Index == Index;
 	}))
 	{
+		TryToSetMaterial(Value, Index);
 		Mat->MaterialID = Value;
 		SaveMWall();
 	}

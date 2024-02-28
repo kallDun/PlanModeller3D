@@ -84,13 +84,13 @@ void USidePanel::OpenLastChildrenInThePool()
 		else
 		{
 			const auto Panel = ManagerUI->GetPanel(Action->SidePanelChildrenName, ChildrenContainer);
-			if (UPanelUI* SidePanel = Cast<UPanelUI>(Panel))
-			{
-				Action->OpenSidePanelChildrenAction.ExecuteIfBound(SidePanel, Action->Index);
-			}
 			if (USidePanelChildren* SidePanelChildren = Cast<USidePanelChildren>(Panel))
 			{
 				SidePanelChildren->SetSidePanelParent(this);
+			}
+			if (UPanelUI* SidePanel = Cast<UPanelUI>(Panel))
+			{
+				Action->OpenSidePanelChildrenAction.ExecuteIfBound(SidePanel, Action->Index);
 			}
 			Action->SidePanelChildren = Panel;
 		}

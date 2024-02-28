@@ -18,6 +18,8 @@ void UMaterialPropertyField::NativeOnInitialized()
 void UMaterialPropertyField::Init(const FMaterialPropertyConstructObject InConstructObject, USidePanel* InSidePanel)
 {
 	BaseInit(InConstructObject.Name);
+	PropertyName = InConstructObject.Name;
+	ParentName = InConstructObject.ParentName;
 	SidePanel = InSidePanel;
 	GetValueDelegate = InConstructObject.GetValue;
 	SetValueDelegate = InConstructObject.SetValue;
@@ -42,10 +44,9 @@ void UMaterialPropertyField::OnRevertButtonClicked()
 
 void UMaterialPropertyField::MaterialChangedEventHandler(FName ID)
 {
-	SetValueDelegate.Execute(ID, MaterialIndex);
+	SetButtonsVisibility(true);
 	MaterialID = ID;
-	const FStoredMaterialData Data = UCoreFunctionLib::GetMaterialsManager(this)->GetMaterialData(ID);
-	OnMaterialChanged(Data);
+	OnMaterialChanged(UCoreFunctionLib::GetMaterialsManager(this)->GetMaterialData(ID));
 }
 
 void UMaterialPropertyField::OnMaterialChanged_Implementation(const FStoredMaterialData MaterialData)
