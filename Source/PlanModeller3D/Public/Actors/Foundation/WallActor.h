@@ -59,6 +59,8 @@ public:
 	
 	virtual UPropertiesConstructData* GetProperties_Implementation() override;
 
+	virtual FString GetActorName() const override;
+
 protected:
 	UFUNCTION(BlueprintCallable)
 	void InitializeMaterialVerticesForRooms();

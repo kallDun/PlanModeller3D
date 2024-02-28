@@ -8,6 +8,7 @@
 #include "UObject/Object.h"
 #include "FoundationController.generated.h"
 
+class AFoundationActor;
 class AWallActor;
 class ARoomActor;
 class UFoundationControllerData;
@@ -26,6 +27,9 @@ public:
 
 	UPROPERTY(BlueprintReadOnly)
 	TArray<AWallActor*> WallActors;
+
+	UPROPERTY(BlueprintReadOnly)
+	TArray<AFoundationActor*> FoundationActors;
 
 	virtual void Init_Implementation(UPrimaryDataAsset* DataAsset) override;
 

@@ -97,5 +97,10 @@ void USidePanel::OpenLastChildrenInThePool()
 
 		const int Index = ChildrenContainer->GetChildIndex(Action->SidePanelChildren);
 		ChildrenContainer->SetActiveWidgetIndex(Index);
+
+		if (USidePanelChildren* SidePanelChildren = Cast<USidePanelChildren>(Action->SidePanelChildren))
+		{
+			SidePanelChildren->ShowOnSidePanelEvent();
+		}
 	}
 }

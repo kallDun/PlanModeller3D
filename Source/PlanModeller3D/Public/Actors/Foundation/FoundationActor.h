@@ -19,6 +19,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	UPropertiesConstructData* GetProperties();
+
+	UFUNCTION(BlueprintCallable)
+	virtual FString GetActorName() const { return ""; }
 	
 protected:	
 	UFUNCTION()

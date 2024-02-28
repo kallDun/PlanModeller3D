@@ -20,5 +20,8 @@ public:
 	UFUNCTION()
 	void SetSidePanelParent(USidePanel* SidePanel);
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void ShowOnSidePanelEvent();
+
 	virtual void ReturnToPool_Implementation(UPoolService* Pool) override;
 };

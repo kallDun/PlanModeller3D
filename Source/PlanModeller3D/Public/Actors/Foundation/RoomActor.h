@@ -28,5 +28,7 @@ public:
 	void Init(FDMRoom Room);
 
 	virtual UPropertiesConstructData* GetProperties_Implementation() override;
+
+	virtual FString GetActorName() const override;
 	
 };

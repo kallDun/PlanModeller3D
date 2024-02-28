@@ -33,3 +33,8 @@ UPropertiesConstructData* ARoomActor::GetProperties_Implementation()
 	
 	return Properties;
 }
+
+FString ARoomActor::GetActorName() const
+{
+	return "Room '" + DMRoom.Name + "'";
+}

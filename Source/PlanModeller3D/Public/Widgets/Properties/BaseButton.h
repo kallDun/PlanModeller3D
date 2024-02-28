@@ -19,13 +19,31 @@ protected:
 
 	UPROPERTY()
 	FOnBaseButtonClicked OnButtonClicked;
+
+	UPROPERTY()
+	bool bIsRadioButton;
+	
+	UPROPERTY()
+	TArray<UBaseButton*> RelatedRadioButtons = {};
 	
 public:
-	UFUNCTION(BlueprintCallable)
-	void AssignClick(FOnBaseButtonClicked ButtonClicked, int InIndex);
+	UPROPERTY(BlueprintReadOnly)
+	bool bIsSelected;
 	
 	UFUNCTION(BlueprintCallable)
+	void AssignClick(FOnBaseButtonClicked ButtonClicked, int InIndex);
+
+	UFUNCTION(BlueprintCallable)
+	void SetupAsRadioButton(TArray<UBaseButton*> InRelatedRadioButtons);
+
+	UFUNCTION(BlueprintCallable)
+	void SetRadioButtonSelected();
+	
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Click();
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void UpdateView();
 
 	virtual void ReturnToPool_Implementation(UPoolService* Pool) override;
 };

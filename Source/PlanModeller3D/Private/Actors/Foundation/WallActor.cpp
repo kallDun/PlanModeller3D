@@ -170,6 +170,11 @@ UPropertiesConstructData* AWallActor::GetProperties_Implementation()
 	return Properties;
 }
 
+FString AWallActor::GetActorName() const
+{
+	return "Wall '" + DMWall.Name + "'";
+}
+
 // GETTERS & SETTERS
 
 void AWallActor::SaveMWall()

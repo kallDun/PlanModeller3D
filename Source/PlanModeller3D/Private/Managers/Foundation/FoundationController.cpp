@@ -22,11 +22,13 @@ void UFoundationController::LoadFromSave_Implementation(UPlanModellerSaveData* S
 		auto Room = GetWorld()->SpawnActor<ARoomActor>(Data->RoomActorClass);
 		Room->Init(RoomDto);
 		RoomActors.Add(Room);
+		FoundationActors.Add(Room);
 	}
 	for (const auto WallDto : Save->Plan2D.Walls)
 	{
 		auto Wall = GetWorld()->SpawnActor<AWallActor>(Data->WallActorClass);
 		Wall->Init(WallDto);
 		WallActors.Add(Wall);
+		FoundationActors.Add(Wall);
 	}
 }
