@@ -13,7 +13,7 @@ void AFurniture::Init(const FFurnitureData& FurnitureData, const FMFurniture& Mo
 
 void AFurniture::UpdateView_Implementation(const FMFurniture& Model)
 {
-	
+	SaveModel = Model;
 }
 
 void AFurniture::GetFromPool_Implementation(UPoolService* Pool)

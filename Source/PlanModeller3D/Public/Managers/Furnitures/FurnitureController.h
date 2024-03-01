@@ -37,6 +37,12 @@ public:
 	virtual void Init_Implementation(UPrimaryDataAsset* DataAsset) override;
 	
 	virtual void LoadFromSave_Implementation(UPlanModellerSaveData* Save) override;
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	TArray<AFurniture*> GetSceneFurnitures(bool bIncludePreview = false);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	AFurniture* GetFurnitureByID(const FString& ID);
 	
 private:
 	UFUNCTION()

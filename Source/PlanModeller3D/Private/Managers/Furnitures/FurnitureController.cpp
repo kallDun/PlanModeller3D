@@ -43,6 +43,24 @@ void UFurnitureController::LoadFromSave_Implementation(UPlanModellerSaveData* Sa
 	SaveData->OnModelChanged.AddDynamic(this, &UFurnitureController::OnModelChanged);
 }
 
+TArray<AFurniture*> UFurnitureController::GetSceneFurnitures(const bool bIncludePreview)
+{
+	TArray<AFurniture*> SceneFurnitures = {};
+	for (auto Furniture : FurnituresMap)
+	{
+		if (bIncludePreview || !Furniture.Value->SaveModel.IsPreview)
+		{
+			SceneFurnitures.Add(Furniture.Value);
+		}
+	}
+	return SceneFurnitures;
+}
+
+AFurniture* UFurnitureController::GetFurnitureByID(const FString& ID)
+{
+	return FurnituresMap[ID];
+}
+
 AFurniture* UFurnitureController::CreateFurniture(const FMFurniture& FurnitureModel, AActor* Parent, const FString& Id)
 {
 	auto Name = FurnitureModel.Name;

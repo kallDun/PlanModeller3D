@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Models/Furnitures/FurnitureData.h"
+#include "Models/Plan3D/MFurniture.h"
 #include "Services/Pool/PoolObject.h"
 #include "Furniture.generated.h"
 
@@ -24,6 +25,9 @@ public:
 
 	UPROPERTY(BlueprintReadOnly)
 	FString ID;
+
+	UPROPERTY(BlueprintReadOnly)
+	FMFurniture SaveModel;
 	
 	UFUNCTION()
 	void Init(const FFurnitureData& FurnitureData, const FMFurniture& Model, const FString& Identifier);

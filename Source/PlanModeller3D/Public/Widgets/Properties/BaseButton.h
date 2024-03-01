@@ -14,7 +14,7 @@ class PLANMODELLER3D_API UBaseButton : public UPanelUI
 	GENERATED_BODY()
 
 protected:
-	UPROPERTY()
+	UPROPERTY(BlueprintReadOnly)
 	int Index;
 
 	UPROPERTY()
@@ -22,6 +22,9 @@ protected:
 
 	UPROPERTY()
 	bool bIsRadioButton;
+	
+	UPROPERTY()
+	bool bChangeSelectionOnClick = true;
 	
 	UPROPERTY()
 	TArray<UBaseButton*> RelatedRadioButtons = {};
@@ -34,7 +37,7 @@ public:
 	void AssignClick(FOnBaseButtonClicked ButtonClicked, int InIndex);
 
 	UFUNCTION(BlueprintCallable)
-	void SetupAsRadioButton(TArray<UBaseButton*> InRelatedRadioButtons);
+	void SetupAsRadioButton(TArray<UBaseButton*> InRelatedRadioButtons, bool ChangeSelectionOnClick = true);
 
 	UFUNCTION(BlueprintCallable)
 	void SetRadioButtonSelected();

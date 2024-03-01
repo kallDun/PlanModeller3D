@@ -9,11 +9,12 @@ void UBaseButton::AssignClick(const FOnBaseButtonClicked ButtonClicked, const in
 	Index = InIndex;
 }
 
-void UBaseButton::SetupAsRadioButton(const TArray<UBaseButton*> InRelatedRadioButtons)
+void UBaseButton::SetupAsRadioButton(const TArray<UBaseButton*> InRelatedRadioButtons, bool ChangeSelectionOnClick)
 {
 	RelatedRadioButtons = InRelatedRadioButtons;
 	bIsRadioButton = true;
 	bIsSelected = false;
+	bChangeSelectionOnClick = ChangeSelectionOnClick;
 	UpdateView();
 }
 
@@ -35,7 +36,10 @@ void UBaseButton::SetRadioButtonSelected()
 void UBaseButton::Click_Implementation()
 {
 	OnButtonClicked.ExecuteIfBound(Index);
-	SetRadioButtonSelected();
+	if (bChangeSelectionOnClick)
+	{
+		SetRadioButtonSelected();
+	}
 }
 
 void UBaseButton::UpdateView_Implementation()
@@ -50,4 +54,5 @@ void UBaseButton::ReturnToPool_Implementation(UPoolService* Pool)
 	RelatedRadioButtons = {};
 	bIsRadioButton = false;
 	bIsSelected = false;
+	bChangeSelectionOnClick = true;
 }
