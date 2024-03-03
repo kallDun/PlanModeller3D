@@ -43,6 +43,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	AFurniture* GetFurnitureByID(const FString& ID);
+
+	UFUNCTION(BlueprintCallable)
+	void DeleteFurniture(const FString& ID) const;
 	
 private:
 	UFUNCTION()

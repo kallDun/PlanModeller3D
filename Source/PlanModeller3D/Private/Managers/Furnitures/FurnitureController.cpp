@@ -61,6 +61,12 @@ AFurniture* UFurnitureController::GetFurnitureByID(const FString& ID)
 	return FurnituresMap[ID];
 }
 
+void UFurnitureController::DeleteFurniture(const FString& ID) const
+{
+	SaveData->Plan3D.Furnitures.Remove(ID);
+	SaveData->OnModelChanged.Broadcast(ECrudActionType::Delete, EPlanModelType::Furniture, ID);
+}
+
 AFurniture* UFurnitureController::CreateFurniture(const FMFurniture& FurnitureModel, AActor* Parent, const FString& Id)
 {
 	auto Name = FurnitureModel.Name;

@@ -6,7 +6,9 @@
 #include "Components/Button.h"
 #include "Components/RichTextBlock.h"
 #include "Core/CoreFunctionLib.h"
+#include "Managers/Instrument/ActorHighlightable.h"
 #include "Managers/Instrument/InstrumentsManager.h"
+#include "Managers/Instrument/SelectionConverterLib.h"
 
 
 void USceneObjectPropertyField::NativeOnInitialized()
@@ -81,4 +83,14 @@ void USceneObjectPropertyField::UpdateCurrentValue_Implementation(const FSceneOb
 {
 	CurrentValue = InSceneObject;
 	SceneObjectName->SetText(FText::FromString(InSceneObject.SelectionName));
+}
+
+void USceneObjectPropertyField::HighlightCurrentValue() const
+{
+	if (const auto ActorToHighlight = USelectionConverterLib::ConvertToActorFromSelection(this, CurrentValue);
+		ActorToHighlight && ActorToHighlight->GetClass()->ImplementsInterface(UActorHighlightable::StaticClass()))
+	{
+		const IActorHighlightable* HighlightableActor = Cast<IActorHighlightable>(ActorToHighlight);
+		HighlightableActor->Execute_Highlight(ActorToHighlight, 3);
+	}
 }

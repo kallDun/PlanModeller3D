@@ -58,6 +58,9 @@ protected:
 	UFUNCTION(BlueprintNativeEvent)
 	void UpdateCurrentValue(const FSceneObjectSelection& InSceneObject);
 
+	UFUNCTION(BlueprintCallable)
+	void HighlightCurrentValue() const;
+
 private:
 	UFUNCTION()	void OnChangeSceneObjectButtonClicked();
 	UFUNCTION()	void OnInstrumentDeactivated();

@@ -38,7 +38,4 @@ public:
 protected:
 	UFUNCTION()
 	AActor* GetHitActorFromLinetrace() const;
-	
-	UFUNCTION()
-	FSceneObjectSelection GetSelectionFromHitActor(AActor* HitActor);
 };

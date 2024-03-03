@@ -3,10 +3,8 @@
 
 #include "Actors/Instrument/SelectionCharacterInstrument.h"
 #include "Actors/Character/PMCharacter.h"
-#include "Actors/Foundation/RoomActor.h"
-#include "Actors/Foundation/WallActor.h"
-#include "Actors/Furnitures/Furniture.h"
 #include "Managers/Instrument/ActorSelectable.h"
+#include "Managers/Instrument/SelectionConverterLib.h"
 #include "Models/Instrument/InstrumentAvailableSelection.h"
 #include "Models/Instrument/SceneObjectSelection.h"
 #include "Services/Shared/Models/LinetraceRay.h"
@@ -14,7 +12,7 @@
 
 void ASelectionCharacterInstrument::Use_Implementation()
 {
-	SelectedSceneObject = GetSelectionFromHitActor(GetHitActorFromLinetrace());
+	SelectedSceneObject = USelectionConverterLib::ConvertToSelectionFromActor(GetHitActorFromLinetrace(), AvailableSelections);
 	Super::Use_Implementation();
 }
 
@@ -27,7 +25,7 @@ void ASelectionCharacterInstrument::Preview_Implementation()
 	}
 	
 	PreviewedActor = GetHitActorFromLinetrace();
-	PreviewedSceneObject = GetSelectionFromHitActor(PreviewedActor);
+	PreviewedSceneObject = USelectionConverterLib::ConvertToSelectionFromActor(PreviewedActor, AvailableSelections);
 
 	if (PreviewedSceneObject.SelectionType == EInstrumentAvailableSelection::IAS_None)
 	{
@@ -75,38 +73,4 @@ AActor* ASelectionCharacterInstrument::GetHitActorFromLinetrace() const
 		}
 	}
 	return nullptr;
-}
-
-FSceneObjectSelection ASelectionCharacterInstrument::GetSelectionFromHitActor(AActor* HitActor)
-{
-	if (Contains(static_cast<EInstrumentAvailableSelection>(AvailableSelections),
-				EInstrumentAvailableSelection::IAS_Room))
-	{
-		if (const auto Room = Cast<ARoomActor>(HitActor))
-		{
-			return FSceneObjectSelection(EInstrumentAvailableSelection::IAS_Room,
-				Room->DMRoom.Id, Room->DMRoom.Name);
-		}
-	}
-	if (Contains(static_cast<EInstrumentAvailableSelection>(AvailableSelections),
-		EInstrumentAvailableSelection::IAS_Wall))
-	{
-		if (const auto Wall = Cast<AWallActor>(HitActor))
-		{
-			return FSceneObjectSelection(EInstrumentAvailableSelection::IAS_Wall,
-				Wall->DMWall.Id, Wall->DMWall.Name);
-		}
-	}
-	if (Contains(static_cast<EInstrumentAvailableSelection>(AvailableSelections),
-		EInstrumentAvailableSelection::IAS_Furniture))
-	{
-		if (const auto Furniture = Cast<AFurniture>(HitActor))
-		{
-			return FSceneObjectSelection(EInstrumentAvailableSelection::IAS_Furniture,
-				Furniture->ID, Furniture->Data.Name.ToString());
-		}
-	}
-	// else if TODO: add check for prop
-
-	return FSceneObjectSelection();
 }

@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Models/Instrument/SceneObjectSelection.h"
 #include "Services/Initialization/Initializable.h"
 #include "Services/Save/LoadedFromSave.h"
 #include "UObject/Object.h"
@@ -23,15 +24,21 @@ public:
 	UFoundationControllerData* Data;
 
 	UPROPERTY(BlueprintReadOnly)
-	TArray<ARoomActor*> RoomActors;
+	TArray<ARoomActor*> RoomActors = {};
 
 	UPROPERTY(BlueprintReadOnly)
-	TArray<AWallActor*> WallActors;
+	TArray<AWallActor*> WallActors = {};
 
 	UPROPERTY(BlueprintReadOnly)
-	TArray<AFoundationActor*> FoundationActors;
+	TArray<AFoundationActor*> FoundationActors = {};
 
 	virtual void Init_Implementation(UPrimaryDataAsset* DataAsset) override;
 
 	virtual void LoadFromSave_Implementation(UPlanModellerSaveData* Save) override;
+
+	UFUNCTION()
+	AActor* GetRoomById(const FString& Id);
+
+	UFUNCTION()
+	AActor* GetWallById(const FString& Id);
 };
