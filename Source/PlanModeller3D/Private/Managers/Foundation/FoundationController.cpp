@@ -35,18 +35,18 @@ void UFoundationController::LoadFromSave_Implementation(UPlanModellerSaveData* S
 
 AActor* UFoundationController::GetRoomById(const FString& Id)
 {
-	if (const auto Room = *RoomActors.FindByPredicate([Id](const auto Room) { return Room->DMRoom.Id == Id; }))
+	if (const auto RoomLink = RoomActors.FindByPredicate([Id](const auto Room) { return Room->DMRoom.Id == Id; }))
 	{
-		return Room;
+		return *RoomLink;
 	}
 	return nullptr;
 }
 
 AActor* UFoundationController::GetWallById(const FString& Id)
 {
-	if (const auto Wall = *WallActors.FindByPredicate([Id](const auto Wall) { return Wall->DMWall.Id == Id; }))
+	if (const auto WallLink = WallActors.FindByPredicate([Id](const auto Wall) { return Wall->DMWall.Id == Id; }))
 	{
-		return Wall;
+		return *WallLink;
 	}
 	return nullptr;
 }
