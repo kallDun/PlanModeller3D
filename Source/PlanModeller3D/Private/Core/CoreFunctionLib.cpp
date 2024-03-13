@@ -76,3 +76,8 @@ UInstrumentsManager* UCoreFunctionLib::GetInstrumentsManager(const UObject* Worl
 	return GetPMState(WorldContextObject)->InstrumentsManager;
 }
 
+UFurnitureGenerationController* UCoreFunctionLib::GetFurnitureGenerationController(const UObject* WorldContextObject)
+{
+	return GetPMState(WorldContextObject)->FurnitureGenerationController;
+}
+

@@ -48,6 +48,9 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = "State")
 	class UInstrumentsManager* InstrumentsManager;
 
+	UPROPERTY(BlueprintReadOnly, Category = "State")
+	class UFurnitureGenerationController* FurnitureGenerationController;
+
 protected:
 	virtual void LoadLevel_Implementation() override;
 	

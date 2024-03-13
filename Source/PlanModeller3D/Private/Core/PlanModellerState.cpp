@@ -9,6 +9,7 @@
 #include "Managers/Instrument/InstrumentsManager.h"
 #include "Services/Initialization/ServicesAbstractFactory.h"
 #include "Core/CoreFunctionLib.h"
+#include "Managers/Furnitures/Generation/FurnitureGenerationController.h"
 #include "Services/Save/SavingService.h"
 
 
@@ -21,6 +22,7 @@ void APlanModellerState::LoadLevel_Implementation()
 	FurnitureController = UServicesAbstractFactory::CreateService<UFurnitureController>(this, FurnitureControllerData);
 	CharactersManager = UServicesAbstractFactory::CreateService<UCharactersManager>(this, CharactersManagerData);
 	InstrumentsManager = UServicesAbstractFactory::CreateService<UInstrumentsManager>(this, InstrumentsManagerData);
+	FurnitureGenerationController = UServicesAbstractFactory::CreateService<UFurnitureGenerationController>(this, nullptr);
 	
 	if (const auto SavingService = UCoreFunctionLib::GetSavingService(this))
 	{
@@ -28,6 +30,7 @@ void APlanModellerState::LoadLevel_Implementation()
 		{
 			FoundationController->LoadFromSave_Implementation(Save);
 			FurnitureController->LoadFromSave_Implementation(Save);
+			FurnitureGenerationController->LoadFromSave_Implementation(Save);
 		}
 	}
 }

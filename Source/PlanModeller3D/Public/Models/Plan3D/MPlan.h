@@ -6,6 +6,7 @@
 #include "MRoom.h"
 #include "MWall.h"
 #include "MWindow.h"
+#include "Models/Furnitures/Generation/FurnitureGenerationData.h"
 #include "MPlan.generated.h"
 
 
@@ -28,4 +29,7 @@ struct FMPlan
 	
 	UPROPERTY(BlueprintReadWrite)
 	TMap<FString, FMFurniture> Furnitures = {};
+	
+	UPROPERTY(BlueprintReadWrite)
+	FFurnitureGenerationData FurnitureGenerationData;
 };
