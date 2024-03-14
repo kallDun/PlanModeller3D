@@ -18,6 +18,16 @@ void USelectFurnitureGenerationComponent::SetData(const FSelectFurnitureGenerati
 	ParentController->SetGenerationData(GenerationData);
 }
 
+TArray<FSelectedFurnitureData> USelectFurnitureGenerationComponent::GetGeneratedFurnitureArray() const
+{
+	return GetData().GeneratedFurniture;
+}
+
+TArray<FSelectedFurnitureData> USelectFurnitureGenerationComponent::GetCustomFurnitureArray() const
+{
+	return GetData().CustomFurniture;
+}
+
 bool USelectFurnitureGenerationComponent::Generate_Implementation()
 {
 	return Super::Generate_Implementation();

@@ -1,19 +1,16 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "SelectedFurnitureData.generated.h"
+#include "AreaGenerationData.generated.h"
 
 USTRUCT(BlueprintType)
-struct FSelectedFurnitureData
+struct FAreaGenerationData
 {
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FName Name;
+	TArray<FString> GeneratedAreas = {};
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FName VariationName;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int Priority;
+	TArray<FString> CustomAreas = {};
 };

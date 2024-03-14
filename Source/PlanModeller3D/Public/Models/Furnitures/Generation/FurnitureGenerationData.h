@@ -1,6 +1,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AreaGenerationData.h"
+#include "PathGenerationData.h"
+#include "PlacedFurnitureGenerationData.h"
 #include "SelectFurnitureGenerationData.h"
 #include "FurnitureGenerationData.generated.h"
 
@@ -9,8 +12,16 @@ struct FFurnitureGenerationData
 {
 	GENERATED_BODY()
 
-public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FSelectFurnitureGenerationData SelectFurnitureComponentData;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FPlacedFurnitureGenerationData PlacedFurnitureComponentData;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FPathGenerationData PathComponentData;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FAreaGenerationData AreaComponentData;
 	
 };

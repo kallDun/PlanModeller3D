@@ -4,29 +4,29 @@
 
 #include "CoreMinimal.h"
 #include "Managers/Furnitures/Generation/FurnitureGenerationComponent.h"
-#include "Models/Furnitures/Generation/SelectFurnitureGenerationData.h"
-#include "SelectFurnitureGenerationComponent.generated.h"
+#include "PlaceFurnitureGenerationComponent.generated.h"
 
+struct FPlacedFurnitureGenerationData;
 
 UCLASS(BlueprintType)
-class PLANMODELLER3D_API USelectFurnitureGenerationComponent : public UFurnitureGenerationComponent
+class PLANMODELLER3D_API UPlaceFurnitureGenerationComponent : public UFurnitureGenerationComponent
 {
 	GENERATED_BODY()
 
 protected:
 	UFUNCTION()
-	FSelectFurnitureGenerationData GetData() const;
+	FPlacedFurnitureGenerationData GetData() const;
 
 	UFUNCTION()
-	void SetData(const FSelectFurnitureGenerationData& Data) const;
+	void SetData(const FPlacedFurnitureGenerationData& Data) const;
 
 public:
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Generation")
-	TArray<FSelectedFurnitureData> GetGeneratedFurnitureArray() const;
+	TArray<FString> GetGeneratedFurnitureArray() const;
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Generation")
-	TArray<FSelectedFurnitureData> GetCustomFurnitureArray() const;
-	
+	TArray<FString> GetCustomFurnitureArray() const;
+
 public:
 	virtual bool Generate_Implementation() override;
 

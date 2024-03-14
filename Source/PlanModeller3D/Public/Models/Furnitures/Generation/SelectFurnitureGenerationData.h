@@ -10,8 +10,8 @@ struct FSelectFurnitureGenerationData
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TArray<FSelectedFurnitureData> GeneratedFurnitureNames = {};
+	TArray<FSelectedFurnitureData> GeneratedFurniture = {};
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TArray<FSelectedFurnitureData> CustomFurnitureNames = {};
+	TArray<FSelectedFurnitureData> CustomFurniture = {};
 };

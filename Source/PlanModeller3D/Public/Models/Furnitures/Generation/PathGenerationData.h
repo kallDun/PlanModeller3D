@@ -1,19 +1,16 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "SelectedFurnitureData.generated.h"
+#include "PathGenerationData.generated.h"
 
 USTRUCT(BlueprintType)
-struct FSelectedFurnitureData
+struct FPathGenerationData
 {
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FName Name;
+	TArray<FString> GeneratedPathes = {};
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FName VariationName;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int Priority;
+	TArray<FString> CustomPathes = {};
 };
