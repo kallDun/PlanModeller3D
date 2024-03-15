@@ -35,12 +35,38 @@ void UFurnitureController::Init_Implementation(UPrimaryDataAsset* DataAsset)
 void UFurnitureController::LoadFromSave_Implementation(UPlanModellerSaveData* Save)
 {
 	ILoadedFromSave::LoadFromSave_Implementation(Save);
+
 	SaveData = Save;
+	SaveData->OnModelChanged.AddDynamic(this, &UFurnitureController::OnModelChanged);
+	
+	TArray<FString> FurnitureIDsToRemove = {};
+	
 	for (auto Furniture : Save->Plan3D.Furnitures)
 	{
+		if (Furniture.Value.IsPreview)
+		{
+			FurnitureIDsToRemove.Add(Furniture.Key);
+			continue;
+		}
 		CreateFurniture(Furniture.Value, nullptr, Furniture.Key);
+		const bool IsCorrectlyPlaced = FurnituresMap[Furniture.Key]->CheckPlacement();
+		SaveData->Plan3D.Furnitures[Furniture.Key].IsCorrectlyPlaced = IsCorrectlyPlaced;
+		if (!IsCorrectlyPlaced)
+		{
+			FurnitureIDsToRemove.Add(Furniture.Key);
+		}
 	}
-	SaveData->OnModelChanged.AddDynamic(this, &UFurnitureController::OnModelChanged);
+	
+	for (auto ID : FurnitureIDsToRemove)
+	{
+		SaveData->Plan3D.Furnitures.Remove(ID);
+		SaveData->OnModelChanged.Broadcast(ECrudActionType::Delete, EPlanModelType::Furniture, ID);
+	}
+}
+
+TArray<FFurnitureData> UFurnitureController::GetFurnituresData() const
+{
+	return Data->Furnitures;
 }
 
 TArray<AFurniture*> UFurnitureController::GetSceneFurnitures(const bool bIncludePreview)
@@ -110,13 +136,26 @@ void UFurnitureController::OnModelChanged(ECrudActionType ActionType, EPlanModel
 	if (ActionType == ECrudActionType::Create)
 	{
 		CreateFurniture(SaveData->Plan3D.Furnitures[ObjectId], nullptr, ObjectId);
+		SaveData->Plan3D.Furnitures[ObjectId].IsCorrectlyPlaced = FurnituresMap[ObjectId]->CheckPlacement();
 	}
 	else if (ActionType == ECrudActionType::Delete)
 	{
-		DestroyFurniture(FurnituresMap[ObjectId]);
+		if (FurnituresMap.Contains(ObjectId))
+		{
+			DestroyFurniture(FurnituresMap[ObjectId]);
+		}
 	}
 	else if (ActionType == ECrudActionType::Update)
 	{
-		FurnituresMap[ObjectId]->UpdateView(SaveData->Plan3D.Furnitures[ObjectId]);
+		if (FurnituresMap.Contains(ObjectId))
+		{
+			FurnituresMap[ObjectId]->UpdateView(SaveData->Plan3D.Furnitures[ObjectId]);
+			SaveData->Plan3D.Furnitures[ObjectId].IsCorrectlyPlaced = FurnituresMap[ObjectId]->CheckPlacement();
+		}
+		else
+		{
+			CreateFurniture(SaveData->Plan3D.Furnitures[ObjectId], nullptr, ObjectId);
+			SaveData->Plan3D.Furnitures[ObjectId].IsCorrectlyPlaced = FurnituresMap[ObjectId]->CheckPlacement();
+		}
 	}
 }

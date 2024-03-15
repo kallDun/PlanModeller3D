@@ -39,7 +39,7 @@ public:
 	FInstrumentAction OnInstrumentDeactivated;
 
 	UFUNCTION()
-	void Init(UInstrumentsManager* InstrumentsManager);
+	virtual void Init(UInstrumentsManager* InstrumentsManager);
 
 	UFUNCTION()
 	virtual void Activate(APMCharacter* InCharacter);

@@ -35,6 +35,9 @@ public:
 	UFUNCTION(BlueprintNativeEvent)
 	void UpdateView(const FMFurniture& Model);
 
+	UFUNCTION(BlueprintNativeEvent)
+	bool CheckPlacement();
+
 	virtual void GetFromPool_Implementation(UPoolService* Pool) override;
 
 	virtual void ReturnToPool_Implementation(UPoolService* Pool) override;

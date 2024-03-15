@@ -16,8 +16,14 @@ struct FMFurniture
 	FVector Location;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FRotator Rotation;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int VariationIndex;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool IsPreview;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool IsCorrectlyPlaced;
 };

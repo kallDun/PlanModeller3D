@@ -16,6 +16,11 @@ void AFurniture::UpdateView_Implementation(const FMFurniture& Model)
 	SaveModel = Model;
 }
 
+bool AFurniture::CheckPlacement_Implementation()
+{
+	return true; // TODO: add collision check
+}
+
 void AFurniture::GetFromPool_Implementation(UPoolService* Pool)
 {
 	IPoolObject::GetFromPool_Implementation(Pool);
