@@ -35,13 +35,13 @@ protected:
 	
 public:
 	UPROPERTY(BlueprintReadOnly, Category = "Instrument State")
-	FName FurnitureName;
+	FString FurnitureName;
 	
 	UPROPERTY(BlueprintReadOnly, Category = "Instrument State")
 	int FurnitureVariationIndex;
 
 	UFUNCTION(BlueprintCallable)
-	void SetFurnitureData(FName InFurnitureName, int VariationIndex);
+	void SetFurnitureData(FString InFurnitureName, int VariationIndex);
 
 public:
 	virtual void Activate(APMCharacter* InCharacter) override;

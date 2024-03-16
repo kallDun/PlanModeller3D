@@ -20,7 +20,7 @@ void UFurnitureController::Init_Implementation(UPrimaryDataAsset* DataAsset)
 	for (FFurnitureData FurnitureData : Data->Furnitures)
 	{
 		const FPoolData PoolData = FPoolData(
-			FurnitureData.UseNameAsPoolID ? FurnitureData.Name : FurnitureData.PoolID,
+			FurnitureData.GetPoolID(),
 			FurnitureData.FurnitureClass,
 			Data->InitPoolSizeForOneFurniture, Data->MaxPoolSizeForOneFurniture,
 			ELevelTransitionPoolBehaviour::Dispose,
@@ -95,14 +95,13 @@ void UFurnitureController::DeleteFurniture(const FString& ID) const
 
 AFurniture* UFurnitureController::CreateFurniture(const FMFurniture& FurnitureModel, AActor* Parent, const FString& Id)
 {
-	auto Name = FurnitureModel.Name;
-	const FFurnitureData* FurnitureData = Data->Furnitures.FindByPredicate([Name](const FFurnitureData& PanelData)
+	const FFurnitureData* FurnitureData = Data->Furnitures.FindByPredicate([FurnitureModel](const FFurnitureData& PanelData)
 	{
-		return PanelData.Name == Name;
+		return PanelData.Name == FurnitureModel.Name;
 	});
 	if (!FurnitureData)
 	{
-		UE_LOG(LogTemp, Error, TEXT("Furniture with name %s not found"), *Name.ToString());
+		UE_LOG(LogTemp, Error, TEXT("Furniture with name %s not found"), *FurnitureModel.Name);
 		return nullptr;
 	}
 
@@ -132,6 +131,7 @@ void UFurnitureController::DestroyFurniture(AFurniture* Furniture)
 void UFurnitureController::OnModelChanged(ECrudActionType ActionType, EPlanModelType ModelType, FString ObjectId)
 {
 	if (ModelType != EPlanModelType::Furniture) return;
+	if (!SaveData->Plan3D.Furnitures.Contains(ObjectId)) return;
 	
 	if (ActionType == ECrudActionType::Create)
 	{

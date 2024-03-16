@@ -22,9 +22,10 @@ void AFurnitureCharacterInstrument::Activate(APMCharacter* InCharacter)
 	}
 	HitPointOffset = FVector::ZeroVector;
 	Rotation = FRotator::ZeroRotator;
+	FurniturePreviewID = SavingService->CurrentSaveGame->GetUniqueFurnitureID();
 }
 
-void AFurnitureCharacterInstrument::SetFurnitureData(const FName InFurnitureName, const int VariationIndex)
+void AFurnitureCharacterInstrument::SetFurnitureData(const FString InFurnitureName, const int VariationIndex)
 {
 	FurnitureName = InFurnitureName;
 	FurnitureVariationIndex = VariationIndex;
@@ -33,7 +34,7 @@ void AFurnitureCharacterInstrument::SetFurnitureData(const FName InFurnitureName
 void AFurnitureCharacterInstrument::Use_Implementation()
 {
 	Super::Use_Implementation();
-	if (FurnitureName.IsNone()) return;
+	if (FurnitureName.IsEmpty()) return;
 	bool bFoundData = false;
 	const FFurnitureData Data = GetFurnitureData(bFoundData);
 	if (!bFoundData) return;
@@ -48,7 +49,7 @@ void AFurnitureCharacterInstrument::Use_Implementation()
 void AFurnitureCharacterInstrument::Preview_Implementation()
 {
 	Super::Preview_Implementation();
-	if (FurnitureName.IsNone()) return;
+	if (FurnitureName.IsEmpty()) return;
 	bool bFoundData = false;
 	const FFurnitureData Data = GetFurnitureData(bFoundData);
 	if (!bFoundData) return;
@@ -68,9 +69,10 @@ void AFurnitureCharacterInstrument::Deactivate()
 
 FFurnitureData AFurnitureCharacterInstrument::GetFurnitureData(bool& bFound) const
 {
-	const auto Data = FurnitureController->GetFurnituresData().FindByPredicate([this](const FFurnitureData& Data)
+	TArray<FFurnitureData> Furnitures = FurnitureController->GetFurnituresData();
+	const auto Data = Furnitures.FindByPredicate([this](const FFurnitureData& Furniture)
 	{
-		return Data.Name == FurnitureName;
+		return Furniture.Name == FurnitureName;
 	});
 	bFound = Data != nullptr;
 	if (bFound) return *Data;
@@ -91,7 +93,7 @@ FVector AFurnitureCharacterInstrument::GetHitPointFromLinetrace(bool& bHit) cons
 	bHit = GetWorld()->LineTraceSingleByChannel(Hit, Start, End, ECC_Visibility, Params);
 	if (bHit)
 	{
-		return Hit.ImpactPoint;
+		return Hit.Location;
 	}
 	return FVector::ZeroVector;
 }

@@ -10,7 +10,7 @@ struct FMFurniture
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FName Name;
+	FString Name;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FVector Location;

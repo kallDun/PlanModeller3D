@@ -13,7 +13,7 @@ struct FFurnitureData
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Furniture")
-	FName Name;
+	FString Name;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Furniture")
 	EFurniturePlacementType PlacementType;
@@ -52,6 +52,6 @@ struct FFurnitureData
 	
 	FName GetPoolID() const
 	{
-		return UseNameAsPoolID ? Name : PoolID;
+		return UseNameAsPoolID ? FName(Name) : PoolID;
 	}
 };

@@ -36,7 +36,7 @@ FSceneObjectSelection USelectionConverterLib::ConvertToSelectionFromActor(AActor
 		if (const auto Furniture = Cast<AFurniture>(Actor))
 		{
 			return FSceneObjectSelection(EInstrumentAvailableSelection::IAS_Furniture,
-				Furniture->ID, Furniture->Data.Name.ToString());
+				Furniture->ID, Furniture->Data.Name);
 		}
 	}
 	// else if TODO: add check for prop
