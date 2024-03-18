@@ -3,6 +3,7 @@
 
 #include "Actors/Instrument/FurnitureCharacterInstrument.h"
 #include "Actors/Character/PMCharacter.h"
+#include "Actors/Foundation/FoundationActor.h"
 #include "Core/CoreFunctionLib.h"
 #include "Managers/Furnitures/FurnitureController.h"
 #include "Models/SaveData/PlanModellerSaveData.h"
@@ -84,16 +85,22 @@ FVector AFurnitureCharacterInstrument::GetHitPointFromLinetrace(bool& bHit) cons
 	// make linetrace, get hit actor, check if it's a valid selection, if it is, set it as current selection
 	// if it's not a valid selection, do nothing
 	auto [Start, End] = Character->GetInstrumentLinetraceRay();
-	auto Hit = FHitResult(ForceInit);
+	auto Hits = TArray<FHitResult>();
 	auto Params = FCollisionQueryParams();
 	Params.AddIgnoredActor(this);
 	Params.AddIgnoredActor(Character);
 	Params.bTraceComplex = true;
 
-	bHit = GetWorld()->LineTraceSingleByChannel(Hit, Start, End, ECC_Visibility, Params);
+	bHit = GetWorld()->LineTraceMultiByChannel(Hits, Start, End, ECC_GameTraceChannel1, Params);
 	if (bHit)
 	{
-		return Hit.Location;
+		for (const auto& Hit : Hits)
+		{
+			if (Hit.GetActor() && Hit.GetActor()->IsA(AFoundationActor::StaticClass()))
+			{
+				return Hit.ImpactPoint;
+			}
+		}
 	}
 	return FVector::ZeroVector;
 }
