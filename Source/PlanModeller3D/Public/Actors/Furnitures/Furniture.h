@@ -28,6 +28,9 @@ public:
 
 	UPROPERTY(BlueprintReadOnly)
 	FMFurniture SaveModel;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<UStaticMeshComponent*> Meshes = {};
 	
 	UFUNCTION()
 	void Init(const FFurnitureData& FurnitureData, const FMFurniture& Model, const FString& Identifier);

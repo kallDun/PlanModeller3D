@@ -85,23 +85,23 @@ FVector AFurnitureCharacterInstrument::GetHitPointFromLinetrace(bool& bHit) cons
 	// make linetrace, get hit actor, check if it's a valid selection, if it is, set it as current selection
 	// if it's not a valid selection, do nothing
 	auto [Start, End] = Character->GetInstrumentLinetraceRay();
-	auto Hits = TArray<FHitResult>();
 	auto Params = FCollisionQueryParams();
 	Params.AddIgnoredActor(this);
 	Params.AddIgnoredActor(Character);
 	Params.bTraceComplex = true;
 
-	bHit = GetWorld()->LineTraceMultiByChannel(Hits, Start, End, ECC_GameTraceChannel1, Params);
-	if (bHit)
+	//auto Hits = TArray<FHitResult>();
+	auto Hit = FHitResult();
+
+	if (GetWorld()->LineTraceSingleByObjectType(Hit, Start, End, ECC_GameTraceChannel2, Params))
 	{
-		for (const auto& Hit : Hits)
+		if (Hit.GetActor() && Hit.GetActor()->IsA(AFoundationActor::StaticClass()))
 		{
-			if (Hit.GetActor() && Hit.GetActor()->IsA(AFoundationActor::StaticClass()))
-			{
-				return Hit.ImpactPoint;
-			}
+			bHit = true;
+			return Hit.ImpactPoint;
 		}
 	}
+	bHit = false;
 	return FVector::ZeroVector;
 }
 

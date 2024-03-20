@@ -2,6 +2,7 @@
 
 
 #include "Actors/Furnitures/Furniture.h"
+#include "Actors/Foundation/FoundationActor.h"
 
 
 void AFurniture::Init(const FFurnitureData& FurnitureData, const FMFurniture& Model, const FString& Identifier)
@@ -18,7 +19,23 @@ void AFurniture::UpdateView_Implementation(const FMFurniture& Model)
 
 bool AFurniture::CheckPlacement_Implementation()
 {
-	return true; // TODO: add collision check
+	TArray<AActor*> OverlappingActors;
+	for (const auto Mesh : Meshes)
+	{
+		Mesh->GetOverlappingActors(OverlappingActors);
+		for (const AActor* Actor : OverlappingActors)
+		{
+			if (Actor->IsA<AFurniture>())
+			{
+				return false;
+			}
+			if (Actor->IsA<AFoundationActor>())
+			{
+				return false;
+			}
+		}
+	}
+	return true;
 }
 
 void AFurniture::GetFromPool_Implementation(UPoolService* Pool)
