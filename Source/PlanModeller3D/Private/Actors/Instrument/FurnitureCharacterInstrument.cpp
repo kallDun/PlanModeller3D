@@ -6,6 +6,7 @@
 #include "Actors/Foundation/FoundationActor.h"
 #include "Core/CoreFunctionLib.h"
 #include "Managers/Furnitures/FurnitureController.h"
+#include "Managers/Instrument/InstrumentsManager.h"
 #include "Models/Instrument/InstrumentInputData.h"
 #include "Models/SaveData/PlanModellerSaveData.h"
 #include "Services/Save/SavingService.h"
@@ -44,7 +45,14 @@ void AFurnitureCharacterInstrument::Input_Implementation(FInstrumentInputData In
 		{
 			AddOrUpdatePreviewFurniture(Data, HitPoint);
 		}
-		OnInstrumentUsed.Broadcast();
+		
+		if (IsFurniturePreviewValid())
+		{
+			OnInstrumentUsed.Broadcast();
+			SavingService->CurrentSaveGame->Plan3D.Furnitures[FurniturePreviewID].IsPreview = false;
+			SavingService->CurrentSaveGame->OnModelChanged.Broadcast(ECrudActionType::Update, EPlanModelType::Furniture, FurniturePreviewID);
+			Manager->DeactivateCurrentInstrument();
+		}
 	}
 
 	if (Contains(static_cast<EInstrumentInputType>(InputTypes), EInstrumentInputType::TriggerPreviewInput)
@@ -147,8 +155,8 @@ void AFurnitureCharacterInstrument::RemovePreviewFurniture() const
 	if (!SavingService->CurrentSaveGame->Plan3D.Furnitures.Contains(FurniturePreviewID)) return;
 	if (SavingService->CurrentSaveGame->Plan3D.Furnitures[FurniturePreviewID].IsPreview)
 	{
-		SavingService->CurrentSaveGame->Plan3D.Furnitures.Remove(FurniturePreviewID);
 		SavingService->CurrentSaveGame->OnModelChanged.Broadcast(ECrudActionType::Delete, EPlanModelType::Furniture, FurniturePreviewID);
+		SavingService->CurrentSaveGame->Plan3D.Furnitures.Remove(FurniturePreviewID);
 	}
 }
 
