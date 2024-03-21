@@ -29,9 +29,7 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = "Instrument State")
 	FSceneObjectSelection PreviewedSceneObject;
 
-	virtual void Use_Implementation() override;
-
-	virtual void Preview_Implementation() override;
+	virtual void Input_Implementation(FInstrumentInputData InputData) override;
 
 	virtual void Deactivate() override;
 

@@ -3,6 +3,8 @@
 
 #include "Actors/Instrument/CharacterInstrument.h"
 #include "Actors/Character/PMCharacter.h"
+#include "Managers/Instrument/InstrumentsManager.h"
+#include "Models/Instrument/InstrumentInputData.h"
 
 
 void ACharacterInstrument::Init(UInstrumentsManager* InstrumentsManager)
@@ -30,11 +32,11 @@ void ACharacterInstrument::Deactivate()
 	Character = nullptr;
 }
 
-void ACharacterInstrument::Preview_Implementation()
+void ACharacterInstrument::Input_Implementation(FInstrumentInputData InputData)
 {
-}
-
-void ACharacterInstrument::Use_Implementation()
-{
-	OnInstrumentUsed.Broadcast();
+	if (Contains(static_cast<EInstrumentInputType>(InputTypes), EInstrumentInputType::TriggerExitInput)
+		&& InputData.ExitInput)
+	{
+		Manager->DeactivateCurrentInstrument();
+	}
 }

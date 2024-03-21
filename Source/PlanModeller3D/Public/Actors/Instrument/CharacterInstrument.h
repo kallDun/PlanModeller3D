@@ -4,9 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Models/Instrument/InstrumentInputHint.h"
 #include "Models/Instrument/InstrumentType.h"
 #include "CharacterInstrument.generated.h"
 
+struct FInstrumentInputData;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FInstrumentAction);
 
 class APMCharacter;
@@ -23,6 +25,13 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Instrument State")
 	FString InstrumentName;
 	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instrument State",
+		meta = (Bitmask, BitmaskEnum = "EInstrumentInputType"))
+	uint8 InputTypes;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Instrument State")
+	TArray<FInstrumentInputHint> InputHints;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Instrument State")
 	EInstrumentType InstrumentType;
 	
@@ -52,10 +61,7 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnDeactivated();
-
+	
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void Use();
-
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void Preview();
+	void Input(FInstrumentInputData InputData);
 };

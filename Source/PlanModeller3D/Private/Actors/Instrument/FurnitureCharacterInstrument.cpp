@@ -6,6 +6,7 @@
 #include "Actors/Foundation/FoundationActor.h"
 #include "Core/CoreFunctionLib.h"
 #include "Managers/Furnitures/FurnitureController.h"
+#include "Models/Instrument/InstrumentInputData.h"
 #include "Models/SaveData/PlanModellerSaveData.h"
 #include "Services/Save/SavingService.h"
 
@@ -26,40 +27,58 @@ void AFurnitureCharacterInstrument::Activate(APMCharacter* InCharacter)
 	FurniturePreviewID = SavingService->CurrentSaveGame->GetUniqueFurnitureID();
 }
 
+void AFurnitureCharacterInstrument::Input_Implementation(FInstrumentInputData InputData)
+{
+	Super::Input_Implementation(InputData);
+	
+	if (Contains(static_cast<EInstrumentInputType>(InputTypes), EInstrumentInputType::TriggerUseInput)
+		&& InputData.UseInput)
+	{
+		if (FurnitureName.IsEmpty()) return;
+		bool bFoundData = false;
+		const FFurnitureData Data = GetFurnitureData(bFoundData);
+		if (!bFoundData) return;
+		bool bHit = false;
+		const FVector HitPoint = GetHitPointFromLinetrace(bHit);
+		if (bHit)
+		{
+			AddOrUpdatePreviewFurniture(Data, HitPoint);
+		}
+		OnInstrumentUsed.Broadcast();
+	}
+
+	if (Contains(static_cast<EInstrumentInputType>(InputTypes), EInstrumentInputType::TriggerPreviewInput)
+		&& InputData.PreviewInput)
+	{
+		if (FurnitureName.IsEmpty()) return;
+		bool bFoundData = false;
+		const FFurnitureData Data = GetFurnitureData(bFoundData);
+		if (!bFoundData) return;
+		bool bHit = false;
+		const FVector HitPoint = GetHitPointFromLinetrace(bHit);
+		if (bHit)
+		{
+			AddOrUpdatePreviewFurniture(Data, HitPoint);
+		}
+	}
+
+	if (Contains(static_cast<EInstrumentInputType>(InputTypes), EInstrumentInputType::TwoAxisInput) &&
+		InputData.TwoAxisInput.IsZero() == false)
+	{
+		HitPointOffset += FVector(InputData.TwoAxisInput.X, InputData.TwoAxisInput.Y, 0);
+	}
+
+	if (Contains(static_cast<EInstrumentInputType>(InputTypes), EInstrumentInputType::OneAxisInput) &&
+		InputData.OneAxisInput != 0)
+	{
+		Rotation.Yaw += InputData.OneAxisInput * 5;
+	}
+}
+
 void AFurnitureCharacterInstrument::SetFurnitureData(const FString InFurnitureName, const int VariationIndex)
 {
 	FurnitureName = InFurnitureName;
 	FurnitureVariationIndex = VariationIndex;
-}
-
-void AFurnitureCharacterInstrument::Use_Implementation()
-{
-	Super::Use_Implementation();
-	if (FurnitureName.IsEmpty()) return;
-	bool bFoundData = false;
-	const FFurnitureData Data = GetFurnitureData(bFoundData);
-	if (!bFoundData) return;
-	bool bHit = false;
-	const FVector HitPoint = GetHitPointFromLinetrace(bHit);
-	if (bHit)
-	{
-		AddOrUpdatePreviewFurniture(Data, HitPoint);
-	}
-}
-
-void AFurnitureCharacterInstrument::Preview_Implementation()
-{
-	Super::Preview_Implementation();
-	if (FurnitureName.IsEmpty()) return;
-	bool bFoundData = false;
-	const FFurnitureData Data = GetFurnitureData(bFoundData);
-	if (!bFoundData) return;
-	bool bHit = false;
-	const FVector HitPoint = GetHitPointFromLinetrace(bHit);
-	if (bHit)
-	{
-		AddOrUpdatePreviewFurniture(Data, HitPoint);
-	}
 }
 
 void AFurnitureCharacterInstrument::Deactivate()

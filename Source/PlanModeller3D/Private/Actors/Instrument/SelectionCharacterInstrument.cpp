@@ -6,36 +6,44 @@
 #include "Managers/Instrument/ActorSelectable.h"
 #include "Managers/Instrument/SelectionConverterLib.h"
 #include "Models/Instrument/InstrumentAvailableSelection.h"
+#include "Models/Instrument/InstrumentInputData.h"
 #include "Models/Instrument/SceneObjectSelection.h"
 #include "Services/Shared/Models/LinetraceRay.h"
 
 
-void ASelectionCharacterInstrument::Use_Implementation()
+void ASelectionCharacterInstrument::Input_Implementation(FInstrumentInputData InputData)
 {
-	SelectedSceneObject = USelectionConverterLib::ConvertToSelectionFromActor(GetHitActorFromLinetrace(), AvailableSelections);
-	Super::Use_Implementation();
-}
-
-void ASelectionCharacterInstrument::Preview_Implementation()
-{
-	if (PreviewedActor && PreviewedActor->GetClass()->ImplementsInterface(UActorSelectable::StaticClass()))
-	{
-		const auto PoolObject = Cast<IActorSelectable>(PreviewedActor);
-		PoolObject->Execute_HideSelectionPreview(PreviewedActor);
-	}
+	Super::Input_Implementation(InputData);
 	
-	PreviewedActor = GetHitActorFromLinetrace();
-	PreviewedSceneObject = USelectionConverterLib::ConvertToSelectionFromActor(PreviewedActor, AvailableSelections);
-
-	if (PreviewedSceneObject.SelectionType == EInstrumentAvailableSelection::IAS_None)
+	if (Contains(static_cast<EInstrumentInputType>(InputTypes), EInstrumentInputType::TriggerUseInput)
+		&& InputData.UseInput)
 	{
-		PreviewedActor = nullptr;
+		SelectedSceneObject = USelectionConverterLib::ConvertToSelectionFromActor(GetHitActorFromLinetrace(), AvailableSelections);
+		OnInstrumentUsed.Broadcast();
 	}
 
-	if (PreviewedActor && PreviewedActor->GetClass()->ImplementsInterface(UActorSelectable::StaticClass()))
+	if (Contains(static_cast<EInstrumentInputType>(InputTypes), EInstrumentInputType::TriggerPreviewInput)
+		&& InputData.PreviewInput)
 	{
-		const auto PoolObject = Cast<IActorSelectable>(PreviewedActor);
-		PoolObject->Execute_ShowSelectionPreview(PreviewedActor);
+		if (PreviewedActor && PreviewedActor->GetClass()->ImplementsInterface(UActorSelectable::StaticClass()))
+		{
+			const auto PoolObject = Cast<IActorSelectable>(PreviewedActor);
+			PoolObject->Execute_HideSelectionPreview(PreviewedActor);
+		}
+	
+		PreviewedActor = GetHitActorFromLinetrace();
+		PreviewedSceneObject = USelectionConverterLib::ConvertToSelectionFromActor(PreviewedActor, AvailableSelections);
+
+		if (PreviewedSceneObject.SelectionType == EInstrumentAvailableSelection::IAS_None)
+		{
+			PreviewedActor = nullptr;
+		}
+
+		if (PreviewedActor && PreviewedActor->GetClass()->ImplementsInterface(UActorSelectable::StaticClass()))
+		{
+			const auto PoolObject = Cast<IActorSelectable>(PreviewedActor);
+			PoolObject->Execute_ShowSelectionPreview(PreviewedActor);
+		}
 	}
 }
 
