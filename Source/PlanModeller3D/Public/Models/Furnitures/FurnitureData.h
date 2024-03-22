@@ -21,6 +21,9 @@ struct FFurnitureData
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Furniture")
 	TSubclassOf<AFurniture> FurnitureClass;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Furniture")
+	bool bIsPhysicsEnabled = true;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Construct Data")
 	FVector ForwardVector;
 
