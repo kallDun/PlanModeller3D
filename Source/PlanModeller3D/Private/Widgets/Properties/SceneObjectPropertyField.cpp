@@ -36,7 +36,7 @@ void USceneObjectPropertyField::OnChangeSceneObjectButtonClicked()
 		return;
 	}
 	const FString SelectInstrumentName = InstrumentsManager->GetInstrumentName(ASelectionCharacterInstrument::StaticClass());
-	const auto Instrument = InstrumentsManager->ActivateInstrument(SelectInstrumentName);
+	const auto Instrument = InstrumentsManager->ActivateInstrument(SelectInstrumentName, FInstrumentActivationFunction());
 	if (const auto SelectionInstrument = Cast<ASelectionCharacterInstrument>(Instrument))
 	{
 		SelectionInstrument->AvailableSelections = CurrentConstructObject.AvailableSelections;

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "CharacterInstrument.h"
+#include "Models/Furnitures/FurnitureData.h"
 #include "FurnitureCharacterInstrument.generated.h"
 
 
@@ -36,6 +37,9 @@ protected:
 public:
 	UPROPERTY(BlueprintReadOnly, Category = "Instrument State")
 	FString FurnitureName;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Instrument State")
+	FFurnitureData FurnitureData;
 	
 	UPROPERTY(BlueprintReadOnly, Category = "Instrument State")
 	int FurnitureVariationIndex;
@@ -50,10 +54,7 @@ public:
 
 	virtual void Deactivate() override;
 
-protected:
-	UFUNCTION()
-	FFurnitureData GetFurnitureData(bool& bFound) const;
-	
+protected:	
 	UFUNCTION()
 	FVector GetHitPointFromLinetrace(bool& bHit) const;
 

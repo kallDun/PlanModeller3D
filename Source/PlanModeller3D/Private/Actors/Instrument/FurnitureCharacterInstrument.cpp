@@ -4,6 +4,8 @@
 #include "Actors/Instrument/FurnitureCharacterInstrument.h"
 #include "Actors/Character/PMCharacter.h"
 #include "Actors/Foundation/FoundationActor.h"
+#include "Actors/Foundation/RoomActor.h"
+#include "Actors/Foundation/WallActor.h"
 #include "Core/CoreFunctionLib.h"
 #include "Managers/Furnitures/FurnitureController.h"
 #include "Managers/Instrument/InstrumentsManager.h"
@@ -35,15 +37,12 @@ void AFurnitureCharacterInstrument::Input_Implementation(FInstrumentInputData In
 	if (Contains(static_cast<EInstrumentInputType>(InputTypes), EInstrumentInputType::TriggerUseInput)
 		&& InputData.UseInput)
 	{
-		if (FurnitureName.IsEmpty()) return;
-		bool bFoundData = false;
-		const FFurnitureData Data = GetFurnitureData(bFoundData);
-		if (!bFoundData) return;
+		if (FurnitureName.IsEmpty() || FurnitureData.Name.IsEmpty()) return;
 		bool bHit = false;
 		const FVector HitPoint = GetHitPointFromLinetrace(bHit);
 		if (bHit)
 		{
-			AddOrUpdatePreviewFurniture(Data, HitPoint);
+			AddOrUpdatePreviewFurniture(FurnitureData, HitPoint);
 		}
 		
 		if (IsFurniturePreviewValid())
@@ -58,15 +57,12 @@ void AFurnitureCharacterInstrument::Input_Implementation(FInstrumentInputData In
 	if (Contains(static_cast<EInstrumentInputType>(InputTypes), EInstrumentInputType::TriggerPreviewInput)
 		&& InputData.PreviewInput)
 	{
-		if (FurnitureName.IsEmpty()) return;
-		bool bFoundData = false;
-		const FFurnitureData Data = GetFurnitureData(bFoundData);
-		if (!bFoundData) return;
+		if (FurnitureName.IsEmpty() || FurnitureData.Name.IsEmpty()) return;
 		bool bHit = false;
 		const FVector HitPoint = GetHitPointFromLinetrace(bHit);
 		if (bHit)
 		{
-			AddOrUpdatePreviewFurniture(Data, HitPoint);
+			AddOrUpdatePreviewFurniture(FurnitureData, HitPoint);
 		}
 	}
 
@@ -87,6 +83,14 @@ void AFurnitureCharacterInstrument::SetFurnitureData(const FString InFurnitureNa
 {
 	FurnitureName = InFurnitureName;
 	FurnitureVariationIndex = VariationIndex;
+
+	TArray<FFurnitureData> Furnitures = FurnitureController->GetFurnituresData();
+	const auto Data = Furnitures.FindByPredicate([this](const FFurnitureData& Furniture)
+	{
+		return Furniture.Name == FurnitureName;
+	});
+	if (Data != nullptr) FurnitureData = *Data;
+	else UE_LOG(LogTemp, Error, TEXT("FurnitureCharacterInstrument::SetFurnitureData: Furniture data not found!"));
 }
 
 void AFurnitureCharacterInstrument::Deactivate()
@@ -95,37 +99,34 @@ void AFurnitureCharacterInstrument::Deactivate()
 	RemovePreviewFurniture();
 }
 
-FFurnitureData AFurnitureCharacterInstrument::GetFurnitureData(bool& bFound) const
-{
-	TArray<FFurnitureData> Furnitures = FurnitureController->GetFurnituresData();
-	const auto Data = Furnitures.FindByPredicate([this](const FFurnitureData& Furniture)
-	{
-		return Furniture.Name == FurnitureName;
-	});
-	bFound = Data != nullptr;
-	if (bFound) return *Data;
-	return FFurnitureData();
-}
-
 FVector AFurnitureCharacterInstrument::GetHitPointFromLinetrace(bool& bHit) const
 {
-	// make linetrace, get hit actor, check if it's a valid selection, if it is, set it as current selection
-	// if it's not a valid selection, do nothing
 	auto [Start, End] = Character->GetInstrumentLinetraceRay();
 	auto Params = FCollisionQueryParams();
 	Params.AddIgnoredActor(this);
 	Params.AddIgnoredActor(Character);
 	Params.bTraceComplex = true;
 
-	//auto Hits = TArray<FHitResult>();
 	auto Hit = FHitResult();
-
 	if (GetWorld()->LineTraceSingleByObjectType(Hit, Start, End, ECC_GameTraceChannel2, Params))
 	{
-		if (Hit.GetActor() && Hit.GetActor()->IsA(AFoundationActor::StaticClass()))
+		if (Hit.GetActor())
 		{
-			bHit = true;
-			return Hit.ImpactPoint;
+			if (Hit.GetActor()->IsA(AFoundationActor::StaticClass()))
+			{
+				if (FurnitureData.PlacementType == EFurniturePlacementType::Floor
+					&& Hit.GetActor()->IsA(ARoomActor::StaticClass()))
+				{
+					bHit = true;
+					return Hit.ImpactPoint;
+				}
+				if (FurnitureData.PlacementType == EFurniturePlacementType::Wall
+					&& Hit.GetActor()->IsA(AWallActor::StaticClass()))
+				{
+					bHit = true;
+					return Hit.ImpactPoint;
+				}
+			}			
 		}
 	}
 	bHit = false;

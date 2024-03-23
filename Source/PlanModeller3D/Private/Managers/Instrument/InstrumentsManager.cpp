@@ -24,7 +24,7 @@ void UInstrumentsManager::Init_Implementation(UPrimaryDataAsset* DataAsset)
 	CharactersManager->OnBeforeCharacterSelected.AddDynamic(this, &UInstrumentsManager::OnBeforeCharacterSelected);
 }
 
-ACharacterInstrument* UInstrumentsManager::ActivateInstrument(const FString& InstrumentName)
+ACharacterInstrument* UInstrumentsManager::ActivateInstrument(const FString& InstrumentName, const FInstrumentActivationFunction ActivateFunction)
 {
 	DeactivateCurrentInstrument();
 	if (const auto Instrument = GetInstrument(InstrumentName))
@@ -32,6 +32,10 @@ ACharacterInstrument* UInstrumentsManager::ActivateInstrument(const FString& Ins
 		auto Character = CharactersManager->GetCurrentCharacter();
 		Instrument->Activate(Character);
 		ActiveInstrument = Instrument;
+		if (ActivateFunction.IsBound())
+		{
+			ActivateFunction.Execute(Instrument);
+		}
 		OnInstrumentActivated.Broadcast();
 		return Instrument;
 	}

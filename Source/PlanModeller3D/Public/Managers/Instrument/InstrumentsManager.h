@@ -8,6 +8,7 @@
 #include "InstrumentsManager.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FInstrumentManagerAction);
+DECLARE_DYNAMIC_DELEGATE_OneParam(FInstrumentActivationFunction, ACharacterInstrument*, Instrument);
 
 class UCharactersManager;
 class APMCharacter;
@@ -44,7 +45,7 @@ public:
 	virtual void Init_Implementation(UPrimaryDataAsset* DataAsset) override;
 	
 	UFUNCTION(BlueprintCallable)
-	ACharacterInstrument* ActivateInstrument(const FString& InstrumentName);
+	ACharacterInstrument* ActivateInstrument(const FString& InstrumentName, FInstrumentActivationFunction ActivateFunction);
 	
 	UFUNCTION(BlueprintCallable)
 	void DeactivateCurrentInstrument();
