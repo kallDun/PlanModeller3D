@@ -61,6 +61,9 @@ public:
 
 	virtual FString GetActorName() const override;
 
+	UFUNCTION(BlueprintCallable)
+	FString GetClosestRoomID(const FVector Point) const;
+
 protected:
 	UFUNCTION(BlueprintCallable)
 	void InitializeMaterialVerticesForRooms();

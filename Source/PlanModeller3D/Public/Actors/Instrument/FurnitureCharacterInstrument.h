@@ -32,6 +32,9 @@ protected:
 	FRotator Rotation;
 
 	UPROPERTY()
+	FRotator SetupRotation;
+
+	UPROPERTY()
 	FString FurniturePreviewID;
 	
 public:
@@ -56,10 +59,10 @@ public:
 
 protected:	
 	UFUNCTION()
-	FVector GetHitPointFromLinetrace(bool& bHit) const;
+	FVector GetHitPointFromLinetrace(bool& bHit, FString& SelectedRoomID);
 
 	UFUNCTION()
-	void AddOrUpdatePreviewFurniture(const FFurnitureData Data, const FVector& InHitPoint) const;
+	void AddOrUpdatePreviewFurniture(const FFurnitureData Data, const FVector& InHitPoint, FString SelectedRoomID) const;
 	
 	UFUNCTION()
 	void RemovePreviewFurniture() const;

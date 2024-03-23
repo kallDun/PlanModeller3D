@@ -46,6 +46,9 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	FString GetUniqueFurnitureID() const;
+
+	UFUNCTION(BlueprintCallable)
+	FDMRoom GetRoom(const FString& RoomID) const;
 };
 
 inline FString UPlanModellerSaveData::GetUniqueFurnitureID() const
@@ -60,4 +63,13 @@ inline FString UPlanModellerSaveData::GetUniqueFurnitureID() const
 		}
 	}
 	return FString::FromInt(MaxID + 1);
+}
+
+inline FDMRoom UPlanModellerSaveData::GetRoom(const FString& RoomID) const
+{
+	if (const FDMRoom* Room = Plan2D.Rooms.FindByPredicate([&RoomID](const FDMRoom& Room) { return Room.Id == RoomID; }))
+	{
+		return *Room;
+	}
+	return FDMRoom();
 }

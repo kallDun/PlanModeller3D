@@ -176,6 +176,24 @@ FString AWallActor::GetActorName() const
 	return "Wall '" + DMWall.Name + "'";
 }
 
+FString AWallActor::GetClosestRoomID(const FVector Point) const
+{
+	FString ClosestRoomID;
+	float MinDistance = TNumericLimits<float>::Max();
+	for (const FDMRoom& Room : DMRooms)
+	{
+		const FVector2DArray RoomPoints = FVector2DArray(Room.Points);
+		const FVector2D ClosestPoint = UVector2D_MathLib::GetClosestPointOnPolygon(RoomPoints, FVector2D(Point));
+		const float Distance = FVector2D::Distance(FVector2D(Point), ClosestPoint);
+		if (Distance < MinDistance)
+		{
+			MinDistance = Distance;
+			ClosestRoomID = Room.Id;
+		}
+	}
+	return ClosestRoomID;
+}
+
 // GETTERS & SETTERS
 
 void AWallActor::SaveMWall()

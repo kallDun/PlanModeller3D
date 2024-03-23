@@ -12,6 +12,8 @@
 #include "Models/Instrument/InstrumentInputData.h"
 #include "Models/SaveData/PlanModellerSaveData.h"
 #include "Services/Save/SavingService.h"
+#include "Utils/Vector2DArray.h"
+#include "Utils/Vector2D_MathLib.h"
 
 
 void AFurnitureCharacterInstrument::Activate(APMCharacter* InCharacter)
@@ -27,6 +29,7 @@ void AFurnitureCharacterInstrument::Activate(APMCharacter* InCharacter)
 	}
 	HitPointOffset = FVector::ZeroVector;
 	Rotation = FRotator::ZeroRotator;
+	SetupRotation = FRotator::ZeroRotator;
 	FurniturePreviewID = SavingService->CurrentSaveGame->GetUniqueFurnitureID();
 }
 
@@ -39,10 +42,11 @@ void AFurnitureCharacterInstrument::Input_Implementation(FInstrumentInputData In
 	{
 		if (FurnitureName.IsEmpty() || FurnitureData.Name.IsEmpty()) return;
 		bool bHit = false;
-		const FVector HitPoint = GetHitPointFromLinetrace(bHit);
+		FString SelectedRoomID;
+		const FVector HitPoint = GetHitPointFromLinetrace(bHit, SelectedRoomID);
 		if (bHit)
 		{
-			AddOrUpdatePreviewFurniture(FurnitureData, HitPoint);
+			AddOrUpdatePreviewFurniture(FurnitureData, HitPoint, SelectedRoomID);
 		}
 		
 		if (IsFurniturePreviewValid())
@@ -59,10 +63,11 @@ void AFurnitureCharacterInstrument::Input_Implementation(FInstrumentInputData In
 	{
 		if (FurnitureName.IsEmpty() || FurnitureData.Name.IsEmpty()) return;
 		bool bHit = false;
-		const FVector HitPoint = GetHitPointFromLinetrace(bHit);
+		FString SelectedRoomID;
+		const FVector HitPoint = GetHitPointFromLinetrace(bHit, SelectedRoomID);
 		if (bHit)
 		{
-			AddOrUpdatePreviewFurniture(FurnitureData, HitPoint);
+			AddOrUpdatePreviewFurniture(FurnitureData, HitPoint, SelectedRoomID);
 		}
 	}
 
@@ -99,7 +104,7 @@ void AFurnitureCharacterInstrument::Deactivate()
 	RemovePreviewFurniture();
 }
 
-FVector AFurnitureCharacterInstrument::GetHitPointFromLinetrace(bool& bHit) const
+FVector AFurnitureCharacterInstrument::GetHitPointFromLinetrace(bool& bHit, FString& SelectedRoomID)
 {
 	auto [Start, End] = Character->GetInstrumentLinetraceRay();
 	auto Params = FCollisionQueryParams();
@@ -110,34 +115,42 @@ FVector AFurnitureCharacterInstrument::GetHitPointFromLinetrace(bool& bHit) cons
 	auto Hit = FHitResult();
 	if (GetWorld()->LineTraceSingleByObjectType(Hit, Start, End, ECC_GameTraceChannel2, Params))
 	{
-		if (Hit.GetActor())
+		if (Hit.GetActor() && Hit.GetActor()->IsA(AFoundationActor::StaticClass()))
 		{
-			if (Hit.GetActor()->IsA(AFoundationActor::StaticClass()))
-			{
-				if (FurnitureData.PlacementType == EFurniturePlacementType::Floor
+			if (FurnitureData.PlacementType == EFurniturePlacementType::Floor
 					&& Hit.GetActor()->IsA(ARoomActor::StaticClass()))
-				{
-					bHit = true;
-					return Hit.ImpactPoint;
-				}
-				if (FurnitureData.PlacementType == EFurniturePlacementType::Wall
-					&& Hit.GetActor()->IsA(AWallActor::StaticClass()))
-				{
-					bHit = true;
-					return Hit.ImpactPoint;
-				}
-			}			
+			{
+				auto Room = Cast<ARoomActor>(Hit.GetActor());
+				SelectedRoomID = Room->DMRoom.Id;
+				bHit = true;
+				return Hit.ImpactPoint;
+			}
+			if (FurnitureData.PlacementType == EFurniturePlacementType::Wall
+				&& Hit.GetActor()->IsA(AWallActor::StaticClass()))
+			{
+				auto Wall = Cast<AWallActor>(Hit.GetActor());
+				SelectedRoomID = Wall->GetClosestRoomID(Hit.ImpactPoint);
+
+				FVector2D ForwardVector = UVector2D_MathLib::GetDirectionVectorFromWallToRoom(
+					FVector2DArray(Wall->DMWall.Points),FVector2DArray(SavingService->CurrentSaveGame->GetRoom(SelectedRoomID).Points),
+					this);
+			 	SetupRotation = UVector2D_MathLib::GetRotationFromDirectionVector(ForwardVector);
+				
+				bHit = true;
+				return Hit.ImpactPoint;
+			}
 		}
 	}
 	bHit = false;
 	return FVector::ZeroVector;
 }
 
-void AFurnitureCharacterInstrument::AddOrUpdatePreviewFurniture(const FFurnitureData Data, const FVector& InHitPoint) const
+void AFurnitureCharacterInstrument::AddOrUpdatePreviewFurniture(const FFurnitureData Data, const FVector& InHitPoint, FString SelectedRoomID) const
 {
 	const FVector SpawnPoint = InHitPoint + HitPointOffset;
-	const FRotator SpawnRotation = Rotation;
-	const FMFurniture Furniture = FMFurniture(Data.Name, SpawnPoint, SpawnRotation, FurnitureVariationIndex, true, false);
+	const FRotator SpawnRotation = Rotation + SetupRotation;
+	const FMFurniture Furniture = FMFurniture(Data.Name, SpawnPoint, SpawnRotation, FurnitureVariationIndex,
+		SelectedRoomID, true, false);
 	
 	if (SavingService->CurrentSaveGame->Plan3D.Furnitures.Contains(FurniturePreviewID))
 	{

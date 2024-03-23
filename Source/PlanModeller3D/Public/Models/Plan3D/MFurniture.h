@@ -22,6 +22,9 @@ struct FMFurniture
 	int VariationIndex;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString RoomID;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool IsPreview;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
