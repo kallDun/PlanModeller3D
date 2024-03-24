@@ -26,7 +26,7 @@ public:
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instrument State",
 		meta = (Bitmask, BitmaskEnum = "EInstrumentInputType"))
-	uint8 InputTypes;
+	int32 InputTypes;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Instrument State")
 	TArray<FInstrumentInputHint> InputHints;

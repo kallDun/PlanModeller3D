@@ -56,17 +56,35 @@ void AFurnitureCharacterInstrument::InitSpawnFromLibrary(const TArray<FString> I
 	FurnitureVariationIndex = VariationIndex;
 	FurniturePreviewID = SavingService->CurrentSaveGame->GetUniqueFurnitureID();
 	FurnitureData = GetFurnitureDataFromName(InFurnitureName);
-	InputTypes = static_cast<uint8>(EInstrumentInputType::TriggerUseInput) |
-		static_cast<uint8>(EInstrumentInputType::TriggerPreviewInput) |
-		static_cast<uint8>(EInstrumentInputType::TwoAxisInput) |
-		static_cast<uint8>(EInstrumentInputType::OneAxisInput) |
-		static_cast<uint8>(EInstrumentInputType::TriggerNextInput) |
-		static_cast<uint8>(EInstrumentInputType::TriggerPreviousInput);
+	InputTypes = static_cast<int32>(
+		EInstrumentInputType::TriggerExitInput
+		| EInstrumentInputType::TriggerUseInput
+		| EInstrumentInputType::TriggerPreviewInput
+		| EInstrumentInputType::TwoAxisInput
+		| EInstrumentInputType::OneAxisInput
+		| EInstrumentInputType::TriggerNextInput
+		| EInstrumentInputType::TriggerPreviousInput);
 }
 
 void AFurnitureCharacterInstrument::InitSpawnFromLibraryFromStart(const TArray<FString> InLibrary)
 {
 	InitSpawnFromLibrary(InLibrary, Library[0], 0);
+}
+
+void AFurnitureCharacterInstrument::InitSpawnWithoutLibrary(FString InFurnitureName, int VariationIndex)
+{
+	InstrumentType = EFurnitureInstrumentType::SpawnWithoutLibrary;
+	Library = {};
+	SavedFurnitureData = FMFurniture();
+	FurnitureVariationIndex = VariationIndex;
+	FurniturePreviewID = SavingService->CurrentSaveGame->GetUniqueFurnitureID();
+	FurnitureData = GetFurnitureDataFromName(InFurnitureName);
+	InputTypes = static_cast<int32>(
+		EInstrumentInputType::TriggerExitInput
+		| EInstrumentInputType::TriggerUseInput
+		| EInstrumentInputType::TriggerPreviewInput
+		| EInstrumentInputType::TwoAxisInput
+		| EInstrumentInputType::OneAxisInput);
 }
 
 void AFurnitureCharacterInstrument::InitUpdateConcrete(const FString Id, const FMFurniture InFurnitureSaveData)
@@ -77,10 +95,12 @@ void AFurnitureCharacterInstrument::InitUpdateConcrete(const FString Id, const F
 	FurniturePreviewID = Id;
 	FurnitureData = GetFurnitureDataFromName(InFurnitureSaveData.Name);
 	Library = {};
-	InputTypes = static_cast<uint8>(EInstrumentInputType::TriggerUseInput) |
-		static_cast<uint8>(EInstrumentInputType::TriggerPreviewInput) |
-		static_cast<uint8>(EInstrumentInputType::TwoAxisInput) |
-		static_cast<uint8>(EInstrumentInputType::OneAxisInput);
+	InputTypes = static_cast<int32>(
+		EInstrumentInputType::TriggerExitInput
+		| EInstrumentInputType::TriggerUseInput
+		| EInstrumentInputType::TriggerPreviewInput
+		| EInstrumentInputType::TwoAxisInput
+		| EInstrumentInputType::OneAxisInput);
 }
 
 // ------------------------------------ INPUT ------------------------------------

@@ -11,9 +11,6 @@ struct FInstrumentInputHint
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	EInstrumentInputType InputType;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FString ButtonAction = "Press";
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString Hint = "to use the instrument";

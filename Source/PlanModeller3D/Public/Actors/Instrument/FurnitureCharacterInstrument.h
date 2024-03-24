@@ -72,6 +72,9 @@ public:
 	void InitSpawnFromLibraryFromStart(TArray<FString> InLibrary);
 
 	UFUNCTION(BlueprintCallable)
+	void InitSpawnWithoutLibrary(FString InFurnitureName, int VariationIndex);
+
+	UFUNCTION(BlueprintCallable)
 	void InitUpdateConcrete(const FString Id, const FMFurniture InFurnitureSaveData);
 
 protected:
