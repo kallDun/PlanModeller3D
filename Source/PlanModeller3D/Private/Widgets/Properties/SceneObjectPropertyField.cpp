@@ -40,7 +40,6 @@ void USceneObjectPropertyField::OnChangeSceneObjectButtonClicked()
 	if (const auto SelectionInstrument = Cast<ASelectionCharacterInstrument>(Instrument))
 	{
 		SelectionInstrument->AvailableSelections = CurrentConstructObject.AvailableSelections;
-		SelectionInstrument->InstrumentType = EInstrumentType::UI;
 	}
 	Instrument->OnInstrumentUsed.AddDynamic(InstrumentsManager, &UInstrumentsManager::DeactivateCurrentInstrument);
 	Instrument->OnInstrumentDeactivated.AddDynamic(this, &USceneObjectPropertyField::OnInstrumentDeactivated);

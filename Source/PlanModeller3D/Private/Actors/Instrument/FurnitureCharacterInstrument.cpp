@@ -30,8 +30,57 @@ void AFurnitureCharacterInstrument::Activate(APMCharacter* InCharacter)
 	HitPointOffset = FVector::ZeroVector;
 	Rotation = FRotator::ZeroRotator;
 	SetupRotation = FRotator::ZeroRotator;
-	FurniturePreviewID = SavingService->CurrentSaveGame->GetUniqueFurnitureID();
+	SavedSelectedRoomIDbyWall = "";
 }
+
+void AFurnitureCharacterInstrument::Deactivate()
+{
+	Super::Deactivate();
+	RemovePreviewFurniture();
+	if (InstrumentType == EFurnitureInstrumentType::UpdateConcrete)
+	{
+		if (SavingService->CurrentSaveGame->Plan3D.Furnitures.Contains(FurniturePreviewID)) return;
+		SavingService->CurrentSaveGame->Plan3D.Furnitures.Add(FurniturePreviewID, SavedFurnitureData);
+		SavingService->CurrentSaveGame->OnModelChanged.Broadcast(ECrudActionType::Create, EPlanModelType::Furniture, FurniturePreviewID);
+	}
+}
+
+// ------------------------------------ INIT ------------------------------------
+
+void AFurnitureCharacterInstrument::InitSpawnFromLibrary(const TArray<FString> InLibrary, const FString InFurnitureName, const int VariationIndex)
+{
+	Library = InLibrary;
+	SavedFurnitureData = FMFurniture();
+	FurnitureVariationIndex = VariationIndex;
+	FurniturePreviewID = SavingService->CurrentSaveGame->GetUniqueFurnitureID();
+	FurnitureData = GetFurnitureDataFromName(InFurnitureName);
+	InputTypes = static_cast<uint8>(EInstrumentInputType::TriggerUseInput) |
+		static_cast<uint8>(EInstrumentInputType::TriggerPreviewInput) |
+		static_cast<uint8>(EInstrumentInputType::TwoAxisInput) |
+		static_cast<uint8>(EInstrumentInputType::OneAxisInput) |
+		static_cast<uint8>(EInstrumentInputType::TriggerNextInput) |
+		static_cast<uint8>(EInstrumentInputType::TriggerPreviousInput);
+}
+
+void AFurnitureCharacterInstrument::InitSpawnFromLibraryFromStart(const TArray<FString> InLibrary)
+{
+	InitSpawnFromLibrary(InLibrary, Library[0], 0);
+}
+
+void AFurnitureCharacterInstrument::InitUpdateConcrete(const FString Id, const FMFurniture InFurnitureSaveData)
+{
+	SavedFurnitureData = InFurnitureSaveData;
+	FurnitureVariationIndex = InFurnitureSaveData.VariationIndex;
+	FurniturePreviewID = Id;
+	FurnitureData = GetFurnitureDataFromName(InFurnitureSaveData.Name);
+	Library = {};
+	InputTypes = static_cast<uint8>(EInstrumentInputType::TriggerUseInput) |
+		static_cast<uint8>(EInstrumentInputType::TriggerPreviewInput) |
+		static_cast<uint8>(EInstrumentInputType::TwoAxisInput) |
+		static_cast<uint8>(EInstrumentInputType::OneAxisInput);
+}
+
+// ------------------------------------ INPUT ------------------------------------
 
 void AFurnitureCharacterInstrument::Input_Implementation(FInstrumentInputData InputData)
 {
@@ -40,7 +89,7 @@ void AFurnitureCharacterInstrument::Input_Implementation(FInstrumentInputData In
 	if (Contains(static_cast<EInstrumentInputType>(InputTypes), EInstrumentInputType::TriggerUseInput)
 		&& InputData.UseInput)
 	{
-		if (FurnitureName.IsEmpty() || FurnitureData.Name.IsEmpty()) return;
+		if (FurnitureData.Name.IsEmpty()) return;
 		bool bHit = false;
 		FString SelectedRoomID;
 		const FVector HitPoint = GetHitPointFromLinetrace(bHit, SelectedRoomID);
@@ -61,7 +110,7 @@ void AFurnitureCharacterInstrument::Input_Implementation(FInstrumentInputData In
 	if (Contains(static_cast<EInstrumentInputType>(InputTypes), EInstrumentInputType::TriggerPreviewInput)
 		&& InputData.PreviewInput)
 	{
-		if (FurnitureName.IsEmpty() || FurnitureData.Name.IsEmpty()) return;
+		if (FurnitureData.Name.IsEmpty()) return;
 		bool bHit = false;
 		FString SelectedRoomID;
 		const FVector HitPoint = GetHitPointFromLinetrace(bHit, SelectedRoomID);
@@ -82,26 +131,82 @@ void AFurnitureCharacterInstrument::Input_Implementation(FInstrumentInputData In
 	{
 		Rotation.Yaw += InputData.OneAxisInput * 5;
 	}
-}
 
-void AFurnitureCharacterInstrument::SetFurnitureData(const FString InFurnitureName, const int VariationIndex)
-{
-	FurnitureName = InFurnitureName;
-	FurnitureVariationIndex = VariationIndex;
-
-	TArray<FFurnitureData> Furnitures = FurnitureController->GetFurnituresData();
-	const auto Data = Furnitures.FindByPredicate([this](const FFurnitureData& Furniture)
+	if (Contains(static_cast<EInstrumentInputType>(InputTypes), EInstrumentInputType::TriggerNextInput) &&
+		InputData.TriggerNextInput && InstrumentType == EFurnitureInstrumentType::SpawnFromLibrary)
 	{
-		return Furniture.Name == FurnitureName;
-	});
-	if (Data != nullptr) FurnitureData = *Data;
-	else UE_LOG(LogTemp, Error, TEXT("FurnitureCharacterInstrument::SetFurnitureData: Furniture data not found!"));
+		HitPointOffset = FVector::ZeroVector;
+		Rotation = FRotator::ZeroRotator;
+		SetupRotation = FRotator::ZeroRotator;
+		SavedSelectedRoomIDbyWall = "";
+
+		if (Library.Num() == 0) return;
+		if (FurnitureVariationIndex + 1 < FurnitureData.Variations.Num())
+		{
+			RemovePreviewFurniture();
+			FurnitureVariationIndex++;
+			OnInstrumentDataUpdated.Broadcast();
+		}
+		else
+		{
+			const int Index = Library.Find(FurnitureData.Name);
+			if (Index + 1 < Library.Num())
+			{
+				RemovePreviewFurniture();
+				FurnitureVariationIndex = 0;
+				FurnitureData = GetFurnitureDataFromName(Library[Index + 1]);
+				OnInstrumentDataUpdated.Broadcast();
+			}
+		}
+	}
+
+	if (Contains(static_cast<EInstrumentInputType>(InputTypes), EInstrumentInputType::TriggerPreviousInput) &&
+		InputData.TriggerPreviousInput && InstrumentType == EFurnitureInstrumentType::SpawnFromLibrary)
+	{
+		HitPointOffset = FVector::ZeroVector;
+		Rotation = FRotator::ZeroRotator;
+		SetupRotation = FRotator::ZeroRotator;
+		SavedSelectedRoomIDbyWall = "";
+
+		if (Library.Num() == 0) return;
+		if (FurnitureVariationIndex > 0)
+		{
+			RemovePreviewFurniture();
+			FurnitureVariationIndex--;
+			OnInstrumentDataUpdated.Broadcast();
+		}
+		else
+		{
+			const int Index = Library.Find(FurnitureData.Name);
+			if (Index > 0)
+			{
+				RemovePreviewFurniture();
+				FurnitureData = GetFurnitureDataFromName(Library[Index - 1]);
+				FurnitureVariationIndex = FurnitureData.Variations.Num() - 1;
+				OnInstrumentDataUpdated.Broadcast();
+			}
+		}
+	}
 }
 
-void AFurnitureCharacterInstrument::Deactivate()
+// ------------------------------------ PRIVATE ------------------------------------
+
+FFurnitureData AFurnitureCharacterInstrument::GetFurnitureDataFromName(const FString Name) const
 {
-	Super::Deactivate();
-	RemovePreviewFurniture();
+	TArray<FFurnitureData> Furnitures = FurnitureController->GetFurnituresData();
+	const auto Data = Furnitures.FindByPredicate([Name](const FFurnitureData& Furniture)
+	{
+		return Furniture.Name == Name;
+	});
+	if (Data != nullptr)
+	{
+		return *Data;
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("FurnitureCharacterInstrument::SetFurnitureData: Furniture data not found!"));
+		return FFurnitureData();
+	}
 }
 
 FVector AFurnitureCharacterInstrument::GetHitPointFromLinetrace(bool& bHit, FString& SelectedRoomID)
@@ -122,6 +227,8 @@ FVector AFurnitureCharacterInstrument::GetHitPointFromLinetrace(bool& bHit, FStr
 			{
 				auto Room = Cast<ARoomActor>(Hit.GetActor());
 				SelectedRoomID = Room->DMRoom.Id;
+				SetupRotation = FRotator::ZeroRotator;
+				SavedSelectedRoomIDbyWall = "";
 				bHit = true;
 				return Hit.ImpactPoint;
 			}
@@ -131,10 +238,13 @@ FVector AFurnitureCharacterInstrument::GetHitPointFromLinetrace(bool& bHit, FStr
 				auto Wall = Cast<AWallActor>(Hit.GetActor());
 				SelectedRoomID = Wall->GetClosestRoomID(Hit.ImpactPoint);
 
-				FVector2D ForwardVector = UVector2D_MathLib::GetDirectionVectorFromWallToRoom(
+				if (SavedSelectedRoomIDbyWall != SelectedRoomID)
+				{
+					FVector2D ForwardVector = UVector2D_MathLib::GetDirectionVectorFromWallToRoom(
 					FVector2DArray(Wall->DMWall.Points),FVector2DArray(SavingService->CurrentSaveGame->GetRoom(SelectedRoomID).Points),
 					this);
-			 	SetupRotation = UVector2D_MathLib::GetRotationFromDirectionVector(ForwardVector);
+					SetupRotation = UVector2D_MathLib::GetRotationFromDirectionVector(ForwardVector);
+				}
 				
 				bHit = true;
 				return Hit.ImpactPoint;
@@ -149,8 +259,8 @@ void AFurnitureCharacterInstrument::AddOrUpdatePreviewFurniture(const FFurniture
 {
 	const FVector SpawnPoint = InHitPoint + HitPointOffset;
 	const FRotator SpawnRotation = Rotation + SetupRotation;
-	const FMFurniture Furniture = FMFurniture(Data.Name, SpawnPoint, SpawnRotation, FurnitureVariationIndex,
-		SelectedRoomID, true, false);
+	const FMFurniture Furniture = FMFurniture(Data.Name, SpawnPoint,
+		SpawnRotation, FurnitureVariationIndex, SelectedRoomID, true, false);
 	
 	if (SavingService->CurrentSaveGame->Plan3D.Furnitures.Contains(FurniturePreviewID))
 	{

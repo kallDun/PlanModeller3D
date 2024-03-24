@@ -69,6 +69,16 @@ TArray<FFurnitureData> UFurnitureController::GetFurnituresData() const
 	return Data->Furnitures;
 }
 
+TArray<FString> UFurnitureController::GetFurnitureNamesFromData(const TArray<FFurnitureData> List) const
+{
+	TArray<FString> Names = {};
+	for (const FFurnitureData FurnitureData : List)
+	{
+		Names.Add(FurnitureData.Name);
+	}
+	return Names;
+}
+
 TArray<AFurniture*> UFurnitureController::GetSceneFurnitures(const bool bIncludePreview)
 {
 	TArray<AFurniture*> SceneFurnitures = {};

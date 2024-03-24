@@ -64,6 +64,18 @@ ACharacterInstrument* UInstrumentsManager::GetInstrument(const FString& Instrume
 	return nullptr;
 }
 
+ACharacterInstrument* UInstrumentsManager::GetInstrumentByType(TSubclassOf<ACharacterInstrument> InstrumentType)
+{
+	for (const auto Item : Instruments)
+	{
+		if (Item->IsA(InstrumentType))
+		{
+			return Item;
+		}
+	}
+	return nullptr;
+}
+
 FString UInstrumentsManager::GetInstrumentName(const TSubclassOf<ACharacterInstrument> InstrumentType)
 {
 	for (const auto Item : Instruments)

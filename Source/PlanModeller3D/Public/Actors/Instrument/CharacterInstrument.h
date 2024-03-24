@@ -5,7 +5,6 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Models/Instrument/InstrumentInputHint.h"
-#include "Models/Instrument/InstrumentType.h"
 #include "CharacterInstrument.generated.h"
 
 struct FInstrumentInputData;
@@ -31,9 +30,6 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Instrument State")
 	TArray<FInstrumentInputHint> InputHints;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Instrument State")
-	EInstrumentType InstrumentType;
 	
 	UPROPERTY(BlueprintReadOnly, Category = "Instrument State")
 	UInstrumentsManager* Manager;
@@ -46,6 +42,9 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category = "Instrument State")
 	FInstrumentAction OnInstrumentDeactivated;
+
+	UPROPERTY(BlueprintAssignable, Category = "Instrument State")
+	FInstrumentAction OnInstrumentDataUpdated;
 
 	UFUNCTION()
 	virtual void Init(UInstrumentsManager* InstrumentsManager);

@@ -40,6 +40,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	TArray<FFurnitureData> GetFurnituresData() const;
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	TArray<FString> GetFurnitureNamesFromData(const TArray<FFurnitureData> List) const;
 	
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	TArray<AFurniture*> GetSceneFurnitures(bool bIncludePreview = false);

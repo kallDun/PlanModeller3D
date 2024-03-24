@@ -54,6 +54,9 @@ public:
 	ACharacterInstrument* GetInstrument(const FString& InstrumentName);
 
 	UFUNCTION(BlueprintCallable)
+	ACharacterInstrument* GetInstrumentByType(TSubclassOf<ACharacterInstrument> InstrumentType);
+
+	UFUNCTION(BlueprintCallable)
 	FString GetInstrumentName(TSubclassOf<ACharacterInstrument> InstrumentType);
 
 private:

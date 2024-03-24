@@ -5,9 +5,11 @@
 #include "CoreMinimal.h"
 #include "CharacterInstrument.h"
 #include "Models/Furnitures/FurnitureData.h"
+#include "Models/Instrument/FurnitureInstrumentType.h"
+#include "Models/Plan3D/MFurniture.h"
 #include "FurnitureCharacterInstrument.generated.h"
 
-
+struct FMFurniture;
 class USavingService;
 class UFurnitureController;
 struct FFurnitureData;
@@ -16,6 +18,22 @@ UCLASS(Abstract, Blueprintable, BlueprintType)
 class PLANMODELLER3D_API AFurnitureCharacterInstrument : public ACharacterInstrument
 {
 	GENERATED_BODY()
+	
+public:
+	UPROPERTY(BlueprintReadOnly, Category = "Instrument State")
+	EFurnitureInstrumentType InstrumentType;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Instrument State")
+	FFurnitureData FurnitureData;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Instrument State")
+	FString FurniturePreviewID;
+	
+	UPROPERTY(BlueprintReadOnly, Category = "Instrument State")
+	int FurnitureVariationIndex;
+	
+	UPROPERTY(BlueprintReadOnly, Category = "Instrument State")
+	TArray<FString> Library;
 
 protected:
 	UPROPERTY()
@@ -24,7 +42,7 @@ protected:
 	UPROPERTY()
 	USavingService* SavingService;
 
-protected:
+private:
 	UPROPERTY()
 	FVector HitPointOffset;
 
@@ -35,20 +53,10 @@ protected:
 	FRotator SetupRotation;
 
 	UPROPERTY()
-	FString FurniturePreviewID;
-	
-public:
-	UPROPERTY(BlueprintReadOnly, Category = "Instrument State")
-	FString FurnitureName;
+	FString SavedSelectedRoomIDbyWall;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Instrument State")
-	FFurnitureData FurnitureData;
-	
-	UPROPERTY(BlueprintReadOnly, Category = "Instrument State")
-	int FurnitureVariationIndex;
-
-	UFUNCTION(BlueprintCallable)
-	void SetFurnitureData(FString InFurnitureName, int VariationIndex);
+	UPROPERTY()
+	FMFurniture SavedFurnitureData;
 
 public:
 	virtual void Activate(APMCharacter* InCharacter) override;
@@ -57,7 +65,19 @@ public:
 
 	virtual void Deactivate() override;
 
-protected:	
+	UFUNCTION(BlueprintCallable)
+	void InitSpawnFromLibrary(TArray<FString> InLibrary, FString InFurnitureName, int VariationIndex);
+
+	UFUNCTION(BlueprintCallable)
+	void InitSpawnFromLibraryFromStart(TArray<FString> InLibrary);
+
+	UFUNCTION(BlueprintCallable)
+	void InitUpdateConcrete(const FString Id, const FMFurniture InFurnitureSaveData);
+
+protected:
+	UFUNCTION()
+	FFurnitureData GetFurnitureDataFromName(const FString Name) const;
+	
 	UFUNCTION()
 	FVector GetHitPointFromLinetrace(bool& bHit, FString& SelectedRoomID);
 

@@ -35,7 +35,7 @@ struct FFurnitureData
 	int PlacementPriority;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Construct Data")
-	TArray<FFurnitureVariationData> Variations;
+	TArray<FFurnitureVariationData> Variations = {};
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="View")
 	FString Category;

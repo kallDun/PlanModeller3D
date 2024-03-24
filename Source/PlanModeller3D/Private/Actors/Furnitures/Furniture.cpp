@@ -102,4 +102,14 @@ void AFurniture::GetFromPool_Implementation(UPoolService* Pool)
 void AFurniture::ReturnToPool_Implementation(UPoolService* Pool)
 {
 	IPoolObject::ReturnToPool_Implementation(Pool);
+	for (const FFurnitureMeshData MeshData : Meshes)
+	{
+		MeshData.Mesh->SetVisibility(false);
+		MeshData.Mesh->SetCollisionProfileName("NoCollision");
+		MeshData.Mesh->SetSimulatePhysics(false);
+		for (int i = 0; i < MeshData.MeshMaterials.Num(); ++i)
+		{
+			MeshData.Mesh->SetMaterial(i, MeshData.MeshMaterials[i]);
+		}
+	}
 }
