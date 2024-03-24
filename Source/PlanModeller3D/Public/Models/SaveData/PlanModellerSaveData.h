@@ -20,7 +20,7 @@ class PLANMODELLER3D_API UPlanModellerSaveData : public UAbstractSaveData
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(BlueprintAssignable)
+	UPROPERTY(BlueprintAssignable, BlueprintCallable)
 	FOnModelChanged OnModelChanged;
 	
 	UPROPERTY()

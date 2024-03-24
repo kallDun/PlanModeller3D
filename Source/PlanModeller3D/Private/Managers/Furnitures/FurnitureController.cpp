@@ -99,8 +99,8 @@ AFurniture* UFurnitureController::GetFurnitureByID(const FString& ID)
 
 void UFurnitureController::DeleteFurniture(const FString& ID) const
 {
-	SaveData->Plan3D.Furnitures.Remove(ID);
 	SaveData->OnModelChanged.Broadcast(ECrudActionType::Delete, EPlanModelType::Furniture, ID);
+	SaveData->Plan3D.Furnitures.Remove(ID);
 }
 
 AFurniture* UFurnitureController::CreateFurniture(const FMFurniture& FurnitureModel, AActor* Parent, const FString& Id)
