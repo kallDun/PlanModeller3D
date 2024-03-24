@@ -16,4 +16,13 @@ struct FFurnitureMeshData
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<UMaterialInterface*> MeshMaterials;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FVector RelativeLocation;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FRotator RelativeRotation;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FVector RelativeScale3D;
 };

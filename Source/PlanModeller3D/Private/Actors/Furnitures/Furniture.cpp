@@ -15,7 +15,8 @@ void AFurniture::Init(const FFurnitureData& FurnitureData, const FMFurniture& Mo
 void AFurniture::AddMeshData(const int VariationIndex, UStaticMeshComponent* Mesh)
 {
 	const TArray<UMaterialInterface*> Materials = Mesh->GetMaterials();
-	Meshes.Add(FFurnitureMeshData(VariationIndex, Mesh, Materials));
+	Meshes.Add(FFurnitureMeshData(VariationIndex, Mesh, Materials,
+		Mesh->GetRelativeLocation(), Mesh->GetRelativeRotation(), Mesh->GetRelativeScale3D()));
 }
 
 void AFurniture::UpdateView_Implementation(const FMFurniture& Model)
@@ -32,12 +33,22 @@ void AFurniture::UpdateMeshesByVariation_Implementation(const int VariationIndex
 	{
 		if (MeshData.VariationIndex == VariationIndex)
 		{
+			const bool bHasPhysics = !SaveModel.IsPreview && Data.bIsPhysicsEnabled;
+			
 			MeshData.Mesh->SetVisibility(true);
 			MeshData.Mesh->SetCollisionProfileName(SaveModel.IsPreview ? "FurniturePreviewPreset" : "FurniturePreset");
-			MeshData.Mesh->SetSimulatePhysics(!SaveModel.IsPreview && Data.bIsPhysicsEnabled);
+			MeshData.Mesh->SetSimulatePhysics(bHasPhysics);
 			for (int i = 0; i < MeshData.MeshMaterials.Num(); ++i)
 			{
 				MeshData.Mesh->SetMaterial(i, SaveModel.IsPreview ? PreviewMaterial : MeshData.MeshMaterials[i]);
+			}
+
+			if (!bHasPhysics) // attach meshes to root component if no physics
+			{
+				MeshData.Mesh->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+				MeshData.Mesh->SetRelativeLocation(MeshData.RelativeLocation);
+				MeshData.Mesh->SetRelativeRotation(MeshData.RelativeRotation);
+				MeshData.Mesh->SetRelativeScale3D(MeshData.RelativeScale3D);
 			}
 		}
 		else
@@ -49,6 +60,12 @@ void AFurniture::UpdateMeshesByVariation_Implementation(const int VariationIndex
 			{
 				MeshData.Mesh->SetMaterial(i, MeshData.MeshMaterials[i]);
 			}
+			
+			// attach meshes to root component if no physics
+			MeshData.Mesh->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+			MeshData.Mesh->SetRelativeLocation(MeshData.RelativeLocation);
+			MeshData.Mesh->SetRelativeRotation(MeshData.RelativeRotation);
+			MeshData.Mesh->SetRelativeScale3D(MeshData.RelativeScale3D);
 		}
 	}
 }
@@ -111,5 +128,10 @@ void AFurniture::ReturnToPool_Implementation(UPoolService* Pool)
 		{
 			MeshData.Mesh->SetMaterial(i, MeshData.MeshMaterials[i]);
 		}
+		// attach meshes to root component
+		MeshData.Mesh->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+		MeshData.Mesh->SetRelativeLocation(MeshData.RelativeLocation);
+		MeshData.Mesh->SetRelativeRotation(MeshData.RelativeRotation);
+		MeshData.Mesh->SetRelativeScale3D(MeshData.RelativeScale3D);
 	}
 }

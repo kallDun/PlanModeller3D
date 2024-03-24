@@ -35,20 +35,22 @@ void AFurnitureCharacterInstrument::Activate(APMCharacter* InCharacter)
 
 void AFurnitureCharacterInstrument::Deactivate()
 {
-	Super::Deactivate();
 	RemovePreviewFurniture();
-	if (InstrumentType == EFurnitureInstrumentType::UpdateConcrete)
+	if (InstrumentType == EFurnitureInstrumentType::UpdateConcrete
+		&& !SavingService->CurrentSaveGame->Plan3D.Furnitures.Contains(FurniturePreviewID))
 	{
-		if (SavingService->CurrentSaveGame->Plan3D.Furnitures.Contains(FurniturePreviewID)) return;
 		SavingService->CurrentSaveGame->Plan3D.Furnitures.Add(FurniturePreviewID, SavedFurnitureData);
 		SavingService->CurrentSaveGame->OnModelChanged.Broadcast(ECrudActionType::Create, EPlanModelType::Furniture, FurniturePreviewID);
 	}
+
+	Super::Deactivate();
 }
 
 // ------------------------------------ INIT ------------------------------------
 
 void AFurnitureCharacterInstrument::InitSpawnFromLibrary(const TArray<FString> InLibrary, const FString InFurnitureName, const int VariationIndex)
 {
+	InstrumentType = EFurnitureInstrumentType::SpawnFromLibrary;
 	Library = InLibrary;
 	SavedFurnitureData = FMFurniture();
 	FurnitureVariationIndex = VariationIndex;
@@ -69,6 +71,7 @@ void AFurnitureCharacterInstrument::InitSpawnFromLibraryFromStart(const TArray<F
 
 void AFurnitureCharacterInstrument::InitUpdateConcrete(const FString Id, const FMFurniture InFurnitureSaveData)
 {
+	InstrumentType = EFurnitureInstrumentType::UpdateConcrete;
 	SavedFurnitureData = InFurnitureSaveData;
 	FurnitureVariationIndex = InFurnitureSaveData.VariationIndex;
 	FurniturePreviewID = Id;
