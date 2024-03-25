@@ -69,17 +69,61 @@ TArray<FFurnitureData> UFurnitureController::GetFurnituresData() const
 	return Data->Furnitures;
 }
 
-TArray<FString> UFurnitureController::GetFurnitureNamesFromData(const TArray<FFurnitureData> List) const
+TArray<FFurnitureLibraryFolder> UFurnitureController::GetFurnitureLibraryFolders() const
 {
-	TArray<FString> Names = {};
-	for (const FFurnitureData FurnitureData : List)
+	// order by category
+	TArray<FString> Categories = {};
+	for (const FFurnitureData FurnitureData : Data->Furnitures)
 	{
-		Names.Add(FurnitureData.Name);
+		if (!Categories.Contains(FurnitureData.Category))
+		{
+			Categories.Add(FurnitureData.Category);
+		}
 	}
-	return Names;
+	TArray<FFurnitureLibraryFolder> Folders = {};
+	for (const FString Category : Categories)
+	{
+		FFurnitureLibraryFolder Folder = FFurnitureLibraryFolder();
+		Folder.Name = Category;
+		Folder.Furnitures = Data->Furnitures.FilterByPredicate([Category](const FFurnitureData& FurnitureData)
+		{
+			return FurnitureData.Category == Category;
+		});
+		Folders.Add(Folder);
+	}
+	return Folders;
 }
 
-TArray<AFurniture*> UFurnitureController::GetSceneFurnitures(const bool bIncludePreview)
+TArray<FFurnitureSceneFolder> UFurnitureController::GetFurnitureSceneFolders(const bool bIncludePreview) const
+{
+	auto Furnitures = GetSceneFurnitures(bIncludePreview);
+	
+	// order by room placement
+	TArray<FString> Rooms = {};
+	for (const auto Item : Furnitures)
+	{
+		if (!Rooms.Contains(Item->SaveModel.RoomID))
+		{
+			Rooms.Add(Item->SaveModel.RoomID);
+		}
+	}
+	
+	TArray<FFurnitureSceneFolder> Folders = {};
+	for (const FString RoomID : Rooms)
+	{
+		FString RoomName = SaveData->GetRoom(RoomID).Name;
+		FFurnitureSceneFolder Folder = FFurnitureSceneFolder();
+		Folder.Name = RoomName;
+		Folder.Furnitures = Furnitures.FilterByPredicate([RoomID](const AFurniture* Furniture)
+		{
+			return Furniture->SaveModel.RoomID == RoomID;
+		});
+		Folders.Add(Folder);
+	}
+	return Folders;
+}
+
+TArray<AFurniture*> UFurnitureController::GetSceneFurnitures(const bool bIncludePreview) const
 {
 	TArray<AFurniture*> SceneFurnitures = {};
 	for (auto Furniture : FurnituresMap)

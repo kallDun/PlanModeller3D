@@ -7,6 +7,7 @@
 #include "Models/Furnitures/FurnitureData.h"
 #include "Models/Instrument/FurnitureInstrumentType.h"
 #include "Models/Plan3D/MFurniture.h"
+#include "Models/Widget/Folder/FurnitureLibraryFolder.h"
 #include "FurnitureCharacterInstrument.generated.h"
 
 struct FMFurniture;
@@ -33,7 +34,7 @@ public:
 	int FurnitureVariationIndex;
 	
 	UPROPERTY(BlueprintReadOnly, Category = "Instrument State")
-	TArray<FString> Library;
+	TArray<FFurnitureLibraryFolder> Library;
 
 protected:
 	UPROPERTY()
@@ -66,10 +67,10 @@ public:
 	virtual void Deactivate() override;
 
 	UFUNCTION(BlueprintCallable)
-	void InitSpawnFromLibrary(TArray<FString> InLibrary, FString InFurnitureName, int VariationIndex);
+	void InitSpawnFromLibrary(TArray<FFurnitureLibraryFolder> InLibrary, FString InFurnitureName, int VariationIndex);
 
 	UFUNCTION(BlueprintCallable)
-	void InitSpawnFromLibraryFromStart(TArray<FString> InLibrary);
+	void InitSpawnFromLibraryFromStart(TArray<FFurnitureLibraryFolder> InLibrary);
 
 	UFUNCTION(BlueprintCallable)
 	void InitSpawnWithoutLibrary(FString InFurnitureName, int VariationIndex);

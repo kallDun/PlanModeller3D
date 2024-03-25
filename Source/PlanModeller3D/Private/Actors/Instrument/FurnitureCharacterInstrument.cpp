@@ -48,7 +48,7 @@ void AFurnitureCharacterInstrument::Deactivate()
 
 // ------------------------------------ INIT ------------------------------------
 
-void AFurnitureCharacterInstrument::InitSpawnFromLibrary(const TArray<FString> InLibrary, const FString InFurnitureName, const int VariationIndex)
+void AFurnitureCharacterInstrument::InitSpawnFromLibrary(const TArray<FFurnitureLibraryFolder> InLibrary, const FString InFurnitureName, const int VariationIndex)
 {
 	InstrumentType = EFurnitureInstrumentType::SpawnFromLibrary;
 	Library = InLibrary;
@@ -66,9 +66,9 @@ void AFurnitureCharacterInstrument::InitSpawnFromLibrary(const TArray<FString> I
 		| EInstrumentInputType::TriggerPreviousInput);
 }
 
-void AFurnitureCharacterInstrument::InitSpawnFromLibraryFromStart(const TArray<FString> InLibrary)
+void AFurnitureCharacterInstrument::InitSpawnFromLibraryFromStart(const TArray<FFurnitureLibraryFolder> InLibrary)
 {
-	InitSpawnFromLibrary(InLibrary, Library[0], 0);
+	InitSpawnFromLibrary(InLibrary, Library[0].Furnitures[0].Name, 0);
 }
 
 void AFurnitureCharacterInstrument::InitSpawnWithoutLibrary(FString InFurnitureName, int VariationIndex)
@@ -172,12 +172,42 @@ void AFurnitureCharacterInstrument::Input_Implementation(FInstrumentInputData In
 		}
 		else
 		{
-			const int Index = Library.Find(FurnitureData.Name);
-			if (Index + 1 < Library.Num())
+			int LibraryIndex = 0;
+			int FurnitureIndex = 0;
+			bool bFound = false;
+			for (int i = 0; i < Library.Num(); i++)
+			{
+				for (int j = 0; j < Library[i].Furnitures.Num(); j++)
+				{
+					if (Library[i].Furnitures[j].Name == FurnitureData.Name)
+					{
+						LibraryIndex = i;
+						FurnitureIndex = j;
+						bFound = true;
+						break;
+					}
+				}
+				if (bFound) break;
+			}
+
+			if (bFound && FurnitureIndex + 1 < Library[LibraryIndex].Furnitures.Num())
 			{
 				RemovePreviewFurniture();
 				FurnitureVariationIndex = 0;
-				FurnitureData = GetFurnitureDataFromName(Library[Index + 1]);
+				FurnitureData = GetFurnitureDataFromName(
+					Library[LibraryIndex]
+					.Furnitures[FurnitureIndex + 1]
+					.Name);
+				OnInstrumentDataUpdated.Broadcast();
+			}
+			else if (bFound && LibraryIndex + 1 < Library.Num())
+			{
+				RemovePreviewFurniture();
+				FurnitureVariationIndex = 0;
+				FurnitureData = GetFurnitureDataFromName(
+					Library[LibraryIndex + 1]
+					.Furnitures[0]
+					.Name);
 				OnInstrumentDataUpdated.Broadcast();
 			}
 		}
@@ -200,11 +230,41 @@ void AFurnitureCharacterInstrument::Input_Implementation(FInstrumentInputData In
 		}
 		else
 		{
-			const int Index = Library.Find(FurnitureData.Name);
-			if (Index > 0)
+			int LibraryIndex = 0;
+			int FurnitureIndex = 0;
+			bool bFound = false;
+			for (int i = 0; i < Library.Num(); i++)
+			{
+				for (int j = 0; j < Library[i].Furnitures.Num(); j++)
+				{
+					if (Library[i].Furnitures[j].Name == FurnitureData.Name)
+					{
+						LibraryIndex = i;
+						FurnitureIndex = j;
+						bFound = true;
+						break;
+					}
+				}
+				if (bFound) break;
+			}
+
+			if (bFound && FurnitureIndex - 1 >= 0)
 			{
 				RemovePreviewFurniture();
-				FurnitureData = GetFurnitureDataFromName(Library[Index - 1]);
+				FurnitureData = GetFurnitureDataFromName(
+					Library[LibraryIndex]
+					.Furnitures[FurnitureIndex - 1]
+					.Name);
+				FurnitureVariationIndex = FurnitureData.Variations.Num() - 1;
+				OnInstrumentDataUpdated.Broadcast();
+			}
+			else if (bFound && LibraryIndex - 1 >= 0)
+			{
+				RemovePreviewFurniture();
+				FurnitureData = GetFurnitureDataFromName(
+					Library[LibraryIndex - 1]
+					.Furnitures[Library[LibraryIndex - 1].Furnitures.Num() - 1]
+					.Name);
 				FurnitureVariationIndex = FurnitureData.Variations.Num() - 1;
 				OnInstrumentDataUpdated.Broadcast();
 			}

@@ -5,6 +5,8 @@
 #include "CoreMinimal.h"
 #include "FurnitureControllerData.h"
 #include "Models/SaveData/PlanModelType.h"
+#include "Models/Widget/Folder/FurnitureLibraryFolder.h"
+#include "Models/Widget/Folder/FurnitureSceneFolder.h"
 #include "Services/Initialization/Initializable.h"
 #include "Services/Save/LoadedFromSave.h"
 #include "Services/Shared/Enums/CrudActionType.h"
@@ -40,12 +42,15 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	TArray<FFurnitureData> GetFurnituresData() const;
-
-	UFUNCTION(BlueprintCallable, BlueprintPure)
-	TArray<FString> GetFurnitureNamesFromData(const TArray<FFurnitureData> List) const;
 	
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-	TArray<AFurniture*> GetSceneFurnitures(bool bIncludePreview = false);
+	TArray<FFurnitureLibraryFolder> GetFurnitureLibraryFolders() const;
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	TArray<FFurnitureSceneFolder> GetFurnitureSceneFolders(bool bIncludePreview = false) const;
+	
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	TArray<AFurniture*> GetSceneFurnitures(bool bIncludePreview = false) const;
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	AFurniture* GetFurnitureByID(const FString& ID);
