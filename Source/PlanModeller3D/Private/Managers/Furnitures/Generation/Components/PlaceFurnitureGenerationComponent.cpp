@@ -28,9 +28,9 @@ TArray<FString> UPlaceFurnitureGenerationComponent::GetCustomFurnitureArray() co
 	return GetData().CustomFurnitureNames;
 }
 
-bool UPlaceFurnitureGenerationComponent::Generate_Implementation()
+bool UPlaceFurnitureGenerationComponent::StartGeneration_Implementation()
 {
-	return Super::Generate_Implementation();
+	return Super::StartGeneration_Implementation();
 }
 
 bool UPlaceFurnitureGenerationComponent::ClearGeneration_Implementation()

@@ -5,7 +5,7 @@
 #include "Widgets/Properties/PropertiesConstructData.h"
 
 
-bool UFurnitureGenerationComponent::Generate_Implementation()
+bool UFurnitureGenerationComponent::StartGeneration_Implementation()
 {
 	for (const auto Component : RequiredComponentsToGenerate)
 	{
@@ -23,4 +23,10 @@ bool UFurnitureGenerationComponent::ClearGeneration_Implementation()
 UPropertiesConstructData* UFurnitureGenerationComponent::GetProperties_Implementation()
 {
 	return NewObject<UPropertiesConstructData>();
+}
+
+void UFurnitureGenerationComponent::OnGenerationFinished(const ERunnableStatus Status)
+{
+	GenerationStatus = Status;
+	OnGenerationComponentViewUpdated.Broadcast(this);
 }

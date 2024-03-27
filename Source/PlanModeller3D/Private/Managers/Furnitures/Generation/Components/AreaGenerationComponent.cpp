@@ -28,9 +28,9 @@ TArray<FString> UAreaGenerationComponent::GetCustomAreasArray() const
 	return GetData().CustomAreas;
 }
 
-bool UAreaGenerationComponent::Generate_Implementation()
+bool UAreaGenerationComponent::StartGeneration_Implementation()
 {
-	return Super::Generate_Implementation();
+	return Super::StartGeneration_Implementation();
 }
 
 bool UAreaGenerationComponent::ClearGeneration_Implementation()

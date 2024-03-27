@@ -13,6 +13,12 @@ struct FFurnitureGenerationData
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString RoomID;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString RoomName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FSelectFurnitureGenerationData SelectFurnitureComponentData;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

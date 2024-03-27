@@ -3,6 +3,7 @@
 
 #include "Managers/Furnitures/Generation/Components/SelectFurnitureGenerationComponent.h"
 #include "Managers/Furnitures/Generation/FurnitureGenerationController.h"
+#include "Managers/Furnitures/Generation/Components/Algorithms/SelectFurnitureGenerationAlgorithm.h"
 #include "Models/Furnitures/Generation/FurnitureGenerationData.h"
 
 
@@ -28,9 +29,15 @@ TArray<FSelectedFurnitureData> USelectFurnitureGenerationComponent::GetCustomFur
 	return GetData().CustomFurniture;
 }
 
-bool USelectFurnitureGenerationComponent::Generate_Implementation()
+bool USelectFurnitureGenerationComponent::StartGeneration_Implementation()
 {
-	return Super::Generate_Implementation();
+	if (Super::StartGeneration_Implementation() == false) return false;
+	SelectFurnitureGenerationAlgorithm Algorithm = SelectFurnitureGenerationAlgorithm();
+	Algorithm.OnGenerationFinished.BindUFunction(this, "OnGenerationFinished");
+	GenerationThread = FRunnableThread::Create(&Algorithm, TEXT("SelectFurnitureGenerationAlgorithm"));
+	GenerationStatus = ERunnableStatus::Running;
+	OnGenerationComponentViewUpdated.Broadcast(this);
+	return true;
 }
 
 bool USelectFurnitureGenerationComponent::ClearGeneration_Implementation()

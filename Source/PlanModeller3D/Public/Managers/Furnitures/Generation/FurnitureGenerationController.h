@@ -3,11 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Models/Furnitures/Generation/FurnitureGenerationData.h"
+#include "Models/Instrument/SceneObjectSelection.h"
 #include "Services/Initialization/Initializable.h"
 #include "Services/Save/LoadedFromSave.h"
 #include "UObject/Object.h"
 #include "FurnitureGenerationController.generated.h"
 
+class UPropertiesConstructData;
 class UFurnitureGenerationComponent;
 struct FFurnitureGenerationData;
 
@@ -24,9 +27,24 @@ protected:
 	UPROPERTY()
 	UPlanModellerSaveData* SaveData;
 
+	UFUNCTION() FSceneObjectSelection GetRoom()
+	{
+		return FSceneObjectSelection(
+			EInstrumentAvailableSelection::IAS_Room,
+			GetGenerationData().RoomID,
+			GetGenerationData().RoomName);
+	}
+	
+	UFUNCTION() void SetRoom(const FSceneObjectSelection Selection)
+	{
+		if (Selection.SelectionType != EInstrumentAvailableSelection::IAS_Room) return;
+		GetGenerationData().RoomID = Selection.SelectionId;
+		GetGenerationData().RoomName = Selection.SelectionName;
+	}
+
 public:
 	UFUNCTION()
-	FFurnitureGenerationData GetGenerationData() const;
+	FFurnitureGenerationData& GetGenerationData() const;
 
 	UFUNCTION()
 	void SetGenerationData(const FFurnitureGenerationData& Data) const;
@@ -41,4 +59,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void ClearAll();
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	UPropertiesConstructData* GetProperties();
 };

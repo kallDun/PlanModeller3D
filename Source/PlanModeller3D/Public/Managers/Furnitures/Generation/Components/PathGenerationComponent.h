@@ -29,7 +29,7 @@ public:
 	TArray<FString> GetCustomPathesArray() const;
 
 public:
-	virtual bool Generate_Implementation() override;
+	virtual bool StartGeneration_Implementation() override;
 
 	virtual bool ClearGeneration_Implementation() override;
 

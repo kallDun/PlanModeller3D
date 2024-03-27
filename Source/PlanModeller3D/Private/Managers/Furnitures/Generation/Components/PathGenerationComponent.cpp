@@ -28,9 +28,9 @@ TArray<FString> UPathGenerationComponent::GetCustomPathesArray() const
 	return GetData().CustomPathes;
 }
 
-bool UPathGenerationComponent::Generate_Implementation()
+bool UPathGenerationComponent::StartGeneration_Implementation()
 {
-	return Super::Generate_Implementation();
+	return Super::StartGeneration_Implementation();
 }
 
 bool UPathGenerationComponent::ClearGeneration_Implementation()
